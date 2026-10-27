@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2e7d32">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>المرشد الزراعي الذكي</title>
+<style>
+:root{--bg:#f4f7f1;--card:#fff;--tx:#1d2b1f;--mut:#5b6b5e;--pri:#2e7d32;--bd:#d6e0d3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a14;--card:#1b261e;--tx:#e6efe6;--mut:#9db0a0;--pri:#66bb6a;--bd:#2f3f33}}
+:root[data-theme="dark"]{--bg:#121a14;--card:#1b261e;--tx:#e6efe6;--mut:#9db0a0;--pri:#66bb6a;--bd:#2f3f33}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;line-height:1.7}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:1.4rem;margin:8px 0 2px}
+.sub{color:var(--mut);margin:0 0 14px;font-size:.9rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+.card h2{font-size:1rem;margin:0 0 10px;color:var(--pri)}
+label{display:block;font-size:.85rem;color:var(--mut);margin:8px 0 3px}
+input,select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:1rem;font-family:inherit}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{width:100%;padding:13px;border:0;border-radius:12px;background:var(--pri);color:#fff;font-size:1.05rem;font-weight:600;font-family:inherit;margin-top:10px}
+button.sec{background:transparent;color:var(--pri);border:1px solid var(--pri);font-size:.9rem;padding:9px}
+button:disabled{opacity:.5}
+#prev{max-width:100%;max-height:220px;border-radius:10px;margin-top:8px;display:none}
+#out{white-space:pre-wrap;word-break:break-word}
+.note{font-size:.8rem;color:var(--mut)}
+</style>
+</head>
+<body>
+<main>
+<h1>🌱 المرشد الزراعي الذكي</h1>
+<p class="sub">أدخل بيانات المزرعة وصورة النبات، وسيعطيك المرشد تشخيصاً وبرنامجاً للتسميد والري والمتابعة.</p>
+
+<div class="card"><h2>١) الموقع والمناخ</h2>
+<div class="row"><div><label>خط العرض</label><input id="lat" inputmode="decimal" placeholder="16.51"></div>
+<div><label>خط الطول</label><input id="lon" inputmode="decimal" placeholder="-15.81"></div></div>
+<button class="sec" id="gps" type="button">📍 استخدم موقعي الحالي</button>
+<div class="row"><div><label>الأمطار السنوية (ملم) – اختياري</label><input id="rain" inputmode="decimal"></div>
+<div><label>متوسط الحرارة (°م) – اختياري</label><input id="temp" inputmode="decimal"></div></div>
+<div class="row"><div><label>الحرارة العظمى (°م) – اختياري</label><input id="tmax" inputmode="decimal"></div><div><label>الحرارة الصغرى (°م) – اختياري</label><input id="tmin" inputmode="decimal"></div></div>
+<button class="sec" id="wxb" type="button">🌦️ اجلب الطقس الحقيقي (آخر 30 يوماً + 7 أيام قادمة)</button>
+<div id="wxo" class="note" style="white-space:pre-wrap"></div>
+<p class="note">المصدر: Open-Meteo. إن لم يُجلب الطقس أو تُركت القيم فارغة سيقدّر المرشد المناخ من الإحداثيات (تقدير وليس قراءة حقيقية).</p></div>
+
+<div class="card"><h2>٢) المحصول</h2>
+<label>الصنف</label>
+<select id="crop">
+<option>طماطم</option><option>خيار</option><option>فلفل</option><option>باذنجان</option><option>كوسة</option><option>بطيخ</option><option>شمام</option><option>بصل</option><option>ثوم</option><option>جزر</option><option>بطاطس</option><option>بطاطا حلوة</option><option>ملفوف</option><option>قرنبيط</option><option>خس</option><option>سبانخ</option><option>جرجير</option><option>كزبرة وبقدونس</option><option>فاصوليا</option><option>بازلاء</option><option>فول</option><option>بامية</option><option>ذرة سكرية</option><option>لفت وفجل</option><option>شمندر</option><option>يقطين</option>
+</select>
+<div class="row"><div><label>تاريخ البذر / إنشاء المشتلة</label><input id="sow" type="date"></div>
+<div><label>المساحة (م²)</label><input id="area" inputmode="decimal" placeholder="1000"></div></div>
+<div class="row"><div><label>مكان الزراعة</label><select id="env"><option>بيت محمي</option><option>حقل مفتوح</option></select></div>
+<div><label>الفصل</label><select id="season"><option>شتاء</option><option>ربيع</option><option>صيف</option><option>خريف</option></select></div></div>
+<label>طريقة الري</label><select id="irr"><option>تنقيط</option><option>رش</option><option>غمر (غرافيتي)</option></select>
+<label>ملوحة ماء الري</label><select id="ec"><option>لا أعرف</option><option>عذبة (EC أقل من 0.7)</option><option>متوسطة (0.7–2)</option><option>مالحة (أكثر من 2)</option></select></div>
+
+<div class="card"><h2>٣) التربة</h2>
+<div class="row"><div><label>نوع التربة</label><select id="soil"><option>رملية</option><option>طينية</option><option>طمية (غرينية)</option><option>رملية طينية</option><option>مالحة</option><option>لا أعرف</option></select></div>
+<div><label>هل أُضيف كومبوست؟</label><select id="comp"><option>لا</option><option>نعم، كمية قليلة</option><option>نعم، كمية جيدة</option></select></div></div></div>
+
+<div class="card"><h2>٤) صورة النبات</h2>
+<input id="img" type="file" accept="image/*">
+<img id="prev" alt="">
+<p class="note">صوّر الورقة والساق والثمرة بإضاءة جيدة. يمكن استخدام الصورة لتحديد النقص الغذائي أو المرض أو الآفة.</p></div>
+
+<div class="card"><h2>٥) الإعدادات</h2>
+<label>مفتاح Anthropic API</label>
+<input id="akey" type="password" placeholder="sk-ant-..." autocomplete="off">
+<p class="note">يُحفظ المفتاح في هاتفك فقط ولا يُرسل إلا إلى Anthropic. احصل عليه من console.anthropic.com.</p></div>
+
+<button id="go" type="button">احصل على الإرشاد</button>
+<div class="card" id="res" style="display:none;margin-top:12px"><h2>الإرشاد</h2><div id="out"></div><button class="sec" id="cp" type="button" style="display:none">📋 نسخ الطلب</button></div>
+<p class="note">هذا إرشاد استرشادي؛ للحالات الشديدة استشر مهندساً زراعياً قبل استخدام أي مبيد.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+window.addEventListener('DOMContentLoaded',()=>{try{const k=localStorage.getItem('fa_key');if(k)$('akey').value=k}catch(_){}});
+let blob=null,W={};
+const TH={'طماطم':[10,34],'خيار':[12,34],'فلفل':[12,34],'باذنجان':[12,34],'كوسة':[10,35],'بطيخ':[15,38],'شمام':[15,38],'بصل':[5,32],'ثوم':[3,30],'جزر':[5,30],'بطاطس':[7,28],'خس':[4,26],'سبانخ':[2,26],'ملفوف':[4,28],'قرنبيط':[4,26],'فاصوليا':[12,32],'بازلاء':[3,26],'فول':[3,26],'جرجير':[3,28]};
+const EFF={'تنقيط':.9,'رش':.75,'غمر (غرافيتي)':.6};
+const avg=a=>a.reduce((x,y)=>x+y,0)/a.length;
+$('wxb').onclick=async()=>{
+const lat=$('lat').value,lon=$('lon').value;if(!lat||!lon){alert('أدخل الإحداثيات');return}
+const b=$('wxb');b.disabled=true;$('wxo').textContent='جارٍ الجلب…';
+try{
+const u='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,et0_fao_evapotranspiration&past_days=30&forecast_days=7&timezone=auto';
+const d=(await (await fetch(u)).json()).daily;
+const n=d.time.length,p=30;
+const hx=d.temperature_2m_max.slice(0,p),hn=d.temperature_2m_min.slice(0,p),fx=d.temperature_2m_max.slice(p),fn=d.temperature_2m_min.slice(p);
+const rain=d.precipitation_sum.slice(0,p).reduce((x,y)=>x+y,0),et=avg(d.et0_fao_evapotranspiration.slice(p-7,p));
+const crop=$('crop').value,t=TH[crop]||[8,35];
+const hot=fx.filter(v=>v>t[1]).length,cold=fn.filter(v=>v<t[0]).length;
+const dd=$('sow').value?Math.floor((Date.now()-new Date($('sow').value))/864e5):30;
+const kc=dd<20?.5:dd<70?1.05:.8,a=parseFloat($('area').value)||0;
+const mm=kc*et/(EFF[$('irr').value]||.8);
+W.txt='آخر 30 يوماً: عظمى متوسطة '+avg(hx).toFixed(1)+' (قصوى '+Math.max(...hx).toFixed(1)+')، صغرى متوسطة '+avg(hn).toFixed(1)+' (أدنى '+Math.min(...hn).toFixed(1)+')، أمطار '+rain.toFixed(1)+' ملم. الأيام السبعة القادمة: عظمى '+fx.map(Math.round).join('/')+'، صغرى '+fn.map(Math.round).join('/');
+W.alerts='حرارة فوق '+t[1]+' في '+hot+' من 7 أيام؛ برودة تحت '+t[0]+' في '+cold+' من 7 أيام';
+W.irr='ET0 متوسط '+et.toFixed(1)+' ملم/يوم، Kc≈'+kc+'، الاحتياج≈'+mm.toFixed(1)+' ل/م²/يوم'+(a?' = '+Math.round(mm*a)+' لتر/يوم للمساحة كلها':'');
+$('tmax').value=Math.max(...hx).toFixed(1);$('tmin').value=Math.min(...hn).toFixed(1);$('rain').value=Math.round(rain)+' (آخر 30 يوماً)';
+$('wxo').textContent='✅ '+W.txt+'\n⚠️ '+W.alerts+'\n💧 '+W.irr;
+}catch(e){W={};$('wxo').textContent='تعذر جلب الطقس: تحقق من الإنترنت أو أدخل القيم يدوياً.'}
+b.disabled=false};
+function shrink(file){return new Promise((ok,no)=>{const i=new Image();i.onload=()=>{const s=Math.min(1,1024/Math.max(i.width,i.height));const c=document.createElement('canvas');c.width=i.width*s;c.height=i.height*s;c.getContext('2d').drawImage(i,0,0,c.width,c.height);c.toBlob(b=>b?ok(b):no(),'image/jpeg',.8)};i.onerror=no;i.src=URL.createObjectURL(file)})}
+$('img').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{blob=await shrink(f);$('prev').src=URL.createObjectURL(blob);$('prev').style.display='block'}catch(_){blob=null}};
+$('gps').onclick=()=>{if(!navigator.geolocation){alert('تحديد الموقع غير متاح، أدخل الإحداثيات يدوياً');return}
+navigator.geolocation.getCurrentPosition(p=>{$('lat').value=p.coords.latitude.toFixed(4);$('lon').value=p.coords.longitude.toFixed(4)},()=>alert('تعذر تحديد الموقع، أدخل الإحداثيات يدوياً'))};
+$('cp').onclick=async()=>{try{await navigator.clipboard.writeText(window.LASTP);$('cp').textContent='✔️ تم النسخ'}catch(_){const r=document.createRange();r.selectNodeContents($('out'));getSelection().removeAllRanges();getSelection().addRange(r);$('cp').textContent='حدّد النص ثم انسخه يدوياً'}};
+$('go').onclick=async()=>{
+const btn=$('go');const sample=null;
+const lat=$('lat').value,lon=$('lon').value;
+if(!lat||!lon){alert('أدخل الإحداثيات');return}
+let days='غير محدد';if($('sow').value){days=Math.floor((Date.now()-new Date($('sow').value))/864e5)+' يوماً منذ البذر'}
+const data=`الصنف: ${$('crop').value}
+الإحداثيات: ${lat}, ${lon}
+الأمطار السنوية المدخلة: ${$('rain').value||'غير مدخلة'}
+الحرارة المتوسطة المدخلة: ${$('temp').value||'غير مدخلة'}
+مكان الزراعة: ${$('env').value}
+الفصل: ${$('season').value}
+الري: ${$('irr').value}
+المساحة: ${$('area').value||'غير محددة'} م²
+التربة: ${$('soil').value}
+الكومبوست: ${$('comp').value}
+ملوحة ماء الري: ${$('ec').value}
+الحرارة العظمى/الصغرى المدخلة: ${$('tmax').value||'-'} / ${$('tmin').value||'-'}
+الطقس الحقيقي (Open-Meteo): ${W.txt||'غير متوفر'}
+تنبيهات حرارية محسوبة: ${W.alerts||'-'}
+احتياج الري المحسوب: ${W.irr||'-'}
+تاريخ البذر: ${$('sow').value||'غير مدخل'} (${days})`;
+const prompt=`أنت مهندس زراعي خبير بالخضروات في المناطق الجافة وشبه الجافة. أجب بالعربية، بإيجاز عملي مناسب لشاشة هاتف، دون جداول، بعناوين قصيرة مرقمة.
+بيانات المزارع:
+${data}
+${blob?'أُرفقت صورة للنبات: حلّلها بدقة.':'لا توجد صورة.'}
+المطلوب:
+1. المناخ: قدّر من الإحداثيات (إن لم تُدخل قراءات) الأمطار السنوية والحرارة، وصنّف المنطقة (جافة/شبه جافة/رطبة)، ونبّه أن هذا تقدير مناخي.
+2. مرحلة النمو الحالية حسب عدد الأيام وما يلائمها.
+3. ${blob?'تشخيص الصورة: الحالة الصحية، نقص العناصر (N,P,K,Ca,Mg,Fe...)، الأمراض والآفات المحتملة ودرجة الثقة.':'ما يجب ملاحظته صحياً في هذه المرحلة.'}
+4. برنامج التسميد: هل يحتاج سماداً الآن؟ أي عناصر وبأي جرعة للمساحة المذكورة وبحسب التربة والكومبوست.
+5. الري: الكمية والتكرار بحسب الطريقة (${$('irr').value}) والمناخ والتربة والمكان.
+6. نصائح لتحسين الإنتاج في ${$('env').value} (التهوية، التظليل، التباعد، التغطية، الدعامات...).
+7. جدول متابعة صحية للأسابيع القادمة (ماذا أفحص ومتى).
+8. تحذيرات إن وُجدت (ملوحة التربة أو الماء، حرارة، رياح، آفات)، واعتمد على الطقس الحقيقي المرفق إن وُجد.
+9. الإنتاج المتوقع للمساحة، وموعد الحصاد، وتقويم مكافحة الآفات الوقائية، وتوصية بالتسميد العضوي أو التغطية (mulch) لتقليل التبخر.`;
+const key=($('akey').value||'').trim();
+if(!key){alert('أدخل مفتاح API أولاً (قسم الإعدادات)');return}
+try{localStorage.setItem('fa_key',key)}catch(_){}
+btn.disabled=true;btn.textContent='جارٍ التحليل…';$('res').style.display='block';$('cp').style.display='none';$('out').textContent='جارٍ التحليل…';
+try{
+const content=[];
+if(blob){const b64=await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result.split(',')[1]);r.onerror=no;r.readAsDataURL(blob)});content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:b64}})}
+content.push({type:'text',text:prompt});
+const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:2500,messages:[{role:'user',content}]})});
+const j=await res.json();
+if(!res.ok)throw new Error((j.error&&j.error.message)||('خطأ '+res.status));
+$('out').textContent=j.content.map(x=>x.text||'').join('');
+window.LASTP=$('out').textContent;$('cp').textContent='📋 نسخ الإرشاد';$('cp').style.display='block';
+}catch(e){$('out').textContent='تعذر الحصول على الإرشاد: '+(e&&e.message||'تحقق من الاتصال بالإنترنت ومن المفتاح')}
+btn.disabled=false;btn.textContent='احصل على الإرشاد';
+$('res').scrollIntoView({behavior:'smooth'})};
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>
