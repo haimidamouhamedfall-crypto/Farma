@@ -44,6 +44,7 @@ summary{font-weight:600}
 <div class="top"><h1 id="ttl"></h1>
 <select id="lang"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div>
 <p class="sub" data-t="sub"></p>
+<div id="today"></div>
 
 <div class="card"><h2 data-t="s1"></h2>
 <div class="row"><div><label data-t="lat"></label><input id="lat" inputmode="decimal" placeholder="16.51"></div>
@@ -86,6 +87,26 @@ summary{font-weight:600}
 
 <button id="go" type="button" data-t="go"></button>
 <div class="card res" id="res" style="display:none;margin-top:12px"><h2 data-t="resT"></h2><div id="out"></div><button class="sec" id="cp" type="button"></button></div>
+<div class="card"><h2 data-t="s6"></h2>
+<p class="note" data-t="alnote"></p>
+<label data-t="rtime"></label><input id="rtime" type="time" value="06:30">
+<button class="sec" id="ics" type="button" data-t="ics"></button>
+<button class="sec" id="notif" type="button" data-t="notif"></button>
+<div id="alo" class="note"></div></div>
+
+<div class="card"><h2 data-t="s7"></h2>
+<div class="row"><div><label data-t="sdate"></label><input id="sd" type="date"></div>
+<div><label data-t="starget"></label><select id="st"></select></div></div>
+<label data-t="sprod"></label><input id="sp" list="spl" autocomplete="off"><datalist id="spl"></datalist>
+<div class="row"><div><label data-t="sqty"></label><input id="sq" inputmode="decimal"></div>
+<div><label data-t="sunit"></label><select id="su"></select></div></div>
+<div class="row"><div><label data-t="svol"></label><input id="sv" inputmode="decimal"></div>
+<div><label data-t="sarea"></label><input id="sa" inputmode="decimal"></div></div>
+<label data-t="snote"></label><input id="sn">
+<button id="ssave" type="button" data-t="ssave"></button>
+<div id="slist"></div>
+<button class="sec" id="scopy" type="button" data-t="scopy"></button></div>
+
 <p class="note" data-t="disc"></p>
 </main>
 <script>
@@ -200,7 +221,7 @@ c3('bee',70,40,4,30,4.0,'root',[10,30],['leafspot','aph'],`شمندر`,`Betterav
 c3('pum',100,30,12,35,2.5,'cucurb',[120,200],['powd','aph','cat'],`يقطين`,`Citrouille`,`Pumpkin`);
 const D={};
 D.ar={dir:'rtl',
-u:{ttl:`🌱 المرشد الزراعي`,sub:`أدخل بيانات المزرعة وصورة النبات إن أردت، ثم اضغط الزر: ري وتسميد وعلاج ووقاية وتحذيرات وإنتاج متوقع، بدون مفتاح ولا حساب.`,s1:`١) الموقع والمناخ`,lat:`خط العرض`,lon:`خط الطول`,gps:`📍 استخدم موقعي الحالي`,rain:`الأمطار السنوية (ملم) – اختياري`,temp:`متوسط الحرارة (°م) – اختياري`,tmax:`الحرارة العظمى (°م) – اختياري`,tmin:`الحرارة الصغرى (°م) – اختياري`,wxb:`🌦️ اجلب الطقس الحقيقي (آخر 30 يوماً + 7 أيام قادمة)`,wxnote:`المصدر: Open-Meteo (يحتاج إنترنت). بدونه يُقدَّر المناخ من الإحداثيات.`,s2:`٢) المحصول`,crop:`الصنف`,sow:`تاريخ البذر / إنشاء المشتلة`,area:`المساحة (م²)`,env:`مكان الزراعة`,season:`الفصل`,irr:`طريقة الري`,ec:`ملوحة ماء الري`,s3:`٣) التربة`,soil:`نوع التربة`,comp:`هل أُضيف كومبوست؟`,s4:`٤) صورة النبات والأعراض`,photoCam:`📷 تصوير النبات`,photoPick:`🖼️ اختيار صورة`,photoNote:`الصورة تبقى في هاتفك ولا تُرسل لأي جهة. تظهر في النتيجة للمقارنة، مع مؤشر لوني تقريبي للاصفرار. التشخيص الفعلي من الأعراض التي تحددها.`,symHdr:`حدّد الأعراض التي تراها (يمكن اختيار أكثر من عرض):`,go:`احصل على الإرشاد`,resT:`الإرشاد`,cp:`📋 نسخ الإرشاد`,cpd:`✔️ تم النسخ`,cpf:`حدّد النص وانسخه يدوياً`,disc:`إرشاد استرشادي مبني على قواعد زراعية عامة وليس تشخيصاً مخبرياً؛ للحالات الشديدة استشر مهندساً زراعياً قبل استخدام أي مبيد.`,needC:`أدخل الإحداثيات`,gpsNA:`تحديد الموقع غير متاح، أدخل الإحداثيات يدوياً`,gpsF:`تعذر تحديد الموقع، أدخل الإحداثيات يدوياً`,fetch:`جارٍ الجلب…`,wxF:`تعذر جلب الطقس (تحقق من الإنترنت). يمكنك المتابعة بدونه.`,s5:`٥) مخطط الري بالتنقيط (اختياري)`,plen:`طول القطعة بالمتر (إن عرفته)`,pdist:`المسافة من المضخة إلى الحقل (م)`,pflow:`تدفق المضخة المتوفرة (م³/ساعة) – اتركه فارغاً ليحسب التطبيق المطلوب`,pnote:`يظهر المخطط بعد اختيار الصنف وإدخال المساحة. إن تركت الحقول فارغة يحسب التطبيق المضخة المطلوبة (التدفق والضغط) ويفترض حقلاً شبه مربع ومصدراً على بعد 20 م.`},
+u:{ttl:`🌱 المرشد الزراعي`,sub:`أدخل بيانات المزرعة وصورة النبات إن أردت، ثم اضغط الزر: ري وتسميد وعلاج ووقاية وتحذيرات وإنتاج متوقع، بدون مفتاح ولا حساب.`,s1:`١) الموقع والمناخ`,lat:`خط العرض`,lon:`خط الطول`,gps:`📍 استخدم موقعي الحالي`,rain:`الأمطار السنوية (ملم) – اختياري`,temp:`متوسط الحرارة (°م) – اختياري`,tmax:`الحرارة العظمى (°م) – اختياري`,tmin:`الحرارة الصغرى (°م) – اختياري`,wxb:`🌦️ اجلب الطقس الحقيقي (آخر 30 يوماً + 7 أيام قادمة)`,wxnote:`المصدر: Open-Meteo (يحتاج إنترنت). بدونه يُقدَّر المناخ من الإحداثيات.`,s2:`٢) المحصول`,crop:`الصنف`,sow:`تاريخ البذر / إنشاء المشتلة`,area:`المساحة (م²)`,env:`مكان الزراعة`,season:`الفصل`,irr:`طريقة الري`,ec:`ملوحة ماء الري`,s3:`٣) التربة`,soil:`نوع التربة`,comp:`هل أُضيف كومبوست؟`,s4:`٤) صورة النبات والأعراض`,photoCam:`📷 تصوير النبات`,photoPick:`🖼️ اختيار صورة`,photoNote:`الصورة تبقى في هاتفك ولا تُرسل لأي جهة. تظهر في النتيجة للمقارنة، مع مؤشر لوني تقريبي للاصفرار. التشخيص الفعلي من الأعراض التي تحددها.`,symHdr:`حدّد الأعراض التي تراها (يمكن اختيار أكثر من عرض):`,go:`احصل على الإرشاد`,resT:`الإرشاد`,cp:`📋 نسخ الإرشاد`,cpd:`✔️ تم النسخ`,cpf:`حدّد النص وانسخه يدوياً`,disc:`إرشاد استرشادي مبني على قواعد زراعية عامة وليس تشخيصاً مخبرياً؛ للحالات الشديدة استشر مهندساً زراعياً قبل استخدام أي مبيد.`,needC:`أدخل الإحداثيات`,gpsNA:`تحديد الموقع غير متاح، أدخل الإحداثيات يدوياً`,gpsF:`تعذر تحديد الموقع، أدخل الإحداثيات يدوياً`,fetch:`جارٍ الجلب…`,wxF:`تعذر جلب الطقس (تحقق من الإنترنت). يمكنك المتابعة بدونه.`,s5:`٥) مخطط الري بالتنقيط (اختياري)`,plen:`طول القطعة بالمتر (إن عرفته)`,pdist:`المسافة من المضخة إلى الحقل (م)`,pflow:`تدفق المضخة المتوفرة (م³/ساعة) – اتركه فارغاً ليحسب التطبيق المطلوب`,pnote:`يظهر المخطط بعد اختيار الصنف وإدخال المساحة. إن تركت الحقول فارغة يحسب التطبيق المضخة المطلوبة (التدفق والضغط) ويفترض حقلاً شبه مربع ومصدراً على بعد 20 م.`,s6:`٦) التنبيهات والتذكير`,alnote:`لا يستطيع التطبيق إرسال إشعارات وهو مغلق. الحل الموثوق: نزّل ملف التذكيرات وافتحه ليُضاف إلى تقويم هاتفك، فتصلك تنبيهات الري (بالكمية) والفحص الأسبوعي وموعد الحصاد في أوقاتها. وعند فتح التطبيق يظهر في أعلى الصفحة ما يجب فعله اليوم.`,rtime:`وقت التذكير اليومي`,ics:`📅 تنزيل التذكيرات للتقويم (.ics)`,notif:`🔔 تفعيل إشعارات المتصفح`,notifOK:`تم تفعيل الإشعارات. تظهر عند فتح التطبيق (أو وهو مفتوح) بعد وقت التذكير.`,notifNo:`لم يُسمح بالإشعارات أو المتصفح لا يدعمها.`,icsNeed:`اختر الصنف وأدخل الإحداثيات أولاً.`,icsOK:`تم إنشاء الملف. افتحه لإضافة التذكيرات إلى التقويم.`,s7:`٧) سجل الرش`,sdate:`تاريخ الرش`,starget:`الآفة / المرض`,sprod:`المبيد المستخدم`,sqty:`الكمية المستخدمة`,sunit:`الوحدة`,svol:`حجم المحلول (لتر)`,sarea:`المساحة المرشوشة (م²)`,snote:`ملاحظات`,ssave:`حفظ الرش`,scopy:`📋 نسخ السجل`,sempty:`لا توجد عمليات رش مسجّلة.`,sdel:`حذف`,snext:`الرش التالي`,sphi:`لا تحصد قبل`,stot:`الكمية الإجمالية`,sneed:`اكتب اسم المبيد والكمية`,sother:`غير ذلك`,units:`مل,غ,لتر,كغ`},
 opt:{env:[['gh',`بيت محمي`],['open',`حقل مفتوح`]],season:[['w',`شتاء`],['sp',`ربيع`],['su',`صيف`],['au',`خريف`]],irr:[['drip',`تنقيط`],['spr',`رش`],['flood',`غمر (غرافيتي)`]],ec:[['unk',`لا أعرف`],['fresh',`عذبة (EC أقل من 0.7)`],['mid',`متوسطة (0.7–2)`],['salty',`مالحة (أكثر من 2)`]],soil:[['sand',`رملية`],['clay',`طينية`],['loam',`طمية (غرينية)`],['sandclay',`رملية طينية`],['saline',`مالحة`],['unk',`لا أعرف`]],comp:[['no',`لا`],['low',`نعم، كمية قليلة`],['good',`نعم، كمية جيدة`]]},
 o:{h:[`1. المناخ`,`2. مرحلة النمو`,`3. التشخيص والعلاج والوقاية`,`4. التسميد`,`5. الري`,`6. لتحسين الإنتاج`,`7. المتابعة الأسبوعية`,`8. تحذيرات`,`9. الإنتاج والحصاد`,`10. دليل آفات وأمراض المحصول`],
 cls:[`جافة`,`شبه جافة`,`رطبة`],clRain:(r,c)=>`الأمطار السنوية المدخلة ${r} ملم: منطقة <b>${c}</b>`,clEst:k=>`المنطقة: `+({arid:`جافة (تقدير: أمطار سنوية أقل من نحو 250 ملم)`,semi:`شبه جافة إلى شبه رطبة (تقدير: 300–800 ملم)`,unk:`غير محدد من الإحداثيات؛ أدخل الأمطار السنوية`}[k]),clTemp:t=>`الحرارة المتوسطة المدخلة: ${t}°م`,clNote:`هذا تقدير مناخي وليس قراءة حقيقية إلا إذا جلبت الطقس.`,
@@ -209,7 +230,7 @@ age:(d,a)=>`عمر المحصول: <b>${d} يوماً</b>`+(a?` (افتراضي 
 photoLbl:`صورتك للمقارنة:`,yellow:p=>`المؤشر اللوني التقريبي: نحو ${p}% من الأجزاء النباتية مائلة للاصفرار`+(p>=25?` — اصفرار ملحوظ، راجع النقص الغذائي أو زيادة الري أو الأمراض.`:`، وهو ضمن الحدود المقبولة.`),noSym:`لم تحدد أعراضاً. إن ظهرت أعراض، حدّدها في القسم 4 وأعد الضغط.`,trl:`العلاج`,prl:`الوقاية`,conf:`الثقة متوسطة لأنها مبنية على الأعراض التي حددتها؛ أكّد بفحص ميداني أو مخبري عند الحاجة.`,
 fCur:(p,r,t,h)=>`المرحلة الحالية: ${p} بمعدل نحو <b>${r} غ/م²/أسبوع</b> يقسَّم على 2–3 دفعات مع ماء الري (`+(t?`المساحة كلها: نحو <b>${t} كغ/أسبوع</b>`:`لكل 100 م²: ${h} كغ/أسبوع`)+`).`,compost:s=>`أضف كومبوست ناضجاً 3–5 كغ/م² قبل الزراعة أو بجانب الخطوط؛ `+(s?`التربة الرملية فقيرة وتفقد العناصر بالغسل.`:`التربة تستفيد من المادة العضوية.`),sandyF:`التربة الرملية: قسّم التسميد على دفعات صغيرة أكثر لتقليل الفقد بالغسل.`,micro:ca=>`عناصر صغرى: حديد EDDHA شهرياً في التربة الرملية أو القلوية.`+(ca?` نترات الكالسيوم أسبوعياً لتجنب نقص الكالسيوم.`:``),salF:`مع الملوحة: تجنّب الأسمدة الكلوريدية مثل KCl، واستخدم النترات والكبريتات، وقلّل التركيز.`,
 fp:{f1:`19-19-19`,f2:`30-10-10 مع نترات الكالسيوم`,f3:`15-5-30 أو نترات البوتاسيوم + نترات الكالسيوم`,f4:`نترات البوتاسيوم (قلّل النيتروجين)`,f5:`30-10-10`,f6:`25-10-10 (نيتروجين عالٍ)`,f7:`20-10-20 مع كالسيوم`,f8:`لا تسميد قبل الحصاد بأسبوعين`,f9:`20-10-20`,f10:`10-5-30 أو نترات البوتاسيوم`,f11:`بوتاسيوم فقط`,f12:`أوقف النيتروجين`,f13:`12-61-0 مع قليل من البوتاسيوم`,f14:`10-20-30`,f15:`لا يلزم`,f16:`يوريا + 20-10-20`,f17:`نترات البوتاسيوم`,f18:`15-5-30`},
-iNeed:(m,e,r,k)=>`الاحتياج اليومي: نحو <b>${m} لتر/م²/يوم</b> (ET0≈${e} ملم ${r?`من الطقس الحقيقي`:`تقدير موسمي`}، Kc≈${k}).`,iTot:l=>`للمساحة كلها: نحو <b>${l} لتر/يوم</b>.`,iFreq:(v,d,p)=>`التكرار: كل <b>${v===1?`يوم`:v+` أيام`}</b>${d?` (جرعتان إلى ثلاث صغيرة في اليوم)`:``}، ${p} لتر/م² في كل مرة.`,leach:p=>`أضفت ${p}% لغسل الأملاح.`,finger:`اختبر الرطوبة بالإصبع على عمق 5–10 سم قبل الري.`,
+iNeed:(m,e,r,k)=>`الاحتياج اليومي: نحو <b>${m} لتر/م²/يوم</b> (ET0≈${e} ملم ${r?`من الطقس الحقيقي`:`تقدير من الحرارة`}، Kc≈${k}).`,iTot:l=>`للمساحة كلها: نحو <b>${l} لتر/يوم</b>.`,iFreq:(v,d,p)=>`التكرار: كل <b>${v===1?`يوم`:v+` أيام`}</b>${d?` (جرعتان إلى ثلاث صغيرة في اليوم)`:``}، ${p} لتر/م² في كل مرة.`,leach:p=>`أضفت ${p}% لغسل الأملاح.`,finger:`اختبر الرطوبة بالإصبع على عمق 5–10 سم قبل الري.`,
 tVent:`التهوية: افتح الجوانب والسقف صباحاً، ولا تترك الرطوبة فوق 80% ليلاً.`,tShade:t=>`التظليل: شبك 30–40% عند ارتفاع الحرارة فوق ${t}°م.`,tWind:`الرياح: ضع مصدّات من القصب أو الشبك لحماية النباتات.`,tMulch:`التغطية (mulch): قش أو بلاستيك أسود يقلل التبخر 25–30% ويحدّ الأعشاب.`,tSup:`الدعامات: ثبّت النبات بخيط أو شبك قبل نمو الثمار.`,tRot:`التناوب الزراعي: لا تكرر نفس العائلة في نفس المكان أكثر من موسم.`,
 wk:[`افحص رطوبة التربة ولون الأوراق وتأكد من عمل النقاطات.`,`افحص أسفل الأوراق للآفات (من، ذبابة، عنكبوت) وسجّل الأعداد.`,`افحص الجذور والساق وأي ذبول أو بقع، وقِس EC ماء الري إن أمكن.`,`قيّم النمو والتسميد واضبط الجرعات حسب لون الأوراق.`],weekL:n=>`الأسبوع ${n}`,
 wHot:(v,t,c)=>`الحرارة العظمى ${v}°م أعلى من حد ${c} (${t}°م): ظلّل وزد الري والتهوية.`,wCold:(v,t)=>`الحرارة الصغرى ${v}°م أقل من ${t}°م: غطِّ النباتات أو أغلق البيت ليلاً.`,wEcH:(c,e)=>`ملوحة الماء أعلى من تحمل ${c} (نحو ${e} dS/م): اغسل التربة واستخدم ماءً أعذب إن أمكن.`,wEcU:`ملوحة الماء مجهولة: افحصها بجهاز EC (رخيص)، فهي أهم عامل في المناطق الجافة.`,wSoil:`التربة مالحة: اغسلها بري غزير دوري واختر الأصناف المتحملة.`,wWind:`الرياح والغبار: راقب الجفاف والتلف الميكانيكي.`,wCom:(c,l)=>`آفات ${c} الشائعة: ${l}.`,
@@ -232,9 +253,17 @@ pNoteT:`ملاحظات`,pNotes:P=>[`ضغط الدخول عند بداية الخ
 svgCap:`F = فلتر، V = صمام القطاع، النقاط = النقاطات (يظهر حتى 12 خطاً فقط)`,pQT:`التدفقات والمضخة`,
 pQ:P=>[`النقاطة الواحدة: ${P.q} لتر/س، وتحتاج نحو <b>${P.Le} لتر/يوم</b> (ذروة الاحتياج) أي ${P.te} دقيقة تشغيل.`,`النبات الواحد: نحو ${P.Lp} لتر/يوم.`,`الخط 16 مم الواحد: ${P.Ql} لتر/س (فقد الضغط فيه ${P.dhl} م).`,`القطاع: ${P.Qsec} م³/س. ولو شُغّل الحقل كله دفعة واحدة: ${P.Qm} م³/س.`,`الحاجة اليومية للحقل: ${P.Vd} م³/يوم، ومدة الري الكلية ${P.hours} ساعة.`,`<b>المضخة المطلوبة: تدفق ≥ ${P.Qp} م³/س وضغط (HMT) ≈ ${P.HMT} م.</b>`],
 pWeak:P=>`مضختك (${P.Qs} م³/س) ضعيفة لهذه المساحة: الري يحتاج ${P.hours} ساعة يومياً. استخدم مضخة بتدفق ≥ ${P.Qreq} م³/س لإنهاء الري في 8 ساعات، أو قسّم الحقل إلى ${P.blocks} وحدات مستقلة.`,
-pHuge:P=>`المساحة كبيرة: حتى بأنبوب 90 مم يحتاج الري ${P.hours} ساعة يومياً. قسّم الحقل إلى ${P.blocks} وحدات مستقلة، لكل منها مضخة وأنبوب رئيسي وفلتر.`}};
+pHuge:P=>`المساحة كبيرة: حتى بأنبوب 90 مم يحتاج الري ${P.hours} ساعة يومياً. قسّم الحقل إلى ${P.blocks} وحدات مستقلة، لكل منها مضخة وأنبوب رئيسي وفلتر.`,h12:`12. المبيدات والجرعات حسب عمر النبات`,
+cT:`منحنى الري عبر الدورة (لتر/م²/يوم)`,cHdr:`كمية المياه في كل مرحلة (بارد / معتدل / حار)`,cL:[`بارد (−5°م)`,`معتدل`,`حار (+5°م)`],cNow:`اليوم`,cDay:`يوم`,cTemp:(a,b)=>`الحرارة المعتمدة: عظمى ${a}°م وصغرى ${b}°م.`,
+cStage:(e,n,d0,d1,c,m,h,pl,tot)=>`${e} <b>${n}</b> (يوم ${d0}–${d1}): ${c} / ${m} / ${h} لتر/م²/يوم — نحو ${pl} لتر للنبات`+(tot?`، و${tot} لتر/يوم للمساحة (معتدل)`:``)+`.`,
+cNote:`الحساب بمعادلة هارغريفز (الحرارة وخط العرض والشهر) ومعامل المحصول؛ كلما ارتفعت الحرارة زادت المياه.`,
+tdH:(d,c,s)=>`📅 اليوم ${d} من دورة ${c} — المرحلة: ${s}`,tdW:(w,t,m,S)=>`💧 اسقِ اليوم نحو <b>${w} لتر/م²</b>`+(t?` (${t} لتر للمساحة)`:``)+(m?`، أي نحو ${m} دقيقة لكل قطاع (${S} قطاع)`:``)+`.`,tdD0:`🔍 موعد الفحص الأسبوعي اليوم: افحص أسفل الأوراق والجذور والساق، وحدّد الأعراض في القسم 4 ثم اضغط «احصل على الإرشاد».`,tdD:n=>`🔍 الفحص الأسبوعي القادم بعد ${n} أيام.`,tdSp:p=>`🧴 حان موعد رش المتابعة: ${p}.`,tdHv:n=>n>0?`🧺 الحصاد المتوقع بعد نحو ${n} يوماً.`:`🧺 حان موعد الحصاد المتوقع.`,
+icsW:(w,t)=>`💧 ري: ${w} لتر/م²`+(t?` (${t} لتر)`:``),icsD:`🔍 فحص أسبوعي للنبات`,icsH:c=>`🧺 الحصاد المتوقع: ${c}`,icsS:p=>`🧴 رش متابعة: ${p}`,
+prSafe:`اتبع الملصق والتسجيل المحلي في بلدك. ارتدِ قفازات وقناعاً، ولا ترشّ في الحرارة الشديدة أو الرياح أو أثناء تفتح الأزهار (حماية النحل). بدّل المواد ذات آلية العمل المختلفة والتزم بمدة الأمان قبل الحصاد (PHI). لا تستعمل الكبريت فوق 32°م. الجرعات استرشادية.`,prSel:`المشاكل التي حددتها`,prPests:`آفات وأمراض المحصول الشائعة`,
+prBio:`🌿 بيولوجي / مسموح عضوياً`,prChem:`⚗️ كيميائي`,prB:{L10:`10 لتر ماء`,m2:`م²`},ul:{g:`غ`,ml:`مل`,kg:`كغ`,L:`لتر`},
+prDose:(ds,b)=>`الجرعة لكل ${b} حسب العمر: ${ds}`,prVol:(v,L)=>`حجم محلول الرش الآن: نحو ${v} لتر/100 م²`+(L?` (${L} لتر للمساحة)`:``),prTot:q=>`الكمية للمساحة الآن: <b>${q}</b>`,prEvery:d=>d?`كرّر كل ${d} أيام`:`مرة واحدة`,prPhi:d=>d?`مدة الأمان قبل الحصاد: ${d} أيام`:`لا مدة أمان تُذكر`}};
 D.fr={dir:'ltr',
-u:{ttl:`🌱 Conseiller agricole`,sub:`Saisissez les données de la ferme et, si vous voulez, une photo de la plante, puis appuyez sur le bouton : irrigation, fertilisation, traitement, prévention, alertes et rendement. Sans clé ni compte.`,s1:`1) Lieu et climat`,lat:`Latitude`,lon:`Longitude`,gps:`📍 Utiliser ma position`,rain:`Pluie annuelle (mm) – facultatif`,temp:`Température moyenne (°C) – facultatif`,tmax:`Température max (°C) – facultatif`,tmin:`Température min (°C) – facultatif`,wxb:`🌦️ Charger la météo réelle (30 derniers jours + 7 prochains)`,wxnote:`Source : Open-Meteo (internet requis). Sans cela, le climat est estimé d’après les coordonnées.`,s2:`2) Culture`,crop:`Culture`,sow:`Date de semis / de pépinière`,area:`Surface (m²)`,env:`Lieu de culture`,season:`Saison`,irr:`Mode d’irrigation`,ec:`Salinité de l’eau d’irrigation`,s3:`3) Sol`,soil:`Type de sol`,comp:`Compost ajouté ?`,s4:`4) Photo de la plante et symptômes`,photoCam:`📷 Photographier la plante`,photoPick:`🖼️ Choisir une photo`,photoNote:`La photo reste sur votre téléphone et n’est envoyée nulle part. Elle s’affiche dans le résultat pour comparaison, avec un indicateur de couleur approximatif du jaunissement. Le diagnostic repose sur les symptômes que vous cochez.`,symHdr:`Cochez les symptômes observés (plusieurs choix possibles) :`,go:`Obtenir les conseils`,resT:`Conseils`,cp:`📋 Copier les conseils`,cpd:`✔️ Copié`,cpf:`Sélectionnez le texte et copiez-le manuellement`,disc:`Conseils indicatifs fondés sur des règles agronomiques générales, pas un diagnostic de laboratoire; en cas de problème grave, consultez un agronome avant tout pesticide.`,needC:`Saisissez les coordonnées`,gpsNA:`Localisation indisponible, saisissez les coordonnées`,gpsF:`Localisation impossible, saisissez les coordonnées`,fetch:`Chargement…`,wxF:`Météo indisponible (vérifiez internet). Vous pouvez continuer sans.`,s5:`5) Plan d’irrigation goutte-à-goutte (facultatif)`,plen:`Longueur de la parcelle en mètres (si connue)`,pdist:`Distance pompe → parcelle (m)`,pflow:`Débit de la pompe disponible (m³/h) – laissez vide pour calculer le débit requis`,pnote:`Le plan apparaît après le choix de la culture et la saisie de la surface. Si vous laissez vide, l’application calcule la pompe requise (débit et pression) et suppose une parcelle presque carrée avec la source à 20 m.`},
+u:{ttl:`🌱 Conseiller agricole`,sub:`Saisissez les données de la ferme et, si vous voulez, une photo de la plante, puis appuyez sur le bouton : irrigation, fertilisation, traitement, prévention, alertes et rendement. Sans clé ni compte.`,s1:`1) Lieu et climat`,lat:`Latitude`,lon:`Longitude`,gps:`📍 Utiliser ma position`,rain:`Pluie annuelle (mm) – facultatif`,temp:`Température moyenne (°C) – facultatif`,tmax:`Température max (°C) – facultatif`,tmin:`Température min (°C) – facultatif`,wxb:`🌦️ Charger la météo réelle (30 derniers jours + 7 prochains)`,wxnote:`Source : Open-Meteo (internet requis). Sans cela, le climat est estimé d’après les coordonnées.`,s2:`2) Culture`,crop:`Culture`,sow:`Date de semis / de pépinière`,area:`Surface (m²)`,env:`Lieu de culture`,season:`Saison`,irr:`Mode d’irrigation`,ec:`Salinité de l’eau d’irrigation`,s3:`3) Sol`,soil:`Type de sol`,comp:`Compost ajouté ?`,s4:`4) Photo de la plante et symptômes`,photoCam:`📷 Photographier la plante`,photoPick:`🖼️ Choisir une photo`,photoNote:`La photo reste sur votre téléphone et n’est envoyée nulle part. Elle s’affiche dans le résultat pour comparaison, avec un indicateur de couleur approximatif du jaunissement. Le diagnostic repose sur les symptômes que vous cochez.`,symHdr:`Cochez les symptômes observés (plusieurs choix possibles) :`,go:`Obtenir les conseils`,resT:`Conseils`,cp:`📋 Copier les conseils`,cpd:`✔️ Copié`,cpf:`Sélectionnez le texte et copiez-le manuellement`,disc:`Conseils indicatifs fondés sur des règles agronomiques générales, pas un diagnostic de laboratoire; en cas de problème grave, consultez un agronome avant tout pesticide.`,needC:`Saisissez les coordonnées`,gpsNA:`Localisation indisponible, saisissez les coordonnées`,gpsF:`Localisation impossible, saisissez les coordonnées`,fetch:`Chargement…`,wxF:`Météo indisponible (vérifiez internet). Vous pouvez continuer sans.`,s5:`5) Plan d’irrigation goutte-à-goutte (facultatif)`,plen:`Longueur de la parcelle en mètres (si connue)`,pdist:`Distance pompe → parcelle (m)`,pflow:`Débit de la pompe disponible (m³/h) – laissez vide pour calculer le débit requis`,pnote:`Le plan apparaît après le choix de la culture et la saisie de la surface. Si vous laissez vide, l’application calcule la pompe requise (débit et pression) et suppose une parcelle presque carrée avec la source à 20 m.`,s6:`6) Alertes et rappels`,alnote:`Une application web ne peut pas envoyer de notifications quand elle est fermée. Solution fiable : téléchargez le fichier de rappels et ouvrez-le pour l’ajouter au calendrier du téléphone; vous recevrez les alertes d’irrigation (avec la quantité), le contrôle hebdomadaire et la date de récolte à l’heure voulue. À l’ouverture de l’application, les tâches du jour s’affichent en haut de page.`,rtime:`Heure du rappel quotidien`,ics:`📅 Télécharger les rappels pour le calendrier (.ics)`,notif:`🔔 Activer les notifications du navigateur`,notifOK:`Notifications activées. Elles s’affichent à l’ouverture de l’application (ou pendant qu’elle est ouverte) après l’heure du rappel.`,notifNo:`Notifications refusées ou non prises en charge.`,icsNeed:`Choisissez d’abord la culture et saisissez les coordonnées.`,icsOK:`Fichier créé. Ouvrez-le pour ajouter les rappels au calendrier.`,s7:`7) Registre des traitements`,sdate:`Date du traitement`,starget:`Ravageur / maladie`,sprod:`Produit utilisé`,sqty:`Quantité utilisée`,sunit:`Unité`,svol:`Volume de bouillie (L)`,sarea:`Surface traitée (m²)`,snote:`Remarques`,ssave:`Enregistrer le traitement`,scopy:`📋 Copier le registre`,sempty:`Aucun traitement enregistré.`,sdel:`Supprimer`,snext:`Prochain traitement`,sphi:`Ne pas récolter avant`,stot:`Quantité totale`,sneed:`Saisissez le produit et la quantité`,sother:`Autre`,units:`ml,g,L,kg`},
 opt:{env:[['gh',`Serre`],['open',`Plein champ`]],season:[['w',`Hiver`],['sp',`Printemps`],['su',`Été`],['au',`Automne`]],irr:[['drip',`Goutte-à-goutte`],['spr',`Aspersion`],['flood',`Gravitaire (submersion)`]],ec:[['unk',`Je ne sais pas`],['fresh',`Douce (CE < 0,7)`],['mid',`Moyenne (0,7–2)`],['salty',`Salée (CE > 2)`]],soil:[['sand',`Sableux`],['clay',`Argileux`],['loam',`Limoneux`],['sandclay',`Sablo-argileux`],['saline',`Salin`],['unk',`Je ne sais pas`]],comp:[['no',`Non`],['low',`Oui, peu`],['good',`Oui, bien`]]},
 o:{h:[`1. Climat`,`2. Stade de croissance`,`3. Diagnostic, traitement et prévention`,`4. Fertilisation`,`5. Irrigation`,`6. Pour améliorer le rendement`,`7. Suivi hebdomadaire`,`8. Alertes`,`9. Rendement et récolte`,`10. Guide des ravageurs et maladies de la culture`],
 cls:[`aride`,`semi-aride`,`humide`],clRain:(r,c)=>`Pluie annuelle saisie ${r} mm : zone <b>${c}</b>`,clEst:k=>`Zone : `+({arid:`aride (estimation : moins d’environ 250 mm/an)`,semi:`semi-aride à subhumide (estimation : 300–800 mm)`,unk:`non déterminée d’après les coordonnées; saisissez la pluie annuelle`}[k]),clTemp:t=>`Température moyenne saisie : ${t}°C`,clNote:`Estimation climatique, pas une mesure, sauf si vous avez chargé la météo.`,
@@ -243,7 +272,7 @@ age:(d,a)=>`Âge de la culture : <b>${d} jours</b>`+(a?` (par défaut, date de s
 photoLbl:`Votre photo pour comparaison :`,yellow:p=>`Indicateur de couleur approximatif : environ ${p} % de la partie végétale tire vers le jaune`+(p>=25?` — jaunissement notable : vérifiez carences, excès d’eau ou maladies.`:`, ce qui reste acceptable.`),noSym:`Aucun symptôme coché. Si vous en observez, cochez-les en section 4 puis relancez.`,trl:`Traitement`,prl:`Prévention`,conf:`Confiance moyenne car fondée sur vos symptômes; confirmez par un contrôle terrain ou de laboratoire si nécessaire.`,
 fCur:(p,r,t,h)=>`Stade actuel : ${p}, environ <b>${r} g/m²/semaine</b>, en 2–3 apports avec l’eau d’irrigation (`+(t?`surface totale : environ <b>${t} kg/semaine</b>`:`pour 100 m² : ${h} kg/semaine`)+`).`,compost:s=>`Ajoutez 3–5 kg/m² de compost mûr avant la plantation ou le long des rangs; `+(s?`le sol sableux est pauvre et perd ses éléments par lessivage.`:`le sol profite de la matière organique.`),sandyF:`Sol sableux : fractionnez la fertilisation en apports plus petits pour limiter le lessivage.`,micro:ca=>`Oligo-éléments : fer EDDHA chaque mois en sol sableux ou calcaire.`+(ca?` Nitrate de calcium chaque semaine pour éviter la carence en calcium.`:``),salF:`Avec la salinité : évitez les engrais chlorés comme KCl, préférez nitrates et sulfates, réduisez la dose.`,
 fp:{f1:`19-19-19`,f2:`30-10-10 avec nitrate de calcium`,f3:`15-5-30 ou nitrate de potassium + nitrate de calcium`,f4:`nitrate de potassium (moins d’azote)`,f5:`30-10-10`,f6:`25-10-10 (azote élevé)`,f7:`20-10-20 avec calcium`,f8:`aucun engrais 2 semaines avant la récolte`,f9:`20-10-20`,f10:`10-5-30 ou nitrate de potassium`,f11:`potassium seul`,f12:`arrêter l’azote`,f13:`12-61-0 avec peu de potassium`,f14:`10-20-30`,f15:`pas nécessaire`,f16:`urée + 20-10-20`,f17:`nitrate de potassium`,f18:`15-5-30`},
-iNeed:(m,e,r,k)=>`Besoin quotidien : environ <b>${m} L/m²/jour</b> (ET0≈${e} mm ${r?`d’après la météo réelle`:`estimation saisonnière`}, Kc≈${k}).`,iTot:l=>`Pour toute la surface : environ <b>${l} L/jour</b>.`,iFreq:(v,d,p)=>`Fréquence : tous les <b>${v===1?`jours`:v+` jours`}</b>${d?` (2 à 3 petits apports par jour)`:``}, ${p} L/m² à chaque fois.`,leach:p=>`J’ai ajouté ${p} % pour lessiver les sels.`,finger:`Testez l’humidité au doigt à 5–10 cm de profondeur avant d’irriguer.`,
+iNeed:(m,e,r,k)=>`Besoin quotidien : environ <b>${m} L/m²/jour</b> (ET0≈${e} mm ${r?`d’après la météo réelle`:`estimée à partir de la température`}, Kc≈${k}).`,iTot:l=>`Pour toute la surface : environ <b>${l} L/jour</b>.`,iFreq:(v,d,p)=>`Fréquence : tous les <b>${v===1?`jours`:v+` jours`}</b>${d?` (2 à 3 petits apports par jour)`:``}, ${p} L/m² à chaque fois.`,leach:p=>`J’ai ajouté ${p} % pour lessiver les sels.`,finger:`Testez l’humidité au doigt à 5–10 cm de profondeur avant d’irriguer.`,
 tVent:`Aération : ouvrez les côtés et le toit le matin; ne laissez pas l’humidité dépasser 80 % la nuit.`,tShade:t=>`Ombrage : filet 30–40 % quand la chaleur dépasse ${t}°C.`,tWind:`Vent : installez des brise-vent (canisses ou filet) pour protéger les plants.`,tMulch:`Paillage : paille ou plastique noir réduit l’évaporation de 25–30 % et limite les adventices.`,tSup:`Tuteurage : attachez les plants avant le grossissement des fruits.`,tRot:`Rotation : ne répétez pas la même famille au même endroit plus d’une saison.`,
 wk:[`Vérifiez l’humidité du sol, la couleur des feuilles et le bon fonctionnement des goutteurs.`,`Inspectez le dessous des feuilles (pucerons, mouches, acariens) et notez les effectifs.`,`Examinez racines et tiges, flétrissements et taches; mesurez la CE de l’eau si possible.`,`Évaluez la croissance et la fertilisation; ajustez les doses selon la couleur du feuillage.`],weekL:n=>`Semaine ${n}`,
 wHot:(v,t,c)=>`Température max ${v}°C supérieure à la limite de ${c} (${t}°C) : ombrez, augmentez irrigation et aération.`,wCold:(v,t)=>`Température min ${v}°C inférieure à ${t}°C : couvrez les plants ou fermez la serre la nuit.`,wEcH:(c,e)=>`Salinité de l’eau supérieure à la tolérance de ${c} (environ ${e} dS/m) : lessivez le sol et utilisez une eau plus douce si possible.`,wEcU:`Salinité de l’eau inconnue : mesurez-la avec un conductimètre (peu coûteux), c’est un facteur clé en zone aride.`,wSoil:`Sol salin : lessivez par irrigations abondantes périodiques et choisissez des variétés tolérantes.`,wWind:`Vent et poussière : surveillez dessèchement et dégâts mécaniques.`,wCom:(c,l)=>`Ravageurs et maladies fréquents (${c}) : ${l}.`,
@@ -266,9 +295,17 @@ pNoteT:`Remarques`,pNotes:P=>[`Pression en tête de rampe d’environ 1 bar; ajo
 svgCap:`F = filtre, V = vanne de secteur, points = goutteurs (12 rampes maximum affichées)`,pQT:`Débits et pompe`,
 pQ:P=>[`Un goutteur : ${P.q} L/h, il lui faut environ <b>${P.Le} L/jour</b> (besoin de pointe), soit ${P.te} min de fonctionnement.`,`Une plante : environ ${P.Lp} L/jour.`,`Une rampe 16 mm : ${P.Ql} L/h (perte de charge ${P.dhl} m).`,`Un secteur : ${P.Qsec} m³/h. Toute la parcelle en même temps : ${P.Qm} m³/h.`,`Besoin journalier de la parcelle : ${P.Vd} m³/jour, durée totale d’irrigation ${P.hours} h.`,`<b>Pompe requise : débit ≥ ${P.Qp} m³/h et pression (HMT) ≈ ${P.HMT} m.</b>`],
 pWeak:P=>`Votre pompe (${P.Qs} m³/h) est trop faible pour cette surface : l’irrigation demande ${P.hours} h par jour. Prenez une pompe de débit ≥ ${P.Qreq} m³/h pour finir en 8 h, ou divisez la parcelle en ${P.blocks} unités indépendantes.`,
-pHuge:P=>`Grande surface : même avec un tuyau de 90 mm, l’irrigation demande ${P.hours} h par jour. Divisez la parcelle en ${P.blocks} unités indépendantes, chacune avec sa pompe, sa conduite principale et son filtre.`}};
+pHuge:P=>`Grande surface : même avec un tuyau de 90 mm, l’irrigation demande ${P.hours} h par jour. Divisez la parcelle en ${P.blocks} unités indépendantes, chacune avec sa pompe, sa conduite principale et son filtre.`,h12:`12. Produits et doses selon l’âge de la plante`,
+cT:`Courbe d’irrigation sur le cycle (L/m²/jour)`,cHdr:`Eau à chaque stade (frais / normal / chaud)`,cL:[`frais (−5°C)`,`normal`,`chaud (+5°C)`],cNow:`Aujourd’hui`,cDay:`jour`,cTemp:(a,b)=>`Températures retenues : max ${a}°C, min ${b}°C.`,
+cStage:(e,n,d0,d1,c,m,h,pl,tot)=>`${e} <b>${n}</b> (jours ${d0}–${d1}) : ${c} / ${m} / ${h} L/m²/jour — environ ${pl} L par plante`+(tot?`, ${tot} L/jour pour la surface (normal)`:``)+`.`,
+cNote:`Calcul par la formule de Hargreaves (température, latitude, date) et le coefficient cultural; plus il fait chaud, plus il faut d’eau.`,
+tdH:(d,c,s)=>`📅 Jour ${d} du cycle de ${c} — stade : ${s}`,tdW:(w,t,m,S)=>`💧 Arrosez aujourd’hui environ <b>${w} L/m²</b>`+(t?` (${t} L pour la surface)`:``)+(m?`, soit environ ${m} min par secteur (${S} secteurs)`:``)+`.`,tdD0:`🔍 Contrôle hebdomadaire aujourd’hui : examinez le dessous des feuilles, les racines et la tige, cochez les symptômes en section 4 puis appuyez sur « Obtenir les conseils ».`,tdD:n=>`🔍 Prochain contrôle hebdomadaire dans ${n} jours.`,tdSp:p=>`🧴 Traitement de suivi à faire : ${p}.`,tdHv:n=>n>0?`🧺 Récolte estimée dans environ ${n} jours.`:`🧺 La date de récolte estimée est arrivée.`,
+icsW:(w,t)=>`💧 Irrigation : ${w} L/m²`+(t?` (${t} L)`:``),icsD:`🔍 Contrôle hebdomadaire de la culture`,icsH:c=>`🧺 Récolte estimée : ${c}`,icsS:p=>`🧴 Traitement de suivi : ${p}`,
+prSafe:`Suivez l’étiquette et l’homologation locale. Portez gants et masque, ne traitez pas par forte chaleur, vent ou pendant la floraison (abeilles). Alternez les modes d’action et respectez le délai avant récolte (DAR). Pas de soufre au-dessus de 32°C. Doses indicatives.`,prSel:`Problèmes que vous avez cochés`,prPests:`Ravageurs et maladies fréquents de la culture`,
+prBio:`🌿 biologique / autorisé en bio`,prChem:`⚗️ chimique`,prB:{L10:`10 L d’eau`,m2:`m²`},ul:{g:`g`,ml:`ml`,kg:`kg`,L:`L`},
+prDose:(ds,b)=>`Dose pour ${b} selon l’âge : ${ds}`,prVol:(v,L)=>`Volume de bouillie actuel : environ ${v} L/100 m²`+(L?` (${L} L pour la surface)`:``),prTot:q=>`Quantité pour la surface maintenant : <b>${q}</b>`,prEvery:d=>d?`Renouveler tous les ${d} jours`:`Une seule application`,prPhi:d=>d?`Délai avant récolte : ${d} jours`:`Pas de délai notable`}};
 D.en={dir:'ltr',
-u:{ttl:`🌱 Farm Advisor`,sub:`Enter your farm data and, if you wish, a plant photo, then tap the button: irrigation, fertilizer, treatment, prevention, warnings and expected yield. No key or account needed.`,s1:`1) Location and climate`,lat:`Latitude`,lon:`Longitude`,gps:`📍 Use my location`,rain:`Annual rainfall (mm) – optional`,temp:`Mean temperature (°C) – optional`,tmax:`Max temperature (°C) – optional`,tmin:`Min temperature (°C) – optional`,wxb:`🌦️ Load real weather (last 30 days + next 7)`,wxnote:`Source: Open-Meteo (needs internet). Without it, climate is estimated from coordinates.`,s2:`2) Crop`,crop:`Crop`,sow:`Sowing / nursery date`,area:`Area (m²)`,env:`Growing place`,season:`Season`,irr:`Irrigation method`,ec:`Irrigation water salinity`,s3:`3) Soil`,soil:`Soil type`,comp:`Compost added?`,s4:`4) Plant photo and symptoms`,photoCam:`📷 Take a plant photo`,photoPick:`🖼️ Choose a photo`,photoNote:`The photo stays on your phone and is sent nowhere. It is shown in the result for comparison, with a rough color indicator of yellowing. The diagnosis is based on the symptoms you tick.`,symHdr:`Tick the symptoms you see (you can pick several):`,go:`Get advice`,resT:`Advice`,cp:`📋 Copy advice`,cpd:`✔️ Copied`,cpf:`Select the text and copy it manually`,disc:`Indicative advice based on general agronomic rules, not a lab diagnosis; for serious problems consult an agronomist before using any pesticide.`,needC:`Enter the coordinates`,gpsNA:`Location unavailable, enter coordinates manually`,gpsF:`Could not get location, enter coordinates manually`,fetch:`Loading…`,wxF:`Could not load weather (check internet). You can continue without it.`,s5:`5) Drip irrigation layout (optional)`,plen:`Plot length in meters (if known)`,pdist:`Distance pump → plot (m)`,pflow:`Available pump flow (m³/h) – leave empty to calculate the required flow`,pnote:`The layout appears once you pick a crop and enter the area. If left empty, the app calculates the required pump (flow and head) and assumes a nearly square plot with the source 20 m away.`},
+u:{ttl:`🌱 Farm Advisor`,sub:`Enter your farm data and, if you wish, a plant photo, then tap the button: irrigation, fertilizer, treatment, prevention, warnings and expected yield. No key or account needed.`,s1:`1) Location and climate`,lat:`Latitude`,lon:`Longitude`,gps:`📍 Use my location`,rain:`Annual rainfall (mm) – optional`,temp:`Mean temperature (°C) – optional`,tmax:`Max temperature (°C) – optional`,tmin:`Min temperature (°C) – optional`,wxb:`🌦️ Load real weather (last 30 days + next 7)`,wxnote:`Source: Open-Meteo (needs internet). Without it, climate is estimated from coordinates.`,s2:`2) Crop`,crop:`Crop`,sow:`Sowing / nursery date`,area:`Area (m²)`,env:`Growing place`,season:`Season`,irr:`Irrigation method`,ec:`Irrigation water salinity`,s3:`3) Soil`,soil:`Soil type`,comp:`Compost added?`,s4:`4) Plant photo and symptoms`,photoCam:`📷 Take a plant photo`,photoPick:`🖼️ Choose a photo`,photoNote:`The photo stays on your phone and is sent nowhere. It is shown in the result for comparison, with a rough color indicator of yellowing. The diagnosis is based on the symptoms you tick.`,symHdr:`Tick the symptoms you see (you can pick several):`,go:`Get advice`,resT:`Advice`,cp:`📋 Copy advice`,cpd:`✔️ Copied`,cpf:`Select the text and copy it manually`,disc:`Indicative advice based on general agronomic rules, not a lab diagnosis; for serious problems consult an agronomist before using any pesticide.`,needC:`Enter the coordinates`,gpsNA:`Location unavailable, enter coordinates manually`,gpsF:`Could not get location, enter coordinates manually`,fetch:`Loading…`,wxF:`Could not load weather (check internet). You can continue without it.`,s5:`5) Drip irrigation layout (optional)`,plen:`Plot length in meters (if known)`,pdist:`Distance pump → plot (m)`,pflow:`Available pump flow (m³/h) – leave empty to calculate the required flow`,pnote:`The layout appears once you pick a crop and enter the area. If left empty, the app calculates the required pump (flow and head) and assumes a nearly square plot with the source 20 m away.`,s6:`6) Alerts and reminders`,alnote:`A web app cannot send notifications while it is closed. Reliable fix: download the reminders file and open it to add it to your phone calendar; you will then get irrigation alerts (with the amount), weekly check-ups and the harvest date on time. When you open the app, today’s tasks appear at the top.`,rtime:`Daily reminder time`,ics:`📅 Download reminders for calendar (.ics)`,notif:`🔔 Enable browser notifications`,notifOK:`Notifications enabled. They appear when you open the app (or while it is open) after the reminder time.`,notifNo:`Notifications denied or not supported.`,icsNeed:`Pick the crop and enter coordinates first.`,icsOK:`File created. Open it to add the reminders to your calendar.`,s7:`7) Spray log`,sdate:`Spray date`,starget:`Pest / disease`,sprod:`Product used`,sqty:`Amount used`,sunit:`Unit`,svol:`Spray volume (L)`,sarea:`Area sprayed (m²)`,snote:`Notes`,ssave:`Save spray`,scopy:`📋 Copy log`,sempty:`No sprays recorded.`,sdel:`Delete`,snext:`Next spray`,sphi:`Do not harvest before`,stot:`Total amount`,sneed:`Enter the product and amount`,sother:`Other`,units:`ml,g,L,kg`},
 opt:{env:[['gh',`Greenhouse`],['open',`Open field`]],season:[['w',`Winter`],['sp',`Spring`],['su',`Summer`],['au',`Autumn`]],irr:[['drip',`Drip`],['spr',`Sprinkler`],['flood',`Flood (surface)`]],ec:[['unk',`I don’t know`],['fresh',`Fresh (EC below 0.7)`],['mid',`Moderate (0.7–2)`],['salty',`Saline (above 2)`]],soil:[['sand',`Sandy`],['clay',`Clay`],['loam',`Loam`],['sandclay',`Sandy clay`],['saline',`Saline`],['unk',`I don’t know`]],comp:[['no',`No`],['low',`Yes, a little`],['good',`Yes, plenty`]]},
 o:{h:[`1. Climate`,`2. Growth stage`,`3. Diagnosis, treatment and prevention`,`4. Fertilizer`,`5. Irrigation`,`6. Improving yield`,`7. Weekly checks`,`8. Warnings`,`9. Yield and harvest`,`10. Pest and disease guide for this crop`],
 cls:[`arid`,`semi-arid`,`humid`],clRain:(r,c)=>`Annual rainfall entered ${r} mm: <b>${c}</b> zone`,clEst:k=>`Zone: `+({arid:`arid (estimate: under about 250 mm/year)`,semi:`semi-arid to sub-humid (estimate: 300–800 mm)`,unk:`not determined from coordinates; enter annual rainfall`}[k]),clTemp:t=>`Mean temperature entered: ${t}°C`,clNote:`This is a climate estimate, not a measurement, unless you loaded the weather.`,
@@ -277,7 +314,7 @@ age:(d,a)=>`Crop age: <b>${d} days</b>`+(a?` (default, no sowing date entered)`:
 photoLbl:`Your photo for comparison:`,yellow:p=>`Rough color indicator: about ${p}% of the plant area looks yellowish`+(p>=25?` — noticeable yellowing: check for nutrient deficiency, overwatering or disease.`:`, which is within normal range.`),noSym:`No symptoms ticked. If you see any, tick them in section 4 and run again.`,trl:`Treatment`,prl:`Prevention`,conf:`Medium confidence since it relies on the symptoms you ticked; confirm with a field or lab check if needed.`,
 fCur:(p,r,t,h)=>`Current stage: ${p}, about <b>${r} g/m²/week</b> split into 2–3 doses with irrigation water (`+(t?`whole area: about <b>${t} kg/week</b>`:`per 100 m²: ${h} kg/week`)+`).`,compost:s=>`Add 3–5 kg/m² of mature compost before planting or beside the rows; `+(s?`sandy soil is poor and loses nutrients by leaching.`:`soil benefits from organic matter.`),sandyF:`Sandy soil: split fertilizer into smaller, more frequent doses to reduce leaching.`,micro:ca=>`Micronutrients: Fe-EDDHA monthly in sandy or alkaline soil.`+(ca?` Calcium nitrate weekly to prevent calcium deficiency.`:``),salF:`With salinity: avoid chloride fertilizers such as KCl, use nitrates and sulfates, and lower the dose.`,
 fp:{f1:`19-19-19`,f2:`30-10-10 with calcium nitrate`,f3:`15-5-30 or potassium nitrate + calcium nitrate`,f4:`potassium nitrate (less nitrogen)`,f5:`30-10-10`,f6:`25-10-10 (high nitrogen)`,f7:`20-10-20 with calcium`,f8:`no fertilizer 2 weeks before harvest`,f9:`20-10-20`,f10:`10-5-30 or potassium nitrate`,f11:`potassium only`,f12:`stop nitrogen`,f13:`12-61-0 with little potassium`,f14:`10-20-30`,f15:`not needed`,f16:`urea + 20-10-20`,f17:`potassium nitrate`,f18:`15-5-30`},
-iNeed:(m,e,r,k)=>`Daily need: about <b>${m} L/m²/day</b> (ET0≈${e} mm ${r?`from real weather`:`seasonal estimate`}, Kc≈${k}).`,iTot:l=>`For the whole area: about <b>${l} L/day</b>.`,iFreq:(v,d,p)=>`Frequency: every <b>${v===1?`day`:v+` days`}</b>${d?` (2–3 short pulses per day)`:``}, ${p} L/m² each time.`,leach:p=>`I added ${p}% for salt leaching.`,finger:`Check moisture by finger at 5–10 cm depth before irrigating.`,
+iNeed:(m,e,r,k)=>`Daily need: about <b>${m} L/m²/day</b> (ET0≈${e} mm ${r?`from real weather`:`estimated from temperature`}, Kc≈${k}).`,iTot:l=>`For the whole area: about <b>${l} L/day</b>.`,iFreq:(v,d,p)=>`Frequency: every <b>${v===1?`day`:v+` days`}</b>${d?` (2–3 short pulses per day)`:``}, ${p} L/m² each time.`,leach:p=>`I added ${p}% for salt leaching.`,finger:`Check moisture by finger at 5–10 cm depth before irrigating.`,
 tVent:`Ventilation: open sides and roof in the morning; do not let night humidity exceed 80%.`,tShade:t=>`Shading: 30–40% net when heat goes above ${t}°C.`,tWind:`Wind: set up windbreaks (reed or netting) to protect plants.`,tMulch:`Mulch: straw or black plastic cuts evaporation 25–30% and suppresses weeds.`,tSup:`Support: tie plants with string or netting before fruit grows heavy.`,tRot:`Rotation: do not repeat the same family in the same spot for more than one season.`,
 wk:[`Check soil moisture, leaf color and that the emitters work.`,`Inspect leaf undersides for pests (aphids, whitefly, mites) and note numbers.`,`Check roots and stems, any wilting or spots; measure irrigation water EC if possible.`,`Assess growth and feeding; adjust doses by leaf color.`],weekL:n=>`Week ${n}`,
 wHot:(v,t,c)=>`Max temperature ${v}°C is above the limit for ${c} (${t}°C): shade, and increase irrigation and ventilation.`,wCold:(v,t)=>`Min temperature ${v}°C is below ${t}°C: cover plants or close the greenhouse at night.`,wEcH:(c,e)=>`Water salinity is above what ${c} tolerates (about ${e} dS/m): leach the soil and use fresher water if possible.`,wEcU:`Water salinity unknown: measure it with an EC meter (cheap); it is a key factor in dry regions.`,wSoil:`Saline soil: leach with periodic heavy irrigation and choose tolerant varieties.`,wWind:`Wind and dust: watch for drying and mechanical damage.`,wCom:(c,l)=>`Common pests and diseases of ${c}: ${l}.`,
@@ -300,8 +337,16 @@ pNoteT:`Notes`,pNotes:P=>[`Inlet pressure at the line start is about 1 bar; add 
 svgCap:`F = filter, V = zone valve, dots = emitters (at most 12 lines drawn)`,pQT:`Flows and pump`,
 pQ:P=>[`One emitter: ${P.q} L/h, needs about <b>${P.Le} L/day</b> (peak demand), i.e. ${P.te} min of running.`,`One plant: about ${P.Lp} L/day.`,`One 16 mm line: ${P.Ql} L/h (pressure loss ${P.dhl} m).`,`One zone: ${P.Qsec} m³/h. Whole plot at once: ${P.Qm} m³/h.`,`Daily plot demand: ${P.Vd} m³/day, total irrigation time ${P.hours} h.`,`<b>Required pump: flow ≥ ${P.Qp} m³/h and head (TDH) ≈ ${P.HMT} m.</b>`],
 pWeak:P=>`Your pump (${P.Qs} m³/h) is too weak for this area: irrigation needs ${P.hours} h per day. Use a pump with flow ≥ ${P.Qreq} m³/h to finish in 8 h, or split the plot into ${P.blocks} independent units.`,
-pHuge:P=>`Large area: even with a 90 mm pipe, irrigation needs ${P.hours} h per day. Split the plot into ${P.blocks} independent units, each with its own pump, main line and filter.`}};
-['ar','fr','en'].forEach(l=>D[l].o.h.push(D[l].o.h11));
+pHuge:P=>`Large area: even with a 90 mm pipe, irrigation needs ${P.hours} h per day. Split the plot into ${P.blocks} independent units, each with its own pump, main line and filter.`,h12:`12. Pesticides and doses by plant age`,
+cT:`Irrigation curve over the cycle (L/m²/day)`,cHdr:`Water at each stage (cool / normal / hot)`,cL:[`cool (−5°C)`,`normal`,`hot (+5°C)`],cNow:`Today`,cDay:`day`,cTemp:(a,b)=>`Temperatures used: max ${a}°C, min ${b}°C.`,
+cStage:(e,n,d0,d1,c,m,h,pl,tot)=>`${e} <b>${n}</b> (days ${d0}–${d1}): ${c} / ${m} / ${h} L/m²/day — about ${pl} L per plant`+(tot?`, ${tot} L/day for the area (normal)`:``)+`.`,
+cNote:`Computed with the Hargreaves equation (temperature, latitude, date) and the crop coefficient; the hotter it is, the more water is needed.`,
+tdH:(d,c,s)=>`📅 Day ${d} of the ${c} cycle — stage: ${s}`,tdW:(w,t,m,S)=>`💧 Water today about <b>${w} L/m²</b>`+(t?` (${t} L for the area)`:``)+(m?`, i.e. about ${m} min per zone (${S} zones)`:``)+`.`,tdD0:`🔍 Weekly check today: inspect leaf undersides, roots and stem, tick symptoms in section 4, then press “Get advice”.`,tdD:n=>`🔍 Next weekly check in ${n} days.`,tdSp:p=>`🧴 Follow-up spray due: ${p}.`,tdHv:n=>n>0?`🧺 Estimated harvest in about ${n} days.`:`🧺 The estimated harvest date has arrived.`,
+icsW:(w,t)=>`💧 Irrigation: ${w} L/m²`+(t?` (${t} L)`:``),icsD:`🔍 Weekly plant check`,icsH:c=>`🧺 Estimated harvest: ${c}`,icsS:p=>`🧴 Follow-up spray: ${p}`,
+prSafe:`Follow the label and local registration. Wear gloves and a mask; do not spray in extreme heat, wind or during flowering (bees). Rotate modes of action and respect the pre-harvest interval (PHI). No sulfur above 32°C. Doses are indicative.`,prSel:`Problems you ticked`,prPests:`Common pests and diseases of this crop`,
+prBio:`🌿 biological / organic-approved`,prChem:`⚗️ chemical`,prB:{L10:`10 L of water`,m2:`m²`},ul:{g:`g`,ml:`ml`,kg:`kg`,L:`L`},
+prDose:(ds,b)=>`Dose per ${b} by age: ${ds}`,prVol:(v,L)=>`Current spray volume: about ${v} L/100 m²`+(L?` (${L} L for the area)`:``),prTot:q=>`Amount for the area now: <b>${q}</b>`,prEvery:d=>d?`Repeat every ${d} days`:`Single application`,prPhi:d=>d?`Pre-harvest interval: ${d} days`:`No notable interval`}};
+['ar','fr','en'].forEach(l=>{D[l].o.h.push(D[l].o.h11);D[l].o.h.push(D[l].o.h12)});
 const $=id=>document.getElementById(id);
 let LANG='ar',W={},PH=null,YEL=null,LAST=null;
 try{const s=localStorage.getItem('fa_lang');if(D[s])LANG=s}catch(_){}
@@ -318,6 +363,7 @@ document.querySelectorAll('[data-t]').forEach(e=>{e.textContent=X.u[e.dataset.t]
 ['env','season','irr','ec','soil','comp'].forEach(k=>fill(k,X.opt[k]));
 const cv=$('crop').value;const cs=$('crop');cs.innerHTML='';Object.keys(CR).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=CR[k].nm[LANG];cs.appendChild(o)});if(cv&&CR[cv])cs.value=cv;
 buildSym();$('lat').placeholder='16.51';
+if(typeof SP!=='undefined'){buildSprayUI();renderSP();renderToday()}
 if(LAST)render()}
 function L(a){return'<ul>'+a.map(x=>'<li>'+x+'</li>').join('')+'</ul>'}
 function issue(k,X){const s=IS[k][LANG];return'<b>'+s.n+'</b><br><span class="tr">'+X.o.trl+': '+s.t+'</span><br><span class="pv">'+X.o.prl+': '+s.p+'</span>'}
@@ -355,18 +401,17 @@ fl.push(o.micro(['fruit','leaf'].includes(k.fam)));
 if(I.ec==='salty'||I.soil==='saline')fl.push(o.salF);
 sec(3,L(fl));
 // 5
-const real=W.et!=null,et=real?W.et:ET0[I.season];
-const kc=si===0?.5:si===1?.8:si===2?(k.fam==='fruit'||k.fam==='cucurb'?1.15:k.fam==='leaf'?.95:1.05):.85;
-let mm=kc*et*(gh?.75:1)/EFF[I.irr];
+const real=W.et!=null,sm=sim(I),et=sm.et0,kc=+sm.kcT.toFixed(2);
 const wEC=ECV[I.ec]||null;let lf=0;
-if(wEC&&wEC>k.ec*.6){lf=wEC>k.ec?.2:.1;mm*=1+lf}
+if(wEC&&wEC>k.ec*.6){lf=wEC>k.ec?.2:.1}
+let mm=sm.todayN;
 const sd=I.soil==='sand',cl2=I.soil==='clay';
 const iv=I.irr==='flood'?(sd?4:cl2?8:6):I.irr==='spr'?(sd?2:cl2?5:3):(cl2?3:1);
 const il=[o.iNeed(mm.toFixed(1),et.toFixed(1),real,kc)];
 if(area)il.push(o.iTot(Math.round(mm*area)));
 il.push(o.iFreq(iv,I.irr==='drip'&&sd,(mm*iv).toFixed(1)));
 if(lf)il.push(o.leach(Math.round(lf*100)));
-il.push(o.finger);sec(4,L(il));
+il.push(o.finger);sec(4,L(il)+chartHTML(sm,o,k,area));
 // 6
 const tp=[];
 if(gh){tp.push(o.tVent);tp.push(o.tShade(k.t[1]))}else tp.push(o.tWind);
@@ -399,6 +444,7 @@ sec(9,k.pests.map(p=>'<details><summary>'+IS[p][LANG].n+'</summary><p>'+IS[p][LA
 const kcPk=k.fam==='fruit'||k.fam==='cucurb'?1.15:k.fam==='leaf'?.95:1.05;
 let mmPk=kcPk*et*(gh?.75:1)/EFF.drip;if(lf)mmPk*=1+lf;
 sec(10,area&&area>0?planHTML(planCalc(I,k,mmPk,area),o):'<p>'+o.pNeed+'</p>');
+sec(11,pestHTML(I,k,si,area,o));
 return H.join('')}
 const DIA=[[40,5],[63,12.5],[90,26]];
 function dia(q){for(const [d,c] of DIA)if(q<=c)return d;return 90}
@@ -473,6 +519,185 @@ return '<p>'+o.pGeo(P.Ll,P.W,P.a,P.b)+'</p>'+L(li)
 +'<p><b>'+o.pBomT+'</b></p>'+L(o.pBom(P))
 +'<p><b>'+o.pFitT+'</b></p>'+L(o.pFit(P))
 +'<p><b>'+o.pNoteT+'</b></p>'+L(o.pNotes(P))}
+const TDEF={w:[27,14],sp:[33,18],su:[39,26],au:[35,22]};
+function ra(lat,doy){const ph=lat*Math.PI/180,dr=1+.033*Math.cos(2*Math.PI*doy/365),dl=.409*Math.sin(2*Math.PI*doy/365-1.39);const x=Math.max(-1,Math.min(1,-Math.tan(ph)*Math.tan(dl))),ws=Math.acos(x);return 24*60/Math.PI*.082*dr*(ws*Math.sin(ph)*Math.sin(dl)+Math.cos(ph)*Math.cos(dl)*Math.sin(ws))*.408}
+function et0h(lat,date,tx,tn){const doy=Math.floor((date-new Date(date.getFullYear(),0,0))/864e5);return Math.max(.5,.0023*((tx+tn)/2+17.8)*Math.sqrt(Math.max(1,tx-tn))*ra(lat,doy))}
+function kcAt(f,km){f=Math.max(0,Math.min(1,f));return f<.15?.5:f<.45?.5+(km-.5)*(f-.15)/.3:f<.75?km:km+(.85-km)*(f-.75)/.25}
+function temps(I){if(W.ax!==undefined)return[+W.ax,+W.an];const a=num(I.tmax),b=num(I.tmin);if(a!==null&&b!==null&&a>b)return[a,b];return TDEF[I.season]||TDEF.w}
+function sim(I){
+const k=CR[I.crop],gh=I.env==='gh',lat=num(I.lat),area=num(I.area),[tx,tn]=temps(I),d=k.d;
+const wEC=ECV[I.ec]||null;let lf=0;if(wEC&&wEC>k.ec*.6)lf=wEC>k.ec?.2:.1;
+const km=k.fam==='fruit'||k.fam==='cucurb'?1.15:k.fam==='leaf'?.95:1.05;
+let dd=I.sow?Math.floor((Date.now()-new Date(I.sow))/864e5):null;const assumed=dd===null||dd<0;if(assumed)dd=30;
+const sow=I.sow&&!assumed?new Date(I.sow):new Date(Date.now()-dd*864e5),now=new Date();
+const base=W.et!=null?W.et:ET0[I.season]||3;
+const cal=lat!==null&&W.et!=null?W.et/et0h(lat,now,tx,tn):1;
+const etDay=(date,dT)=>lat!==null?cal*et0h(lat,date,tx+dT,tn+dT):base*(1+.04*dT);
+const eff=EFF[I.irr]||.9,envf=gh?.75:1;
+const sc={cool:[],norm:[],hot:[]};
+for(let x=0;x<=d;x++){const date=new Date(sow.getTime()+x*864e5),kc=kcAt(x/d,km);
+[['cool',-5],['norm',0],['hot',5]].forEach(([n,dT])=>sc[n].push(kc*etDay(date,dT)*envf/eff*(1+lf)))}
+const b=[0,.2,.5,.8,1].map(f=>Math.round(f*d));
+const mid=k.fam==='leaf'?'🥬':k.fam==='root'?'🥕':k.fam==='bulb'?'🧅':'🌸';
+const emo=['🌱','🌿',mid,'🧺'];
+const a=k.sp[0],bb=k.sp[1];
+const stages=[0,1,2,3].map(i=>{const sl=n=>{const r=sc[n].slice(b[i],Math.max(b[i]+1,b[i+1]+(i===3?1:0)));return avg(r)};
+const c=sl('cool'),m=sl('norm'),h=sl('hot');return{i,d0:b[i],d1:b[i+1],c,m,h,pl:m*a*bb/10000,tot:area?m*area:null,e:emo[i]}});
+const di=Math.min(dd,d);
+return{k,d,dd,assumed,sow,sc,b,stages,emo,tx,tn,et0:etDay(now,0),kcT:kcAt(di/d,km),todayN:sc.norm[di],area}}
+function chartSVG(sm,o){
+const d=sm.d,X0=34,X1=332,Y0=22,Y1=150,mx=Math.max(...sm.sc.hot)*1.1||1;
+const px=x=>X0+(X1-X0)*x/d,py=y=>Y1-(Y1-Y0)*y/mx;
+let g='<svg viewBox="0 0 340 215" style="width:100%;max-width:440px;color:var(--tx)" font-family="sans-serif" font-size="9">';
+for(let i=0;i<4;i++){const x0=px(sm.b[i]),x1=px(sm.b[i+1]);
+g+='<rect x="'+x0+'" y="'+Y0+'" width="'+(x1-x0)+'" height="'+(Y1-Y0)+'" fill="'+(i%2?'rgba(46,125,50,.17)':'rgba(46,125,50,.07)')+'"/><text x="'+((x0+x1)/2)+'" y="'+(Y0+14)+'" text-anchor="middle" font-size="13">'+sm.emo[i]+'</text>'}
+g+='<line x1="'+X0+'" y1="'+Y1+'" x2="'+X1+'" y2="'+Y1+'" stroke="currentColor" stroke-width=".8"/><line x1="'+X0+'" y1="'+Y0+'" x2="'+X0+'" y2="'+Y1+'" stroke="currentColor" stroke-width=".8"/>';
+[0,.5,1].forEach(f=>{const v=mx*f;g+='<text x="'+(X0-3)+'" y="'+(py(v)+3)+'" text-anchor="end" fill="currentColor">'+v.toFixed(1)+'</text>'});
+[0,.5,1].forEach(f=>{g+='<text x="'+px(d*f)+'" y="'+(Y1+12)+'" text-anchor="middle" fill="currentColor">'+Math.round(d*f)+'</text>'});
+g+='<text x="'+X1+'" y="'+(Y1+24)+'" text-anchor="end" fill="currentColor">'+o.cDay+'</text><text x="4" y="12" fill="currentColor">L/m²</text>';
+[['cool','#1e88e5'],['norm','var(--pri)'],['hot','#e53935']].forEach(([n,c])=>{g+='<polyline fill="none" stroke="'+c+'" stroke-width="1.8" points="'+sm.sc[n].map((v,x)=>px(x).toFixed(1)+','+py(v).toFixed(1)).join(' ')+'"/>'});
+if(sm.dd<=d){const x=px(sm.dd);g+='<line x1="'+x+'" y1="'+Y0+'" x2="'+x+'" y2="'+Y1+'" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/><text x="'+x+'" y="'+(Y1+12+0)+'" text-anchor="middle" font-size="8" fill="currentColor" dy="11">'+o.cNow+'</text>'}
+[['#1e88e5',0],['var(--pri)',1],['#e53935',2]].forEach(([c,i])=>{const x=X0+i*100;g+='<line x1="'+x+'" y1="205" x2="'+(x+16)+'" y2="205" stroke="'+c+'" stroke-width="2.5"/><text x="'+(x+20)+'" y="208" fill="currentColor">'+o.cL[i]+'</text>'});
+return g+'</svg>'}
+function chartHTML(sm,o,k,area){
+return '<p><b>'+o.cT+'</b></p>'+chartSVG(sm,o)+'<p class="note">'+o.cTemp(sm.tx.toFixed(0),sm.tn.toFixed(0))+' '+o.cNote+'</p><p><b>'+o.cHdr+'</b></p>'
++L(sm.stages.map(s=>o.cStage(s.e,s.i===2?o.MID[k.fam]:o.STG[s.i],s.d0,s.d1,s.c.toFixed(1),s.m.toFixed(1),s.h.toFixed(1),s.pl.toFixed(2),s.tot?Math.round(s.tot):null)))}
+const PN={
+cu:{t:'bio',ar:`نحاس (هيدروكسيد / أوكسي كلوريد)`,fr:`Cuivre (hydroxyde / oxychlorure)`,en:`Copper (hydroxide / oxychloride)`},
+mz:{t:'chem',ar:`مانكوزيب 80%`,fr:`Mancozèbe 80 %`,en:`Mancozeb 80%`},
+az:{t:'chem',ar:`أزوكسيستروبين 25% SC`,fr:`Azoxystrobine 25 % SC`,en:`Azoxystrobin 25% SC`},
+mm:{t:'chem',ar:`ميتالاكسيل-م + مانكوزيب (68 WG)`,fr:`Métalaxyl-M + mancozèbe (68 WG)`,en:`Metalaxyl-M + mancozeb (68 WG)`},
+su:{t:'bio',ar:`كبريت ميكروني 80%`,fr:`Soufre mouillable 80 %`,en:`Wettable sulfur 80%`},
+kb:{t:'bio',ar:`بيكربونات البوتاسيوم`,fr:`Bicarbonate de potassium`,en:`Potassium bicarbonate`},
+dc:{t:'chem',ar:`ديفينوكونازول 25% EC`,fr:`Difénoconazole 25 % EC`,en:`Difenoconazole 25% EC`},
+bs:{t:'bio',ar:`باسيلوس سبتيلس (بيولوجي)`,fr:`Bacillus subtilis (biologique)`,en:`Bacillus subtilis (biological)`},
+tr:{t:'bio',ar:`ترايكوديرما (بيولوجي)`,fr:`Trichoderma (biologique)`,en:`Trichoderma (biological)`},
+bt:{t:'bio',ar:`Bt كورستاكي (بيولوجي)`,fr:`Bt kurstaki (biologique)`,en:`Bt kurstaki (biological)`},
+sp:{t:'bio',ar:`سبينوساد 480 SC (سام للنحل)`,fr:`Spinosad 480 SC (toxique pour les abeilles)`,en:`Spinosad 480 SC (toxic to bees)`},
+em:{t:'chem',ar:`إيمامكتين بنزوات 5% SG`,fr:`Émamectine benzoate 5 % SG`,en:`Emamectin benzoate 5% SG`},
+ch:{t:'chem',ar:`كلورانترانيليبرول 20% SC`,fr:`Chlorantraniliprole 20 % SC`,en:`Chlorantraniliprole 20% SC`},
+ks:{t:'bio',ar:`صابون البوتاسيوم`,fr:`Savon noir (potassium)`,en:`Potassium soap`},
+ne:{t:'bio',ar:`زيت النيم`,fr:`Huile de neem`,en:`Neem oil`},
+ac:{t:'chem',ar:`أسيتاميبريد 20% SP`,fr:`Acétamipride 20 % SP`,en:`Acetamiprid 20% SP`},
+sm:{t:'chem',ar:`سبيروميسيفين 240 SC`,fr:`Spiromésifène 240 SC`,en:`Spiromesifen 240 SC`},
+mo:{t:'bio',ar:`زيت معدني صيفي`,fr:`Huile minérale d’été`,en:`Summer mineral oil`},
+ab:{t:'chem',ar:`أبامكتين 1.8% EC`,fr:`Abamectine 1,8 % EC`,en:`Abamectin 1.8% EC`},
+dm:{t:'chem',ar:`ديلتامثرين 2.5% EC`,fr:`Deltaméthrine 2,5 % EC`,en:`Deltamethrin 2.5% EC`},
+nc:{t:'bio',ar:`كسب النيم (للتربة)`,fr:`Tourteau de neem (sol)`,en:`Neem cake (soil)`},
+pl:{t:'bio',ar:`Purpureocillium lilacinum (بيولوجي)`,fr:`Purpureocillium lilacinum (biologique)`,en:`Purpureocillium lilacinum (biological)`}};
+const PR={
+leafspot:[['cu',20,30,'g','L10',8,3],['mz',20,25,'g','L10',8,7],['az',7,10,'ml','L10',14,3]],
+lb:[['cu',25,30,'g','L10',6,3],['mm',20,25,'g','L10',8,14],['az',7,10,'ml','L10',14,3]],
+powd:[['su',20,30,'g','L10',8,1],['kb',30,50,'g','L10',7,0],['dc',3,5,'ml','L10',14,7]],
+down:[['cu',25,30,'g','L10',7,3],['mm',20,25,'g','L10',8,14]],
+rust:[['su',20,30,'g','L10',8,1],['cu',20,30,'g','L10',8,3],['dc',3,5,'ml','L10',14,7]],
+botr:[['bs',10,20,'g','L10',7,0],['kb',30,50,'g','L10',7,0]],
+blkrot:[['cu',25,30,'g','L10',7,3]],
+whrot:[['tr',10,20,'g','L10',15,0]],
+cat:[['bt',10,15,'g','L10',6,0],['sp',2,4,'ml','L10',7,3],['em',4,4,'g','L10',12,7],['ch',1.5,2,'ml','L10',14,3]],
+aph:[['ks',100,200,'g','L10',7,0],['ne',30,50,'ml','L10',7,0],['ac',2.5,3,'g','L10',12,7]],
+wf:[['ne',30,50,'ml','L10',7,0],['ks',100,200,'g','L10',6,0],['sm',5,5,'ml','L10',14,3],['ac',2.5,3,'g','L10',12,7]],
+mite:[['su',20,30,'g','L10',8,1],['mo',100,200,'ml','L10',10,3],['ab',5,10,'ml','L10',14,7],['sm',5,5,'ml','L10',14,3]],
+thr:[['sp',2,4,'ml','L10',7,3],['ne',30,50,'ml','L10',7,0],['ab',5,10,'ml','L10',14,7]],
+flea:[['ne',30,50,'ml','L10',7,0],['dm',5,7.5,'ml','L10',10,3]],
+rootfly:[['dm',5,7.5,'ml','L10',10,7],['ne',30,50,'ml','L10',7,0]],
+rootrot:[['tr',10,20,'g','L10',15,0],['bs',10,20,'g','L10',10,0]],
+nem:[['nc',100,200,'g','m2',0,0],['pl',10,20,'g','L10',15,0]]};
+function fq(q,u,o){if(u==='g'&&q>=1000){q/=1000;u='kg'}else if(u==='ml'&&q>=1000){q/=1000;u='L'}return(q>=100?Math.round(q):Math.round(q*10)/10)+' '+o.ul[u]}
+function pestHTML(I,k,si,area,o){
+const ids=[];I.sym.filter(i=>PR[i]).forEach(i=>ids.push([i,1]));k.pests.filter(i=>PR[i]&&!ids.some(x=>x[0]===i)).forEach(i=>ids.push([i,0]));
+if(!ids.length)return '<p>'+o.prSafe+'</p>';
+const vol=[2,4,6,7][si],Lt=area?Math.round(vol*area/100):null,sn=[o.STG[0],o.STG[1],o.MID[k.fam]];
+let h='<p class="note">'+o.prSafe+'</p><p>'+o.prVol(vol,Lt)+'</p>';
+ids.forEach(([id,sel])=>{
+h+='<details'+(sel?' open':'')+'><summary>'+IS[id][LANG].n+(sel?' ✔':'')+'</summary><p class="note">'+IS[id][LANG].s+'</p><ul>';
+PR[id].forEach(([pk,lo,hi,u,b,iv,phi])=>{
+const ds=[lo,(lo+hi)/2,hi].map(v=>Math.round(v*10)/10),cur=ds[Math.min(si,2)];
+const dtxt=ds.map((v,i)=>(i===Math.min(si,2)?'<b>':'')+sn[i]+': '+v+(i===Math.min(si,2)?'</b>':'')).join(' · ')+' '+o.ul[u];
+let tot=null;if(area)tot=b==='m2'?cur*area:cur*(Lt/10);
+h+='<li><b>'+PN[pk][LANG]+'</b> — '+(PN[pk].t==='bio'?o.prBio:o.prChem)+'<br>'+o.prDose(dtxt,o.prB[b])+(tot!==null?'<br>'+o.prTot(fq(tot,u,o)):'')+'<br>'+o.prEvery(iv)+' · '+o.prPhi(phi)+'</li>'});
+h+='</ul></details>'});
+return h}
+// ---------- reminders ----------
+function pad2(n){return String(n).padStart(2,'0')}
+function icsText(I,X){
+const o=X.o,k=CR[I.crop],sm=sim(I),area=num(I.area),tm=($('rtime').value||'06:30').split(':'),HH=+tm[0],MM=+tm[1];
+const dts=(d,h,m)=>d.getFullYear()+pad2(d.getMonth()+1)+pad2(d.getDate())+'T'+pad2(h)+pad2(m)+'00';
+const esc=t=>String(t).replace(/<[^>]+>/g,'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+const fold=l=>{const a=Array.from(l),r=[];for(let i=0;i<a.length;i+=28)r.push(a.slice(i,i+28).join(''));return r.join('\r\n ')};
+const stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,''),L2=[],ev=[];
+let uid=0;
+const add=(start,sum,desc,rr)=>{const tm2=HH*60+MM+30;
+const l=['BEGIN:VEVENT','UID:fa'+Date.now()+'-'+(uid++)+'@farm-advisor','DTSTAMP:'+stamp,'DTSTART:'+dts(start,HH,MM),'DTEND:'+dts(start,Math.floor(tm2/60)%24,tm2%60)];
+if(rr)l.push('RRULE:'+rr);
+l.push('SUMMARY:'+esc(sum),'DESCRIPTION:'+esc(desc),'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+esc(sum),'TRIGGER:PT0M','END:VALARM','END:VEVENT');ev.push(...l)};
+const day=n=>new Date(sm.sow.getTime()+n*864e5);
+const tdy=new Date(sm.sow.getTime()+sm.dd*864e5);
+sm.stages.forEach(st=>{const s0=Math.max(st.d0,sm.dd),e0=st.i===3?sm.d:st.d1-1;if(s0>e0)return;
+const n=e0-s0+1,nm=st.i===2?o.MID[k.fam]:o.STG[st.i];
+const w=st.m.toFixed(1),tot=st.tot?Math.round(st.tot):null;
+let mins='';if(area){const P=planCalc(I,k,st.m,area);mins=' · '+P.t+' min × '+P.S}
+add(day(s0),o.icsW(w,tot),nm+' — '+o.cStage(st.e,nm,st.d0,st.d1,st.c.toFixed(1),w,st.h.toFixed(1),st.pl.toFixed(2),tot)+mins,'FREQ=DAILY;COUNT='+n)});
+const list=k.pests.map(p=>IS[p][LANG].n+': '+IS[p][LANG].s).join(' | ');
+for(let j=1;sm.dd+7*j<=sm.d;j++){add(day(sm.dd+7*j),o.icsD,o.wk[(j-1)%4]+' — '+list)}
+if(sm.dd<=sm.d)add(day(sm.d),o.icsH(k.nm[LANG]),k.nm[LANG]);
+SP.forEach(e=>{const inf=prodInfo(e.prod);if(inf&&inf.iv>0){const nx=new Date(new Date(e.date).getTime()+inf.iv*864e5);if(nx>=new Date(new Date().toDateString()))add(nx,o.icsS(e.prod),e.prod)}});
+const head=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//FarmAdvisor//AR-FR-EN//','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
+return head.concat(ev,['END:VCALENDAR']).map(fold).join('\r\n')+'\r\n'}
+function download(text,name,type){const bl=new Blob([text],{type}),a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},3000)}
+function todayHTML(I,X){
+if(!I||!CR[I.crop]||!I.sow)return '';
+const o=X.o,k=CR[I.crop],sm=sim(I);if(sm.assumed||sm.dd>sm.d+10)return '';
+const area=num(I.area),f=sm.dd/sm.d,si=f<.2?0:f<.5?1:f<.8?2:3,sn=sm.dd/sm.d>1.4?o.endCycle:si===2?o.MID[k.fam]:o.STG[si];
+const w=sm.todayN;let m=null,S=null;if(area){const P=planCalc(I,k,w,area);m=P.t;S=P.S}
+const ln=[o.tdH(sm.dd,k.nm[LANG],sn),o.tdW(w.toFixed(1),area?Math.round(w*area):null,m,S),sm.dd%7===0?o.tdD0:o.tdD(7-sm.dd%7)];
+SP.forEach(e=>{const inf=prodInfo(e.prod);if(inf&&inf.iv>0){const nx=new Date(new Date(e.date).getTime()+inf.iv*864e5);if(nx<=new Date())ln.push(o.tdSp(e.prod))}});
+ln.push(o.tdHv(sm.d-sm.dd));
+return ln.map(x=>'<p>'+x+'</p>').join('')}
+function renderToday(){const h=todayHTML(SAVED,D[LANG]);$('today').innerHTML=h?'<div class="card">'+h+'</div>':''}
+async function notify(title,body){try{const reg=await navigator.serviceWorker.ready;await reg.showNotification(title,{body,icon:'icon-192.png',badge:'icon-192.png',tag:'fa-today'})}catch(_){try{new Notification(title,{body})}catch(__){}}}
+function checkNotify(){try{if(!('Notification' in window)||Notification.permission!=='granted'||!SAVED)return;const el=$('today');if(!el.innerText)return;
+const now=new Date(),key=now.toDateString(),tm=($('rtime').value||'06:30').split(':');
+if(now.getHours()*60+now.getMinutes()<(+tm[0])*60+(+tm[1]))return;
+if(localStorage.getItem('fa_notified')===key)return;localStorage.setItem('fa_notified',key);
+notify(D[LANG].u.ttl,el.innerText.replace(/\n+/g,'\n'))}catch(_){}}
+// ---------- spray log ----------
+let SP=[],SAVED=null;
+try{SP=JSON.parse(localStorage.getItem('fa_sprays')||'[]')}catch(_){}
+try{SAVED=JSON.parse(localStorage.getItem('fa_last')||'null')}catch(_){}
+function saveSP(){try{localStorage.setItem('fa_sprays',JSON.stringify(SP))}catch(_){}}
+function prodKey(name){const n=String(name||'').trim().toLowerCase();for(const k of Object.keys(PN))for(const l of ['ar','fr','en'])if(PN[k][l].toLowerCase()===n)return k;return null}
+function prodInfo(name){const key=prodKey(name);if(!key)return null;const iv=[],ph=[];for(const a of Object.values(PR))for(const p of a)if(p[0]===key){if(p[5]>0)iv.push(p[5]);ph.push(p[6])}return{iv:iv.length?Math.round(avg(iv)):0,phi:ph.length?Math.max(...ph):0}}
+function fmtDate(d){return new Date(d).toLocaleDateString(LANG)}
+function buildSprayUI(){const X=D[LANG];
+const st=$('st');const v=st.value;st.innerHTML='';
+Object.keys(IS).filter(i=>!['old','young'].includes(IS[i].g)).forEach(i=>{const o=document.createElement('option');o.value=i;o.textContent=IS[i][LANG].n;st.appendChild(o)});
+const ot=document.createElement('option');ot.value='other';ot.textContent=X.u.sother;st.appendChild(ot);if(v)st.value=v;
+const su=$('su'),uv=su.value;su.innerHTML='';const us=X.u.units.split(',');['ml','g','L','kg'].forEach((c,i)=>{const o=document.createElement('option');o.value=c;o.textContent=us[i];su.appendChild(o)});if(uv)su.value=uv;
+$('spl').innerHTML=Object.keys(PN).map(k=>'<option value="'+PN[k][LANG].replace(/"/g,'&quot;')+'">').join('');
+if(!$('sd').value)$('sd').value=new Date().toISOString().slice(0,10)}
+function renderSP(){const X=D[LANG],u=X.u,o=X.o;
+if(!SP.length){$('slist').innerHTML='<p class="note">'+u.sempty+'</p>';return}
+const tot={};SP.forEach(e=>{const key=e.prod+'|'+e.unit;tot[key]=(tot[key]||0)+(+e.qty||0)});
+let h='<ul>'+[...SP].sort((a,b)=>b.date.localeCompare(a.date)).map(e=>{const inf=prodInfo(e.prod);
+const tg=e.target==='other'?u.sother:(IS[e.target]?IS[e.target][LANG].n:'');
+let x='<b>'+fmtDate(e.date)+'</b> — '+tg+'<br>'+e.prod+': <b>'+e.qty+' '+u.units.split(',')[['ml','g','L','kg'].indexOf(e.unit)]+'</b>'+(e.vol?' · '+e.vol+' L':'')+(e.area?' · '+e.area+' m²':'')+(e.note?'<br><span class="note">'+e.note.replace(/</g,'&lt;')+'</span>':'');
+if(inf&&inf.iv>0)x+='<br>'+u.snext+': '+fmtDate(new Date(e.date).getTime()+inf.iv*864e5);
+if(inf&&inf.phi>0)x+='<br>'+u.sphi+': '+fmtDate(new Date(e.date).getTime()+inf.phi*864e5);
+return '<li>'+x+' <button class="sec" style="width:auto;padding:2px 10px;margin:0" data-del="'+e.id+'">'+u.sdel+'</button></li>'}).join('')+'</ul>';
+h+='<p><b>'+u.stot+':</b></p><ul>'+Object.keys(tot).map(k=>{const [p,un]=k.split('|');return '<li>'+p+': '+(Math.round(tot[k]*100)/100)+' '+u.units.split(',')[['ml','g','L','kg'].indexOf(un)]+'</li>'}).join('')+'</ul>';
+$('slist').innerHTML=h}
+$('slist').onclick=e=>{const id=e.target.dataset&&e.target.dataset.del;if(!id)return;SP=SP.filter(x=>String(x.id)!==id);saveSP();renderSP();renderToday()};
+$('ssave').onclick=()=>{const u=D[LANG].u,p=$('sp').value.trim(),q=num($('sq').value);if(!p||q===null){alert(u.sneed);return}
+SP.push({id:Date.now(),date:$('sd').value||new Date().toISOString().slice(0,10),target:$('st').value,prod:p,qty:q,unit:$('su').value,vol:$('sv').value.trim(),area:$('sa').value.trim(),note:$('sn').value.trim()});
+saveSP();$('sq').value='';$('sv').value='';$('sn').value='';renderSP();renderToday();$('ssave').textContent=u.ssave+' ✔';setTimeout(()=>{$('ssave').textContent=D[LANG].u.ssave},1500)};
+$('scopy').onclick=async()=>{const u=D[LANG].u;const t=SP.map(e=>fmtDate(e.date)+' | '+(e.target==='other'?u.sother:IS[e.target]?IS[e.target][LANG].n:'')+' | '+e.prod+' | '+e.qty+' '+e.unit+(e.vol?' | '+e.vol+' L':'')+(e.area?' | '+e.area+' m²':'')).join('\n');try{await navigator.clipboard.writeText(t);$('scopy').textContent=u.cpd}catch(_){$('scopy').textContent=u.cpf}};
+$('ics').onclick=()=>{const u=D[LANG].u,I=getI();if(!CR[I.crop]||!I.lat||!I.lon){$('alo').textContent=u.icsNeed;return}
+download(icsText(I,D[LANG]),'farm-reminders.ics','text/calendar;charset=utf-8');$('alo').textContent=u.icsOK};
+$('notif').onclick=async()=>{const u=D[LANG].u;try{const r=await Notification.requestPermission();$('alo').textContent=r==='granted'?u.notifOK:u.notifNo;if(r==='granted')checkNotify()}catch(_){$('alo').textContent=u.notifNo}};
+function restore(I){if(!I)return;['lat','lon','rain','temp','tmax','tmin','crop','sow','area','env','season','irr','ec','soil','comp','plen','pdist','pflow'].forEach(k=>{if(I[k]!==undefined&&I[k]!==null){try{$(k).value=I[k]}catch(_){}}});
+document.querySelectorAll('#sym input').forEach(x=>{x.checked=(I.sym||[]).includes(x.dataset.i)})}
+function initApp(){applyLang();restore(SAVED);buildSprayUI();renderSP();renderToday();checkNotify();setInterval(checkNotify,60000)}
 function getI(){return{lat:$('lat').value,lon:$('lon').value,rain:$('rain').value,temp:$('temp').value,tmax:$('tmax').value,tmin:$('tmin').value,crop:$('crop').value,sow:$('sow').value,area:$('area').value,env:$('env').value,season:$('season').value,irr:$('irr').value,ec:$('ec').value,soil:$('soil').value,comp:$('comp').value,plen:$('plen').value,pdist:$('pdist').value,pflow:$('pflow').value,sym:[...document.querySelectorAll('#sym input:checked')].map(x=>x.dataset.i)}}
 function render(){$('out').innerHTML=compute(LAST);$('res').style.display='block'}
 function analyze(url){return new Promise(res=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=80;const x=c.getContext('2d');x.drawImage(im,0,0,80,80);const d=x.getImageData(0,0,80,80).data;let g=0,y=0;for(let i=0;i<d.length;i+=4){const r=d[i]/255,gg=d[i+1]/255,b=d[i+2]/255,mx=Math.max(r,gg,b),mn=Math.min(r,gg,b),df=mx-mn;if(mx<.25||df/mx<.3)continue;let h;if(mx===r)h=((gg-b)/df)%6;else if(mx===gg)h=(b-r)/df+2;else h=(r-gg)/df+4;h*=60;if(h<0)h+=360;if(h>=75&&h<=165)g++;else if(h>=42&&h<75)y++}res(g+y>30?Math.round(100*y/(g+y)):null)};im.onerror=()=>res(null);im.src=url})}
@@ -494,10 +719,10 @@ b.disabled=false};
 $('go').onclick=async()=>{const X=D[LANG].u;
 if(!$('lat').value||!$('lon').value){alert(X.needC);return}
 if(PH&&YEL===null)YEL=await analyze(PH);
-LAST=getI();render();
+LAST=getI();SAVED=LAST;try{localStorage.setItem('fa_last',JSON.stringify(LAST))}catch(_){}renderToday();render();
 $('cp').onclick=async()=>{try{await navigator.clipboard.writeText($('out').innerText);$('cp').textContent=D[LANG].u.cpd}catch(_){$('cp').textContent=D[LANG].u.cpf}};
 $('res').scrollIntoView({behavior:'smooth'})};
-applyLang();
+initApp();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
