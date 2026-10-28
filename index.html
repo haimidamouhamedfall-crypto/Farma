@@ -6,15 +6,15 @@
 <meta name="theme-color" content="#2e7d32">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>المرشد الزراعي</title>
+<title>Farm Advisor</title>
 <style>
 :root{--bg:#f4f7f1;--card:#fff;--tx:#1d2b1f;--mut:#5b6b5e;--pri:#2e7d32;--bd:#d6e0d3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a14;--card:#1b261e;--tx:#e6efe6;--mut:#9db0a0;--pri:#66bb6a;--bd:#2f3f33}}
-:root[data-theme="dark"]{--bg:#121a14;--card:#1b261e;--tx:#e6efe6;--mut:#9db0a0;--pri:#66bb6a;--bd:#2f3f33}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#121a14;--card:#1b261e;--tx:#e6efe6;--mut:#9db0a0;--pri:#66bb6a;--bd:#2f3f33}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;line-height:1.7}
 main{max-width:640px;margin:0 auto;padding:16px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top select{width:auto}
 h1{font-size:1.4rem;margin:8px 0 2px}
 .sub{color:var(--mut);margin:0 0 14px;font-size:.9rem}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
@@ -25,254 +25,339 @@ input,select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--b
 button{width:100%;padding:13px;border:0;border-radius:12px;background:var(--pri);color:#fff;font-size:1.05rem;font-weight:600;font-family:inherit;margin-top:10px}
 button.sec{background:transparent;color:var(--pri);border:1px solid var(--pri);font-size:.9rem;padding:9px}
 button:disabled{opacity:.5}
-#prev{max-width:100%;max-height:220px;border-radius:10px;margin-top:8px;display:none}
-#out{white-space:pre-wrap;word-break:break-word}
-.res h3{font-size:.95rem;margin:12px 0 4px;color:var(--pri)}
+#prev,.pimg{max-width:100%;max-height:220px;border-radius:10px;margin-top:8px;display:none}
+.pimg{display:block}
+.res h3{font-size:.95rem;margin:14px 0 4px;color:var(--pri)}
 .res ul{margin:4px 0;padding-inline-start:20px}
 .res p{margin:4px 0}
 .warn{color:#c62828}
 .chk{display:flex;gap:8px;align-items:flex-start;margin:4px 0;font-size:.92rem}
 .chk input{width:auto;margin-top:6px}
+.tr{color:#1565c0}.pv{color:#2e7d32}
+details{border:1px solid var(--bd);border-radius:10px;padding:6px 10px;margin:6px 0}
+summary{font-weight:600}
 .note{font-size:.8rem;color:var(--mut)}
 </style>
 </head>
 <body>
 <main>
-<h1>🌱 المرشد الزراعي</h1>
-<p class="sub">أدخل بيانات المزرعة واضغط الزر: ري وتسميد ومتابعة وتحذيرات وإنتاج متوقع، بدون مفتاح ولا حساب.</p>
+<div class="top"><h1 id="ttl"></h1>
+<select id="lang"><option value="ar">العربية</option><option value="fr">Français</option><option value="en">English</option></select></div>
+<p class="sub" data-t="sub"></p>
 
-<div class="card"><h2>١) الموقع والمناخ</h2>
-<div class="row"><div><label>خط العرض</label><input id="lat" inputmode="decimal" placeholder="16.51"></div>
-<div><label>خط الطول</label><input id="lon" inputmode="decimal" placeholder="-15.81"></div></div>
-<button class="sec" id="gps" type="button">📍 استخدم موقعي الحالي</button>
-<div class="row"><div><label>الأمطار السنوية (ملم) – اختياري</label><input id="rain" inputmode="decimal"></div>
-<div><label>متوسط الحرارة (°م) – اختياري</label><input id="temp" inputmode="decimal"></div></div>
-<div class="row"><div><label>الحرارة العظمى (°م) – اختياري</label><input id="tmax" inputmode="decimal"></div><div><label>الحرارة الصغرى (°م) – اختياري</label><input id="tmin" inputmode="decimal"></div></div>
-<button class="sec" id="wxb" type="button">🌦️ اجلب الطقس الحقيقي (آخر 30 يوماً + 7 أيام قادمة)</button>
+<div class="card"><h2 data-t="s1"></h2>
+<div class="row"><div><label data-t="lat"></label><input id="lat" inputmode="decimal" placeholder="16.51"></div>
+<div><label data-t="lon"></label><input id="lon" inputmode="decimal" placeholder="-15.81"></div></div>
+<button class="sec" id="gps" type="button" data-t="gps"></button>
+<div class="row"><div><label data-t="rain"></label><input id="rain" inputmode="decimal"></div>
+<div><label data-t="temp"></label><input id="temp" inputmode="decimal"></div></div>
+<div class="row"><div><label data-t="tmax"></label><input id="tmax" inputmode="decimal"></div><div><label data-t="tmin"></label><input id="tmin" inputmode="decimal"></div></div>
+<button class="sec" id="wxb" type="button" data-t="wxb"></button>
 <div id="wxo" class="note" style="white-space:pre-wrap"></div>
-<p class="note">المصدر: Open-Meteo. إن لم يُجلب الطقس أو تُركت القيم فارغة سيقدّر المرشد المناخ من الإحداثيات (تقدير وليس قراءة حقيقية).</p></div>
+<p class="note" data-t="wxnote"></p></div>
 
-<div class="card"><h2>٢) المحصول</h2>
-<label>الصنف</label>
-<select id="crop">
-<option>طماطم</option><option>خيار</option><option>فلفل</option><option>باذنجان</option><option>كوسة</option><option>بطيخ</option><option>شمام</option><option>بصل</option><option>ثوم</option><option>جزر</option><option>بطاطس</option><option>بطاطا حلوة</option><option>ملفوف</option><option>قرنبيط</option><option>خس</option><option>سبانخ</option><option>جرجير</option><option>كزبرة وبقدونس</option><option>فاصوليا</option><option>بازلاء</option><option>فول</option><option>بامية</option><option>ذرة سكرية</option><option>لفت وفجل</option><option>شمندر</option><option>يقطين</option>
-</select>
-<div class="row"><div><label>تاريخ البذر / إنشاء المشتلة</label><input id="sow" type="date"></div>
-<div><label>المساحة (م²)</label><input id="area" inputmode="decimal" placeholder="1000"></div></div>
-<div class="row"><div><label>مكان الزراعة</label><select id="env"><option>بيت محمي</option><option>حقل مفتوح</option></select></div>
-<div><label>الفصل</label><select id="season"><option>شتاء</option><option>ربيع</option><option>صيف</option><option>خريف</option></select></div></div>
-<label>طريقة الري</label><select id="irr"><option>تنقيط</option><option>رش</option><option>غمر (غرافيتي)</option></select>
-<label>ملوحة ماء الري</label><select id="ec"><option>لا أعرف</option><option>عذبة (EC أقل من 0.7)</option><option>متوسطة (0.7–2)</option><option>مالحة (أكثر من 2)</option></select></div>
+<div class="card"><h2 data-t="s2"></h2>
+<label data-t="crop"></label><select id="crop"></select>
+<div class="row"><div><label data-t="sow"></label><input id="sow" type="date"></div>
+<div><label data-t="area"></label><input id="area" inputmode="decimal" placeholder="1000"></div></div>
+<div class="row"><div><label data-t="env"></label><select id="env"></select></div>
+<div><label data-t="season"></label><select id="season"></select></div></div>
+<label data-t="irr"></label><select id="irr"></select>
+<label data-t="ec"></label><select id="ec"></select></div>
 
-<div class="card"><h2>٣) التربة</h2>
-<div class="row"><div><label>نوع التربة</label><select id="soil"><option>رملية</option><option>طينية</option><option>طمية (غرينية)</option><option>رملية طينية</option><option>مالحة</option><option>لا أعرف</option></select></div>
-<div><label>هل أُضيف كومبوست؟</label><select id="comp"><option>لا</option><option>نعم، كمية قليلة</option><option>نعم، كمية جيدة</option></select></div></div></div>
+<div class="card"><h2 data-t="s3"></h2>
+<div class="row"><div><label data-t="soil"></label><select id="soil"></select></div>
+<div><label data-t="comp"></label><select id="comp"></select></div></div></div>
 
-<div class="card"><h2>٤) الأعراض الظاهرة على النبات (اختياري)</h2>
-<p class="note">بدل الصورة: حدّد ما تراه فقط، وسيعطيك المرشد الأسباب المحتملة.</p>
+<div class="card"><h2 data-t="s4"></h2>
+<div class="row"><button class="sec" id="cam" type="button" data-t="photoCam"></button><button class="sec" id="pick" type="button" data-t="photoPick"></button></div>
+<input id="f1" type="file" accept="image/*" capture="environment" hidden>
+<input id="f2" type="file" accept="image/*" hidden>
+<img id="prev" alt="">
+<p class="note" data-t="photoNote"></p>
+<label data-t="symHdr"></label>
 <div id="sym"></div></div>
 
-<button id="go" type="button">احصل على الإرشاد</button>
-<div class="card res" id="res" style="display:none;margin-top:12px"><h2>الإرشاد</h2><div id="out"></div><button class="sec" id="cp" type="button">📋 نسخ الإرشاد</button></div>
-<p class="note">إرشاد استرشادي مبني على قواعد زراعية عامة وليس تشخيصاً مخبرياً؛ للحالات الشديدة استشر مهندساً زراعياً قبل استخدام أي مبيد.</p>
+<button id="go" type="button" data-t="go"></button>
+<div class="card res" id="res" style="display:none;margin-top:12px"><h2 data-t="resT"></h2><div id="out"></div><button class="sec" id="cp" type="button"></button></div>
+<p class="note" data-t="disc"></p>
 </main>
 <script>
+const IS={};
+function I3(id,g,ar,fr,en){IS[id]={g,ar:{n:ar[0],s:ar[1],t:ar[2],p:ar[3]},fr:{n:fr[0],s:fr[1],t:fr[2],p:fr[3]},en:{n:en[0],s:en[1],t:en[2],p:en[3]}}}
+I3('nit','old',[`نقص النيتروجين (N)`,`اصفرار الأوراق السفلى (القديمة) يبدأ من الأسفل`,`سماد غني بالنيتروجين (نترات الأمونيوم أو 30-10-10) مع ماء الري`,`تسميد مجزّأ منتظم وإضافة كومبوست`],
+[`Carence en azote (N)`,`Jaunissement des vieilles feuilles du bas`,`Engrais azoté (nitrate d’ammonium ou 30-10-10) en fertigation`,`Fertilisation fractionnée régulière et compost`],
+[`Nitrogen (N) deficiency`,`Older lower leaves turning uniformly yellow`,`Nitrogen fertilizer (ammonium nitrate or 30-10-10) through irrigation`,`Regular split fertigation and compost`]);
+I3('pot','old',[`نقص البوتاسيوم (K)`,`حواف الأوراق القديمة بنية محروقة مع تجعد`,`نترات البوتاسيوم مع الري`,`تسميد متوازن بالبوتاسيوم وتجنّب الماء المالح`],
+[`Carence en potassium (K)`,`Bords bruns brûlés des vieilles feuilles`,`Nitrate de potassium en fertigation`,`Fertilisation potassique équilibrée, éviter l’eau salée`],
+[`Potassium (K) deficiency`,`Scorched brown edges on older leaves`,`Potassium nitrate through irrigation`,`Balanced potassium feeding; avoid saline water`]);
+I3('mag','old',[`نقص المغنيسيوم (Mg)`,`اصفرار بين العروق مع بقاء العروق خضراء في الأوراق القديمة`,`رش كبريتات المغنيسيوم 0.5% (5 غ/لتر) أسبوعياً لمدة 3 أسابيع`,`تجنّب الإفراط في البوتاسيوم وأضف المغنيسيوم في التسميد`],
+[`Carence en magnésium (Mg)`,`Jaunissement entre les nervures des vieilles feuilles (nervures vertes)`,`Pulvériser du sulfate de magnésium à 0,5 % (5 g/L) chaque semaine pendant 3 semaines`,`Éviter l’excès de potassium; apporter du Mg en fertigation`],
+[`Magnesium (Mg) deficiency`,`Yellowing between veins of older leaves (veins stay green)`,`Spray magnesium sulfate 0.5% (5 g/L) weekly for 3 weeks`,`Avoid excess potassium; include Mg in fertigation`]);
+I3('pho','old',[`نقص الفوسفور (P) أو برودة الجذور`,`لون أرجواني أو بنفسجي على الأوراق`,`سماد 12-61-0 وتجنّب التربة الباردة المبلّلة`,`تدفئة منطقة الجذور وتجنّب غمر التربة بالماء`],
+[`Carence en phosphore (P) ou sol froid`,`Feuilles violacées ou pourpres`,`Engrais 12-61-0; éviter le sol froid et détrempé`,`Réchauffer la zone racinaire, éviter l’excès d’eau`],
+[`Phosphorus (P) deficiency or cold roots`,`Purple or violet tint on leaves`,`12-61-0 fertilizer; avoid cold, wet soil`,`Keep the root zone warm, avoid waterlogging`]);
+I3('iro','young',[`نقص الحديد (Fe)`,`اصفرار بين العروق في الأوراق الحديثة مع بقاء العروق خضراء`,`حديد مخلّبي EDDHA مع الري أو رشاً ورقياً`,`حافظ على pH بين 6 و7 وأضف كومبوست وتجنّب الجير الزائد`],
+[`Carence en fer (Fe)`,`Jaunissement entre les nervures des jeunes feuilles (nervures vertes)`,`Fer chélaté EDDHA en fertigation ou en pulvérisation foliaire`,`Garder un pH de 6 à 7, ajouter du compost, éviter l’excès de calcaire`],
+[`Iron (Fe) deficiency`,`Yellowing between veins of young leaves (veins stay green)`,`Fe-EDDHA chelate through irrigation or as a foliar spray`,`Keep pH 6–7, add compost, avoid excess lime`]);
+I3('cal','young',[`نقص الكالسيوم (Ca) أو حرق الأطراف`,`احتراق أطراف وحواف الأوراق الحديثة`,`نترات الكالسيوم أسبوعياً مع ري منتظم`,`ري منتظم وتهوية جيدة وتجنّب ارتفاع الملوحة`],
+[`Carence en calcium (Ca) ou brûlure des pointes`,`Pointes et bords brûlés sur les jeunes feuilles`,`Nitrate de calcium chaque semaine, irrigation régulière`,`Irrigation régulière, bonne aération, éviter une CE élevée`],
+[`Calcium (Ca) deficiency or tipburn`,`Burnt tips and edges on young leaves`,`Calcium nitrate weekly with steady irrigation`,`Steady irrigation, good ventilation, avoid high EC`]);
+I3('mic','young',[`نقص بورون/زنك أو إصابة تربس أو فيروس`,`تشوه وتقزم الأوراق الحديثة`,`رش عناصر صغرى مخلّبية وافحص التربس`,`فخاخ لاصقة ونباتات مشاتل سليمة`],
+[`Carence en bore/zinc, thrips ou virus`,`Jeunes feuilles déformées et rabougries`,`Pulvériser des oligo-éléments chélatés; vérifier les thrips`,`Pièges collants et plants sains`],
+[`Boron/zinc deficiency, thrips or virus`,`Deformed, stunted young leaves`,`Spray chelated micronutrients; check for thrips`,`Sticky traps and clean seedlings`]);
+I3('leafspot','leaf',[`تبقع الأوراق / اللفحة المبكرة (فطري)`,`بقع بنية دائرية مع هالة صفراء`,`أزل الأوراق المصابة ورشّ مبيداً نحاسياً كل 7–10 أيام`,`ري بالتنقيط دون رش الأوراق، تهوية، تناوب زراعي`],
+[`Taches foliaires / alternariose (champignon)`,`Taches brunes rondes avec halo jaune`,`Retirer les feuilles atteintes; fongicide cuivrique tous les 7–10 jours`,`Goutte-à-goutte sans mouiller le feuillage, aération, rotation`],
+[`Leaf spot / early blight (fungal)`,`Round brown spots with a yellow halo`,`Remove infected leaves; copper fungicide every 7–10 days`,`Drip irrigation without wetting leaves, ventilation, crop rotation`]);
+I3('lb','leaf',[`اللفحة المتأخرة (فطر)`,`بقع زيتية داكنة تنتشر بسرعة على الأوراق والسيقان في الطقس الرطب`,`أزل النباتات المصابة فوراً ورشّ نحاساً أو مانكوزيب حسب المسموح محلياً`,`أصناف مقاومة، ري صباحاً، تباعد وتهوية`],
+[`Mildiou (champignon)`,`Taches huileuses sombres qui s’étendent vite par temps humide`,`Arracher les plants atteints; cuivre ou mancozèbe selon la réglementation locale`,`Variétés résistantes, irrigation le matin, espacement et aération`],
+[`Late blight (fungal)`,`Dark oily lesions spreading fast in humid weather`,`Remove affected plants at once; copper or mancozeb as locally permitted`,`Resistant varieties, morning irrigation, spacing and ventilation`]);
+I3('powd','leaf',[`البياض الدقيقي`,`مسحوق أبيض على الأوراق`,`كبريت ميكروني أو بيكربونات البوتاسيوم (5 غ/لتر)`,`تهوية، تجنّب الإفراط في النيتروجين، أصناف مقاومة`],
+[`Oïdium`,`Poudre blanche sur les feuilles`,`Soufre mouillable ou bicarbonate de potassium (5 g/L)`,`Aération, éviter l’excès d’azote, variétés résistantes`],
+[`Powdery mildew`,`White powder on leaves`,`Wettable sulfur or potassium bicarbonate (5 g/L)`,`Ventilation, avoid excess nitrogen, resistant varieties`]);
+I3('down','leaf',[`البياض الزغبي`,`بقع صفراء أعلى الورقة وزغب رمادي بنفسجي أسفلها`,`مبيد نحاسي وأزل الأوراق المصابة`,`قلّل الرطوبة وتجنّب الرش على الأوراق`],
+[`Mildiou (duveteux)`,`Taches jaunes dessus, duvet gris-violet dessous`,`Fongicide cuivrique; retirer les feuilles atteintes`,`Réduire l’humidité, éviter d’arroser le feuillage`],
+[`Downy mildew`,`Yellow patches on top, gray-purple fuzz underneath`,`Copper fungicide; remove infected leaves`,`Lower humidity, avoid wetting foliage`]);
+I3('rust','leaf',[`الصدأ`,`بثرات برتقالية أو بنية صدئة على الأوراق`,`أزل الأوراق المصابة ورشّ كبريتاً أو نحاساً`,`تباعد وتهوية وتناوب زراعي`],
+[`Rouille`,`Pustules orange ou brun rouille sur les feuilles`,`Retirer les feuilles; soufre ou cuivre`,`Espacement, aération, rotation`],
+[`Rust`,`Orange or rusty-brown pustules on leaves`,`Remove infected leaves; sulfur or copper spray`,`Spacing, ventilation, crop rotation`]);
+I3('botr','leaf',[`العفن الرمادي (بوتريتس)`,`عفن رمادي زغبي على الأوراق والثمار الرطبة`,`أزل الأجزاء المصابة وقلّل الرطوبة، وجرّب Trichoderma أو مبيداً مسجّلاً`,`تهوية، تجنّب الرطوبة العالية، وإزالة الأوراق السفلية`],
+[`Pourriture grise (Botrytis)`,`Moisissure grise duveteuse sur feuilles et fruits humides`,`Retirer les parties atteintes, baisser l’humidité; Trichoderma ou fongicide homologué`,`Aération, éviter l’humidité élevée, éclaircir les feuilles basses`],
+[`Gray mold (Botrytis)`,`Fuzzy gray mold on wet leaves and fruit`,`Remove affected parts, lower humidity; Trichoderma or a registered fungicide`,`Ventilation, avoid high humidity, remove lower leaves`]);
+I3('blkrot','leaf',[`العفن الأسود البكتيري (الملفوف والقرنبيط)`,`بقع صفراء على شكل V عند حواف الأوراق وعروق سوداء`,`أزل الأوراق المصابة ومبيد نحاسي واتلف البقايا`,`بذور سليمة، تناوب، وتجنّب الرش العلوي`],
+[`Nervation noire (chou, chou-fleur)`,`Taches jaunes en V sur les bords, nervures noires`,`Retirer les feuilles atteintes, cuivre, détruire les résidus`,`Semences saines, rotation, éviter l’aspersion`],
+[`Black rot (cabbage, cauliflower)`,`V-shaped yellow lesions at leaf edges with black veins`,`Remove infected leaves, copper spray, destroy residues`,`Clean seed, rotation, avoid overhead irrigation`]);
+I3('cat','leaf',[`يرقات وحفارات الأوراق (توتا، دودة ورق، دودة الحشد)`,`ثقوب أو أنفاق في الأوراق وبراز يرقات`,`Bt (باسيلوس ثورنجينسيس) أو سبينوساد، وجمع اليرقات يدوياً`,`مصائد فرمونية، شبك مانع للحشرات في البيت المحمي، فحص أسبوعي`],
+[`Chenilles et mineuses (Tuta, noctuelles, légionnaire)`,`Trous ou galeries dans les feuilles, déjections`,`Bt (Bacillus thuringiensis) ou spinosad; ramassage manuel`,`Pièges à phéromones, filet anti-insectes en serre, inspection hebdomadaire`],
+[`Caterpillars and leaf miners (Tuta, armyworm, fall armyworm)`,`Holes or tunnels in leaves, frass`,`Bt (Bacillus thuringiensis) or spinosad; hand-pick larvae`,`Pheromone traps, insect nets in the greenhouse, weekly scouting`]);
+I3('aph','leaf',[`المن`,`حشرات صغيرة خضراء أو سوداء أسفل الأوراق وندوة عسلية لزجة`,`صابون البوتاسيوم أو زيت النيم كل 7 أيام ورشّ الماء بقوة`,`فخاخ لاصقة صفراء، إزالة الأعشاب، وتشجيع الأعداء الحيوية`],
+[`Pucerons`,`Petits insectes verts ou noirs sous les feuilles, miellat collant`,`Savon noir ou huile de neem tous les 7 jours; jet d’eau`,`Pièges jaunes, désherbage, auxiliaires`],
+[`Aphids`,`Small green or black insects under leaves, sticky honeydew`,`Potassium soap or neem oil every 7 days; strong water jet`,`Yellow sticky traps, weed control, beneficial insects`]);
+I3('wf','leaf',[`الذبابة البيضاء`,`حشرات بيضاء صغيرة تطير عند هز النبات وندوة عسلية وأوراق مصفرّة`,`فخاخ صفراء وصابون البوتاسيوم أو زيت النيم كل 5–7 أيام`,`شبك مانع للحشرات، إزالة الأعشاب، ونباتات مشاتل سليمة`],
+[`Aleurodes (mouche blanche)`,`Petits insectes blancs qui s’envolent, miellat, feuilles jaunies`,`Pièges jaunes, savon noir ou huile de neem tous les 5–7 jours`,`Filet anti-insectes, désherbage, plants sains`],
+[`Whitefly`,`Tiny white insects flying up when shaken, honeydew, yellowing leaves`,`Yellow traps and potassium soap or neem oil every 5–7 days`,`Insect-proof netting, weed control, clean seedlings`]);
+I3('mite','leaf',[`العنكبوت الأحمر`,`نسيج عنكبوتي ونقاط صفراء دقيقة على الأوراق في الجو الحار الجاف`,`رشّ الماء أسفل الأوراق، كبريت أو زيت معدني، ومبيد أكاروس عند الإصابة الشديدة`,`خفّف الحرارة والغبار، زد الرطوبة، وافحص أسفل الأوراق أسبوعياً`],
+[`Acariens (araignée rouge)`,`Toiles fines et points jaunes sur les feuilles par temps chaud et sec`,`Jet d’eau sous les feuilles, soufre ou huile minérale; acaricide si forte attaque`,`Limiter chaleur et poussière, augmenter l’humidité, inspecter chaque semaine`],
+[`Spider mites`,`Fine webbing and yellow stippling on leaves in hot, dry weather`,`Water spray under leaves, sulfur or mineral oil; miticide only if severe`,`Reduce heat stress and dust, raise humidity, scout weekly`]);
+I3('thr','leaf',[`التربس`,`خطوط فضية على الأوراق وتشوه الأزهار والأوراق الحديثة`,`سبينوساد أو زيت النيم، فخاخ زرقاء، ورشّ متكرر`,`فخاخ زرقاء، إزالة الأعشاب، شبك مانع للحشرات`],
+[`Thrips`,`Traînées argentées, déformation des fleurs et jeunes feuilles`,`Spinosad ou huile de neem; pièges bleus; traitements répétés`,`Pièges bleus, désherbage, filet anti-insectes`],
+[`Thrips`,`Silvery streaks and distorted flowers and young leaves`,`Spinosad or neem oil; blue sticky traps; repeat sprays`,`Blue traps, weed control, insect-proof nets`]);
+I3('flea','leaf',[`خنفساء البراغيث`,`ثقوب صغيرة كثيرة كطلقات الخردق في الأوراق`,`زيت النيم أو بيريثرين نباتي وغطاء شبكي`,`غطاء شبكي، ري منتظم، وزراعة مبكرة`],
+[`Altises`,`Nombreux petits trous en « grains de plomb » dans les feuilles`,`Huile de neem ou pyrèthre naturel; voile anti-insectes`,`Voile anti-insectes, arrosage régulier, semis précoces`],
+[`Flea beetles`,`Many tiny shot-holes in leaves`,`Neem oil or natural pyrethrin; row cover`,`Row cover, steady watering, early sowing`]);
+I3('ber','fruit',[`عفن الطرف الزهري`,`تعفن وبقعة سوداء في أسفل الثمرة`,`نترات الكالسيوم وري منتظم`,`ري منتظم، تغطية التربة، وتجنّب الإفراط في النيتروجين`],
+[`Cul noir (nécrose apicale)`,`Pourriture noire à la base du fruit`,`Nitrate de calcium et irrigation régulière`,`Irrigation régulière, paillage, éviter l’excès d’azote`],
+[`Blossom-end rot`,`Dark rotten patch at the base of the fruit`,`Calcium nitrate and steady irrigation`,`Even watering, mulch, avoid excess nitrogen`]);
+I3('crack','fruit',[`تشقق الثمار`,`شقوق في سطح الثمرة`,`ثبّت نظام الري ولا تترك التربة تجف ثم تغمرها`,`تغطية التربة وتظليل وري منتظم`],
+[`Éclatement des fruits`,`Fissures à la surface des fruits`,`Stabiliser l’irrigation, ne pas alterner sec et détrempé`,`Paillage, ombrage, irrigation régulière`],
+[`Fruit cracking`,`Splits on the fruit surface`,`Stabilize irrigation, avoid swings between dry and wet`,`Mulch, shading, even watering`]);
+I3('rootrot','root',[`عفن الجذور والذبول الفيوزاريومي`,`ذبول مفاجئ مع جذور وقاعدة ساق بنية`,`قلّل الري وحسّن التصريف وأزل النباتات المصابة وأضف Trichoderma`,`تعقيم شمسي، أصول مطعّمة مقاومة، وتناوب`],
+[`Pourriture racinaire et fusariose`,`Flétrissement soudain, racines et collet bruns`,`Réduire l’irrigation, améliorer le drainage, arracher les plants, Trichoderma`,`Solarisation, plants greffés résistants, rotation`],
+[`Root rot and Fusarium wilt`,`Sudden wilting with brown roots and stem base`,`Cut irrigation, improve drainage, remove plants, add Trichoderma`,`Soil solarization, resistant grafted plants, rotation`]);
+I3('nem','root',[`النيماتودا`,`عقد وأورام على الجذور وتقزم عام`,`أزل النباتات المصابة وأضف مادة عضوية وكسب النيم`,`تعقيم شمسي، تناوب مع الحبوب، أصول مقاومة`],
+[`Nématodes`,`Galles sur les racines, croissance réduite`,`Arracher les plants, apporter matière organique et tourteau de neem`,`Solarisation, rotation avec des céréales, porte-greffes résistants`],
+[`Root-knot nematodes`,`Galls on roots, stunted growth`,`Remove plants, add organic matter and neem cake`,`Solarization, rotation with cereals, resistant rootstocks`]);
+I3('whrot','root',[`العفن الأبيض (بصل وثوم)`,`اصفرار وذبول الأوراق وعفن أبيض عند قاعدة البصلة`,`أزل النباتات المصابة وتجنّب الري الزائد`,`تناوب 4 سنوات، تعقيم شمسي، وتربة جيدة التصريف`],
+[`Pourriture blanche (oignon, ail)`,`Feuilles jaunes flétries, moisissure blanche à la base du bulbe`,`Arracher les plants atteints, éviter l’excès d’eau`,`Rotation de 4 ans, solarisation, sol bien drainé`],
+[`White rot (onion, garlic)`,`Yellowing, wilting leaves and white mold at the bulb base`,`Remove infected plants, avoid overwatering`,`4-year rotation, solarization, well-drained soil`]);
+I3('rootfly','root',[`ذبابة الجذور (الجزر والفجل)`,`أنفاق في الجذور واصفرار الأوراق`,`أزل النباتات المصابة وغطِّ الصفوف بشبك`,`تغطية بشبك، تناوب، وتجنّب الحقول المصابة سابقاً`],
+[`Mouche des racines (carotte, radis)`,`Galeries dans les racines, feuillage jaune`,`Retirer les plants atteints, couvrir de filet`,`Voile anti-insectes, rotation, éviter les parcelles infestées`],
+[`Root fly (carrot, radish)`,`Tunnels in roots and yellowing foliage`,`Remove infested plants and cover rows with netting`,`Netting, rotation, avoid previously infested plots`]);
+const GRP={old:{ar:`الأوراق القديمة`,fr:`Vieilles feuilles`,en:`Older leaves`},young:{ar:`الأوراق الحديثة`,fr:`Jeunes feuilles`,en:`Young leaves`},leaf:{ar:`أمراض وآفات الأوراق`,fr:`Maladies et ravageurs du feuillage`,en:`Leaf diseases and pests`},fruit:{ar:`الثمار`,fr:`Fruits`,en:`Fruit`},root:{ar:`الجذور والساق`,fr:`Racines et tige`,en:`Roots and stem`}};
+const CR={};
+function c3(id,d,y,t0,t1,ec,fam,sp,pests,ar,fr,en){CR[id]={d,y,t:[t0,t1],ec,fam,sp,pests,nm:{ar,fr,en}}}
+c3('tom',90,60,10,34,2.5,'fruit',[45,100],['wf','cat','lb','nem','leafspot'],`طماطم`,`Tomate`,`Tomato`);
+c3('cuc',60,50,12,34,2.0,'cucurb',[35,100],['mite','powd','wf','aph','down'],`خيار`,`Concombre`,`Cucumber`);
+c3('pep',100,35,12,34,1.5,'fruit',[45,80],['aph','thr','mite','ber'],`فلفل`,`Poivron`,`Pepper`);
+c3('egg',100,45,12,34,2.5,'fruit',[55,90],['mite','wf','cat','ber'],`باذنجان`,`Aubergine`,`Eggplant`);
+c3('zuc',50,30,10,35,3.0,'cucurb',[70,100],['powd','aph','wf'],`كوسة`,`Courgette`,`Zucchini`);
+c3('wat',90,35,15,38,3.0,'cucurb',[120,200],['rootrot','powd','aph','mite'],`بطيخ`,`Pastèque`,`Watermelon`);
+c3('mel',85,25,15,38,2.5,'cucurb',[90,180],['powd','aph','rootrot'],`شمام`,`Melon`,`Melon`);
+c3('oni',140,35,5,32,1.2,'bulb',[10,25],['thr','whrot','down'],`بصل`,`Oignon`,`Onion`);
+c3('gar',160,12,3,30,1.5,'bulb',[10,25],['whrot','rust','thr'],`ثوم`,`Ail`,`Garlic`);
+c3('car',100,40,5,30,1.0,'root',[5,25],['rootfly','nem','leafspot'],`جزر`,`Carotte`,`Carrot`);
+c3('pta',100,30,7,28,1.7,'root',[28,75],['lb','cat','wf'],`بطاطس`,`Pomme de terre`,`Potato`);
+c3('swp',120,25,12,35,3.0,'root',[30,90],['nem','cat','rootrot'],`بطاطا حلوة`,`Patate douce`,`Sweet potato`);
+c3('cab',90,40,4,28,1.8,'leaf',[45,60],['cat','aph','blkrot'],`ملفوف`,`Chou`,`Cabbage`);
+c3('cau',90,25,4,26,1.8,'leaf',[50,60],['cat','aph','blkrot'],`قرنبيط`,`Chou-fleur`,`Cauliflower`);
+c3('let',55,25,4,26,1.3,'leaf',[28,30],['aph','botr','down','cal'],`خس`,`Laitue`,`Lettuce`);
+c3('spi',45,15,2,26,2.0,'leaf',[10,25],['aph','down','cat'],`سبانخ`,`Épinard`,`Spinach`);
+c3('aru',35,15,3,28,2.5,'leaf',[8,20],['flea','aph'],`جرجير`,`Roquette`,`Arugula`);
+c3('cil',55,15,3,28,1.5,'leaf',[10,25],['aph','leafspot'],`كزبرة وبقدونس`,`Coriandre et persil`,`Cilantro and parsley`);
+c3('bea',60,12,12,32,1.0,'legume',[10,60],['mite','wf','rust'],`فاصوليا`,`Haricot`,`Bean`);
+c3('pea',70,8,3,26,1.5,'legume',[5,60],['aph','powd','rust'],`بازلاء`,`Petit pois`,`Pea`);
+c3('fab',90,6,3,26,1.6,'legume',[18,60],['aph','rust','leafspot'],`فول`,`Fève`,`Faba bean`);
+c3('okr',60,12,15,38,2.0,'fruit',[35,70],['aph','wf','nem'],`بامية`,`Gombo`,`Okra`);
+c3('cor',80,12,10,35,1.7,'cereal',[25,70],['cat','aph'],`ذرة سكرية`,`Maïs doux`,`Sweet corn`);
+c3('tur',40,25,4,28,1.5,'root',[6,30],['flea','rootfly'],`لفت وفجل`,`Navet et radis`,`Turnip and radish`);
+c3('bee',70,40,4,30,4.0,'root',[10,30],['leafspot','aph'],`شمندر`,`Betterave`,`Beet`);
+c3('pum',100,30,12,35,2.5,'cucurb',[120,200],['powd','aph','cat'],`يقطين`,`Citrouille`,`Pumpkin`);
+const D={};
+D.ar={dir:'rtl',
+u:{ttl:`🌱 المرشد الزراعي`,sub:`أدخل بيانات المزرعة وصورة النبات إن أردت، ثم اضغط الزر: ري وتسميد وعلاج ووقاية وتحذيرات وإنتاج متوقع، بدون مفتاح ولا حساب.`,s1:`١) الموقع والمناخ`,lat:`خط العرض`,lon:`خط الطول`,gps:`📍 استخدم موقعي الحالي`,rain:`الأمطار السنوية (ملم) – اختياري`,temp:`متوسط الحرارة (°م) – اختياري`,tmax:`الحرارة العظمى (°م) – اختياري`,tmin:`الحرارة الصغرى (°م) – اختياري`,wxb:`🌦️ اجلب الطقس الحقيقي (آخر 30 يوماً + 7 أيام قادمة)`,wxnote:`المصدر: Open-Meteo (يحتاج إنترنت). بدونه يُقدَّر المناخ من الإحداثيات.`,s2:`٢) المحصول`,crop:`الصنف`,sow:`تاريخ البذر / إنشاء المشتلة`,area:`المساحة (م²)`,env:`مكان الزراعة`,season:`الفصل`,irr:`طريقة الري`,ec:`ملوحة ماء الري`,s3:`٣) التربة`,soil:`نوع التربة`,comp:`هل أُضيف كومبوست؟`,s4:`٤) صورة النبات والأعراض`,photoCam:`📷 تصوير النبات`,photoPick:`🖼️ اختيار صورة`,photoNote:`الصورة تبقى في هاتفك ولا تُرسل لأي جهة. تظهر في النتيجة للمقارنة، مع مؤشر لوني تقريبي للاصفرار. التشخيص الفعلي من الأعراض التي تحددها.`,symHdr:`حدّد الأعراض التي تراها (يمكن اختيار أكثر من عرض):`,go:`احصل على الإرشاد`,resT:`الإرشاد`,cp:`📋 نسخ الإرشاد`,cpd:`✔️ تم النسخ`,cpf:`حدّد النص وانسخه يدوياً`,disc:`إرشاد استرشادي مبني على قواعد زراعية عامة وليس تشخيصاً مخبرياً؛ للحالات الشديدة استشر مهندساً زراعياً قبل استخدام أي مبيد.`,needC:`أدخل الإحداثيات`,gpsNA:`تحديد الموقع غير متاح، أدخل الإحداثيات يدوياً`,gpsF:`تعذر تحديد الموقع، أدخل الإحداثيات يدوياً`,fetch:`جارٍ الجلب…`,wxF:`تعذر جلب الطقس (تحقق من الإنترنت). يمكنك المتابعة بدونه.`},
+opt:{env:[['gh',`بيت محمي`],['open',`حقل مفتوح`]],season:[['w',`شتاء`],['sp',`ربيع`],['su',`صيف`],['au',`خريف`]],irr:[['drip',`تنقيط`],['spr',`رش`],['flood',`غمر (غرافيتي)`]],ec:[['unk',`لا أعرف`],['fresh',`عذبة (EC أقل من 0.7)`],['mid',`متوسطة (0.7–2)`],['salty',`مالحة (أكثر من 2)`]],soil:[['sand',`رملية`],['clay',`طينية`],['loam',`طمية (غرينية)`],['sandclay',`رملية طينية`],['saline',`مالحة`],['unk',`لا أعرف`]],comp:[['no',`لا`],['low',`نعم، كمية قليلة`],['good',`نعم، كمية جيدة`]]},
+o:{h:[`1. المناخ`,`2. مرحلة النمو`,`3. التشخيص والعلاج والوقاية`,`4. التسميد`,`5. الري`,`6. لتحسين الإنتاج`,`7. المتابعة الأسبوعية`,`8. تحذيرات`,`9. الإنتاج والحصاد`,`10. دليل آفات وأمراض المحصول`],
+cls:[`جافة`,`شبه جافة`,`رطبة`],clRain:(r,c)=>`الأمطار السنوية المدخلة ${r} ملم: منطقة <b>${c}</b>`,clEst:k=>`المنطقة: `+({arid:`جافة (تقدير: أمطار سنوية أقل من نحو 250 ملم)`,semi:`شبه جافة إلى شبه رطبة (تقدير: 300–800 ملم)`,unk:`غير محدد من الإحداثيات؛ أدخل الأمطار السنوية`}[k]),clTemp:t=>`الحرارة المتوسطة المدخلة: ${t}°م`,clNote:`هذا تقدير مناخي وليس قراءة حقيقية إلا إذا جلبت الطقس.`,
+wx:w=>`آخر 30 يوماً: عظمى متوسطة ${w.ax}°م، صغرى متوسطة ${w.an}°م، أمطار ${w.rain} ملم. الأيام السبعة القادمة: عظمى ${w.fx}، صغرى ${w.fn}`,wxAl:(h,c)=>`حرارة فوق الحد في ${h} من 7 أيام؛ برودة تحت الحد في ${c} من 7 أيام`,
+age:(d,a)=>`عمر المحصول: <b>${d} يوماً</b>`+(a?` (افتراضي لأنك لم تُدخل تاريخ البذر)`:``),stageIs:s=>`المرحلة: <b>${s}</b>.`,endCycle:`نهاية الدورة`,STG:[`التأسيس والإنبات`,`النمو الخضري`,``,`النضج والحصاد`],MID:{fruit:`الإزهار وعقد الثمار`,cucurb:`الإزهار وعقد الثمار`,leaf:`تكوين الأوراق والرأس`,root:`تضخم الجذر أو الدرنة`,bulb:`تكوين البصلة`,legume:`الإزهار وتكوين القرون`,cereal:`التزهير والتلقيح`},stTip:[`حافظ على رطوبة ثابتة وحماية من البرد والحرارة.`,`شجّع النمو الجذري والخضري بنيتروجين معتدل.`,`انتظم الري وأضف البوتاسيوم والكالسيوم حسب المحصول.`,`قلّل النيتروجين وراقب النضج والحصاد.`],sp:(a,b)=>`المسافة الموصى بها: ${a} سم بين النباتات و${b} سم بين الخطوط.`,
+photoLbl:`صورتك للمقارنة:`,yellow:p=>`المؤشر اللوني التقريبي: نحو ${p}% من الأجزاء النباتية مائلة للاصفرار`+(p>=25?` — اصفرار ملحوظ، راجع النقص الغذائي أو زيادة الري أو الأمراض.`:`، وهو ضمن الحدود المقبولة.`),noSym:`لم تحدد أعراضاً. إن ظهرت أعراض، حدّدها في القسم 4 وأعد الضغط.`,trl:`العلاج`,prl:`الوقاية`,conf:`الثقة متوسطة لأنها مبنية على الأعراض التي حددتها؛ أكّد بفحص ميداني أو مخبري عند الحاجة.`,
+fCur:(p,r,t,h)=>`المرحلة الحالية: ${p} بمعدل نحو <b>${r} غ/م²/أسبوع</b> يقسَّم على 2–3 دفعات مع ماء الري (`+(t?`المساحة كلها: نحو <b>${t} كغ/أسبوع</b>`:`لكل 100 م²: ${h} كغ/أسبوع`)+`).`,compost:s=>`أضف كومبوست ناضجاً 3–5 كغ/م² قبل الزراعة أو بجانب الخطوط؛ `+(s?`التربة الرملية فقيرة وتفقد العناصر بالغسل.`:`التربة تستفيد من المادة العضوية.`),sandyF:`التربة الرملية: قسّم التسميد على دفعات صغيرة أكثر لتقليل الفقد بالغسل.`,micro:ca=>`عناصر صغرى: حديد EDDHA شهرياً في التربة الرملية أو القلوية.`+(ca?` نترات الكالسيوم أسبوعياً لتجنب نقص الكالسيوم.`:``),salF:`مع الملوحة: تجنّب الأسمدة الكلوريدية مثل KCl، واستخدم النترات والكبريتات، وقلّل التركيز.`,
+fp:{f1:`19-19-19`,f2:`30-10-10 مع نترات الكالسيوم`,f3:`15-5-30 أو نترات البوتاسيوم + نترات الكالسيوم`,f4:`نترات البوتاسيوم (قلّل النيتروجين)`,f5:`30-10-10`,f6:`25-10-10 (نيتروجين عالٍ)`,f7:`20-10-20 مع كالسيوم`,f8:`لا تسميد قبل الحصاد بأسبوعين`,f9:`20-10-20`,f10:`10-5-30 أو نترات البوتاسيوم`,f11:`بوتاسيوم فقط`,f12:`أوقف النيتروجين`,f13:`12-61-0 مع قليل من البوتاسيوم`,f14:`10-20-30`,f15:`لا يلزم`,f16:`يوريا + 20-10-20`,f17:`نترات البوتاسيوم`,f18:`15-5-30`},
+iNeed:(m,e,r,k)=>`الاحتياج اليومي: نحو <b>${m} لتر/م²/يوم</b> (ET0≈${e} ملم ${r?`من الطقس الحقيقي`:`تقدير موسمي`}، Kc≈${k}).`,iTot:l=>`للمساحة كلها: نحو <b>${l} لتر/يوم</b>.`,iFreq:(v,d,p)=>`التكرار: كل <b>${v===1?`يوم`:v+` أيام`}</b>${d?` (جرعتان إلى ثلاث صغيرة في اليوم)`:``}، ${p} لتر/م² في كل مرة.`,leach:p=>`أضفت ${p}% لغسل الأملاح.`,finger:`اختبر الرطوبة بالإصبع على عمق 5–10 سم قبل الري.`,
+tVent:`التهوية: افتح الجوانب والسقف صباحاً، ولا تترك الرطوبة فوق 80% ليلاً.`,tShade:t=>`التظليل: شبك 30–40% عند ارتفاع الحرارة فوق ${t}°م.`,tWind:`الرياح: ضع مصدّات من القصب أو الشبك لحماية النباتات.`,tMulch:`التغطية (mulch): قش أو بلاستيك أسود يقلل التبخر 25–30% ويحدّ الأعشاب.`,tSup:`الدعامات: ثبّت النبات بخيط أو شبك قبل نمو الثمار.`,tRot:`التناوب الزراعي: لا تكرر نفس العائلة في نفس المكان أكثر من موسم.`,
+wk:[`افحص رطوبة التربة ولون الأوراق وتأكد من عمل النقاطات.`,`افحص أسفل الأوراق للآفات (من، ذبابة، عنكبوت) وسجّل الأعداد.`,`افحص الجذور والساق وأي ذبول أو بقع، وقِس EC ماء الري إن أمكن.`,`قيّم النمو والتسميد واضبط الجرعات حسب لون الأوراق.`],weekL:n=>`الأسبوع ${n}`,
+wHot:(v,t,c)=>`الحرارة العظمى ${v}°م أعلى من حد ${c} (${t}°م): ظلّل وزد الري والتهوية.`,wCold:(v,t)=>`الحرارة الصغرى ${v}°م أقل من ${t}°م: غطِّ النباتات أو أغلق البيت ليلاً.`,wEcH:(c,e)=>`ملوحة الماء أعلى من تحمل ${c} (نحو ${e} dS/م): اغسل التربة واستخدم ماءً أعذب إن أمكن.`,wEcU:`ملوحة الماء مجهولة: افحصها بجهاز EC (رخيص)، فهي أهم عامل في المناطق الجافة.`,wSoil:`التربة مالحة: اغسلها بري غزير دوري واختر الأصناف المتحملة.`,wWind:`الرياح والغبار: راقب الجفاف والتلف الميكانيكي.`,wCom:(c,l)=>`آفات ${c} الشائعة: ${l}.`,
+yR:(a,b,ta,tb)=>`الإنتاج المتوقع: نحو <b>${a}–${b} كغ/م²</b>`+(ta?` ⇒ نحو <b>${ta}–${tb} كغ</b> للمساحة كلها`:``)+`.`,yH:(dt,d)=>`موعد الحصاد المتوقع: <b>${dt}</b> (بعد نحو ${d} يوماً من البذر).`,yNo:d=>`أدخل تاريخ البذر لتحديد موعد الحصاد (الدورة نحو ${d} يوماً).`,yPrev:`وقاية: فحص أسبوعي، فخاخ لاصقة صفراء، رشّة وقائية بزيت النيم أو صابون البوتاسيوم كل 10–14 يوماً، وتبديل المواد المستخدمة.`,yOrg:`يُفضَّل التسميد العضوي مع التغطية (mulch) لتقليل التبخر وتحسين التربة.`}};
+D.fr={dir:'ltr',
+u:{ttl:`🌱 Conseiller agricole`,sub:`Saisissez les données de la ferme et, si vous voulez, une photo de la plante, puis appuyez sur le bouton : irrigation, fertilisation, traitement, prévention, alertes et rendement. Sans clé ni compte.`,s1:`1) Lieu et climat`,lat:`Latitude`,lon:`Longitude`,gps:`📍 Utiliser ma position`,rain:`Pluie annuelle (mm) – facultatif`,temp:`Température moyenne (°C) – facultatif`,tmax:`Température max (°C) – facultatif`,tmin:`Température min (°C) – facultatif`,wxb:`🌦️ Charger la météo réelle (30 derniers jours + 7 prochains)`,wxnote:`Source : Open-Meteo (internet requis). Sans cela, le climat est estimé d’après les coordonnées.`,s2:`2) Culture`,crop:`Culture`,sow:`Date de semis / de pépinière`,area:`Surface (m²)`,env:`Lieu de culture`,season:`Saison`,irr:`Mode d’irrigation`,ec:`Salinité de l’eau d’irrigation`,s3:`3) Sol`,soil:`Type de sol`,comp:`Compost ajouté ?`,s4:`4) Photo de la plante et symptômes`,photoCam:`📷 Photographier la plante`,photoPick:`🖼️ Choisir une photo`,photoNote:`La photo reste sur votre téléphone et n’est envoyée nulle part. Elle s’affiche dans le résultat pour comparaison, avec un indicateur de couleur approximatif du jaunissement. Le diagnostic repose sur les symptômes que vous cochez.`,symHdr:`Cochez les symptômes observés (plusieurs choix possibles) :`,go:`Obtenir les conseils`,resT:`Conseils`,cp:`📋 Copier les conseils`,cpd:`✔️ Copié`,cpf:`Sélectionnez le texte et copiez-le manuellement`,disc:`Conseils indicatifs fondés sur des règles agronomiques générales, pas un diagnostic de laboratoire; en cas de problème grave, consultez un agronome avant tout pesticide.`,needC:`Saisissez les coordonnées`,gpsNA:`Localisation indisponible, saisissez les coordonnées`,gpsF:`Localisation impossible, saisissez les coordonnées`,fetch:`Chargement…`,wxF:`Météo indisponible (vérifiez internet). Vous pouvez continuer sans.`},
+opt:{env:[['gh',`Serre`],['open',`Plein champ`]],season:[['w',`Hiver`],['sp',`Printemps`],['su',`Été`],['au',`Automne`]],irr:[['drip',`Goutte-à-goutte`],['spr',`Aspersion`],['flood',`Gravitaire (submersion)`]],ec:[['unk',`Je ne sais pas`],['fresh',`Douce (CE < 0,7)`],['mid',`Moyenne (0,7–2)`],['salty',`Salée (CE > 2)`]],soil:[['sand',`Sableux`],['clay',`Argileux`],['loam',`Limoneux`],['sandclay',`Sablo-argileux`],['saline',`Salin`],['unk',`Je ne sais pas`]],comp:[['no',`Non`],['low',`Oui, peu`],['good',`Oui, bien`]]},
+o:{h:[`1. Climat`,`2. Stade de croissance`,`3. Diagnostic, traitement et prévention`,`4. Fertilisation`,`5. Irrigation`,`6. Pour améliorer le rendement`,`7. Suivi hebdomadaire`,`8. Alertes`,`9. Rendement et récolte`,`10. Guide des ravageurs et maladies de la culture`],
+cls:[`aride`,`semi-aride`,`humide`],clRain:(r,c)=>`Pluie annuelle saisie ${r} mm : zone <b>${c}</b>`,clEst:k=>`Zone : `+({arid:`aride (estimation : moins d’environ 250 mm/an)`,semi:`semi-aride à subhumide (estimation : 300–800 mm)`,unk:`non déterminée d’après les coordonnées; saisissez la pluie annuelle`}[k]),clTemp:t=>`Température moyenne saisie : ${t}°C`,clNote:`Estimation climatique, pas une mesure, sauf si vous avez chargé la météo.`,
+wx:w=>`30 derniers jours : max moyenne ${w.ax}°C, min moyenne ${w.an}°C, pluie ${w.rain} mm. 7 prochains jours : max ${w.fx}, min ${w.fn}`,wxAl:(h,c)=>`Chaleur excessive sur ${h} jours sur 7; froid excessif sur ${c} jours sur 7`,
+age:(d,a)=>`Âge de la culture : <b>${d} jours</b>`+(a?` (par défaut, date de semis non saisie)`:``),stageIs:s=>`Stade : <b>${s}</b>.`,endCycle:`Fin de cycle`,STG:[`Installation et levée`,`Croissance végétative`,``,`Maturité et récolte`],MID:{fruit:`Floraison et nouaison`,cucurb:`Floraison et nouaison`,leaf:`Formation du feuillage et de la pomme`,root:`Grossissement de la racine ou du tubercule`,bulb:`Formation du bulbe`,legume:`Floraison et formation des gousses`,cereal:`Floraison et pollinisation`},stTip:[`Gardez une humidité stable et protégez du froid et de la chaleur.`,`Favorisez les racines et le feuillage avec un azote modéré.`,`Irrigation régulière; apportez potassium et calcium selon la culture.`,`Réduisez l’azote et surveillez la maturité et la récolte.`],sp:(a,b)=>`Espacement conseillé : ${a} cm sur le rang et ${b} cm entre rangs.`,
+photoLbl:`Votre photo pour comparaison :`,yellow:p=>`Indicateur de couleur approximatif : environ ${p} % de la partie végétale tire vers le jaune`+(p>=25?` — jaunissement notable : vérifiez carences, excès d’eau ou maladies.`:`, ce qui reste acceptable.`),noSym:`Aucun symptôme coché. Si vous en observez, cochez-les en section 4 puis relancez.`,trl:`Traitement`,prl:`Prévention`,conf:`Confiance moyenne car fondée sur vos symptômes; confirmez par un contrôle terrain ou de laboratoire si nécessaire.`,
+fCur:(p,r,t,h)=>`Stade actuel : ${p}, environ <b>${r} g/m²/semaine</b>, en 2–3 apports avec l’eau d’irrigation (`+(t?`surface totale : environ <b>${t} kg/semaine</b>`:`pour 100 m² : ${h} kg/semaine`)+`).`,compost:s=>`Ajoutez 3–5 kg/m² de compost mûr avant la plantation ou le long des rangs; `+(s?`le sol sableux est pauvre et perd ses éléments par lessivage.`:`le sol profite de la matière organique.`),sandyF:`Sol sableux : fractionnez la fertilisation en apports plus petits pour limiter le lessivage.`,micro:ca=>`Oligo-éléments : fer EDDHA chaque mois en sol sableux ou calcaire.`+(ca?` Nitrate de calcium chaque semaine pour éviter la carence en calcium.`:``),salF:`Avec la salinité : évitez les engrais chlorés comme KCl, préférez nitrates et sulfates, réduisez la dose.`,
+fp:{f1:`19-19-19`,f2:`30-10-10 avec nitrate de calcium`,f3:`15-5-30 ou nitrate de potassium + nitrate de calcium`,f4:`nitrate de potassium (moins d’azote)`,f5:`30-10-10`,f6:`25-10-10 (azote élevé)`,f7:`20-10-20 avec calcium`,f8:`aucun engrais 2 semaines avant la récolte`,f9:`20-10-20`,f10:`10-5-30 ou nitrate de potassium`,f11:`potassium seul`,f12:`arrêter l’azote`,f13:`12-61-0 avec peu de potassium`,f14:`10-20-30`,f15:`pas nécessaire`,f16:`urée + 20-10-20`,f17:`nitrate de potassium`,f18:`15-5-30`},
+iNeed:(m,e,r,k)=>`Besoin quotidien : environ <b>${m} L/m²/jour</b> (ET0≈${e} mm ${r?`d’après la météo réelle`:`estimation saisonnière`}, Kc≈${k}).`,iTot:l=>`Pour toute la surface : environ <b>${l} L/jour</b>.`,iFreq:(v,d,p)=>`Fréquence : tous les <b>${v===1?`jours`:v+` jours`}</b>${d?` (2 à 3 petits apports par jour)`:``}, ${p} L/m² à chaque fois.`,leach:p=>`J’ai ajouté ${p} % pour lessiver les sels.`,finger:`Testez l’humidité au doigt à 5–10 cm de profondeur avant d’irriguer.`,
+tVent:`Aération : ouvrez les côtés et le toit le matin; ne laissez pas l’humidité dépasser 80 % la nuit.`,tShade:t=>`Ombrage : filet 30–40 % quand la chaleur dépasse ${t}°C.`,tWind:`Vent : installez des brise-vent (canisses ou filet) pour protéger les plants.`,tMulch:`Paillage : paille ou plastique noir réduit l’évaporation de 25–30 % et limite les adventices.`,tSup:`Tuteurage : attachez les plants avant le grossissement des fruits.`,tRot:`Rotation : ne répétez pas la même famille au même endroit plus d’une saison.`,
+wk:[`Vérifiez l’humidité du sol, la couleur des feuilles et le bon fonctionnement des goutteurs.`,`Inspectez le dessous des feuilles (pucerons, mouches, acariens) et notez les effectifs.`,`Examinez racines et tiges, flétrissements et taches; mesurez la CE de l’eau si possible.`,`Évaluez la croissance et la fertilisation; ajustez les doses selon la couleur du feuillage.`],weekL:n=>`Semaine ${n}`,
+wHot:(v,t,c)=>`Température max ${v}°C supérieure à la limite de ${c} (${t}°C) : ombrez, augmentez irrigation et aération.`,wCold:(v,t)=>`Température min ${v}°C inférieure à ${t}°C : couvrez les plants ou fermez la serre la nuit.`,wEcH:(c,e)=>`Salinité de l’eau supérieure à la tolérance de ${c} (environ ${e} dS/m) : lessivez le sol et utilisez une eau plus douce si possible.`,wEcU:`Salinité de l’eau inconnue : mesurez-la avec un conductimètre (peu coûteux), c’est un facteur clé en zone aride.`,wSoil:`Sol salin : lessivez par irrigations abondantes périodiques et choisissez des variétés tolérantes.`,wWind:`Vent et poussière : surveillez dessèchement et dégâts mécaniques.`,wCom:(c,l)=>`Ravageurs et maladies fréquents (${c}) : ${l}.`,
+yR:(a,b,ta,tb)=>`Rendement attendu : environ <b>${a}–${b} kg/m²</b>`+(ta?` ⇒ environ <b>${ta}–${tb} kg</b> pour toute la surface`:``)+`.`,yH:(dt,d)=>`Date de récolte estimée : <b>${dt}</b> (environ ${d} jours après le semis).`,yNo:d=>`Saisissez la date de semis pour estimer la récolte (cycle d’environ ${d} jours).`,yPrev:`Prévention : inspection hebdomadaire, pièges collants jaunes, traitement préventif à l’huile de neem ou au savon noir tous les 10–14 jours, en alternant les produits.`,yOrg:`Préférez la fertilisation organique avec paillage pour réduire l’évaporation et améliorer le sol.`}};
+D.en={dir:'ltr',
+u:{ttl:`🌱 Farm Advisor`,sub:`Enter your farm data and, if you wish, a plant photo, then tap the button: irrigation, fertilizer, treatment, prevention, warnings and expected yield. No key or account needed.`,s1:`1) Location and climate`,lat:`Latitude`,lon:`Longitude`,gps:`📍 Use my location`,rain:`Annual rainfall (mm) – optional`,temp:`Mean temperature (°C) – optional`,tmax:`Max temperature (°C) – optional`,tmin:`Min temperature (°C) – optional`,wxb:`🌦️ Load real weather (last 30 days + next 7)`,wxnote:`Source: Open-Meteo (needs internet). Without it, climate is estimated from coordinates.`,s2:`2) Crop`,crop:`Crop`,sow:`Sowing / nursery date`,area:`Area (m²)`,env:`Growing place`,season:`Season`,irr:`Irrigation method`,ec:`Irrigation water salinity`,s3:`3) Soil`,soil:`Soil type`,comp:`Compost added?`,s4:`4) Plant photo and symptoms`,photoCam:`📷 Take a plant photo`,photoPick:`🖼️ Choose a photo`,photoNote:`The photo stays on your phone and is sent nowhere. It is shown in the result for comparison, with a rough color indicator of yellowing. The diagnosis is based on the symptoms you tick.`,symHdr:`Tick the symptoms you see (you can pick several):`,go:`Get advice`,resT:`Advice`,cp:`📋 Copy advice`,cpd:`✔️ Copied`,cpf:`Select the text and copy it manually`,disc:`Indicative advice based on general agronomic rules, not a lab diagnosis; for serious problems consult an agronomist before using any pesticide.`,needC:`Enter the coordinates`,gpsNA:`Location unavailable, enter coordinates manually`,gpsF:`Could not get location, enter coordinates manually`,fetch:`Loading…`,wxF:`Could not load weather (check internet). You can continue without it.`},
+opt:{env:[['gh',`Greenhouse`],['open',`Open field`]],season:[['w',`Winter`],['sp',`Spring`],['su',`Summer`],['au',`Autumn`]],irr:[['drip',`Drip`],['spr',`Sprinkler`],['flood',`Flood (surface)`]],ec:[['unk',`I don’t know`],['fresh',`Fresh (EC below 0.7)`],['mid',`Moderate (0.7–2)`],['salty',`Saline (above 2)`]],soil:[['sand',`Sandy`],['clay',`Clay`],['loam',`Loam`],['sandclay',`Sandy clay`],['saline',`Saline`],['unk',`I don’t know`]],comp:[['no',`No`],['low',`Yes, a little`],['good',`Yes, plenty`]]},
+o:{h:[`1. Climate`,`2. Growth stage`,`3. Diagnosis, treatment and prevention`,`4. Fertilizer`,`5. Irrigation`,`6. Improving yield`,`7. Weekly checks`,`8. Warnings`,`9. Yield and harvest`,`10. Pest and disease guide for this crop`],
+cls:[`arid`,`semi-arid`,`humid`],clRain:(r,c)=>`Annual rainfall entered ${r} mm: <b>${c}</b> zone`,clEst:k=>`Zone: `+({arid:`arid (estimate: under about 250 mm/year)`,semi:`semi-arid to sub-humid (estimate: 300–800 mm)`,unk:`not determined from coordinates; enter annual rainfall`}[k]),clTemp:t=>`Mean temperature entered: ${t}°C`,clNote:`This is a climate estimate, not a measurement, unless you loaded the weather.`,
+wx:w=>`Last 30 days: mean max ${w.ax}°C, mean min ${w.an}°C, rain ${w.rain} mm. Next 7 days: max ${w.fx}, min ${w.fn}`,wxAl:(h,c)=>`Heat above limit on ${h} of 7 days; cold below limit on ${c} of 7 days`,
+age:(d,a)=>`Crop age: <b>${d} days</b>`+(a?` (default, no sowing date entered)`:``),stageIs:s=>`Stage: <b>${s}</b>.`,endCycle:`End of cycle`,STG:[`Establishment and germination`,`Vegetative growth`,``,`Maturity and harvest`],MID:{fruit:`Flowering and fruit set`,cucurb:`Flowering and fruit set`,leaf:`Leaf and head formation`,root:`Root or tuber bulking`,bulb:`Bulb formation`,legume:`Flowering and pod set`,cereal:`Tasseling and pollination`},stTip:[`Keep moisture steady and protect from cold and heat.`,`Encourage roots and foliage with moderate nitrogen.`,`Irrigate evenly and add potassium and calcium as the crop needs.`,`Cut nitrogen and watch ripeness and harvest.`],sp:(a,b)=>`Suggested spacing: ${a} cm in the row and ${b} cm between rows.`,
+photoLbl:`Your photo for comparison:`,yellow:p=>`Rough color indicator: about ${p}% of the plant area looks yellowish`+(p>=25?` — noticeable yellowing: check for nutrient deficiency, overwatering or disease.`:`, which is within normal range.`),noSym:`No symptoms ticked. If you see any, tick them in section 4 and run again.`,trl:`Treatment`,prl:`Prevention`,conf:`Medium confidence since it relies on the symptoms you ticked; confirm with a field or lab check if needed.`,
+fCur:(p,r,t,h)=>`Current stage: ${p}, about <b>${r} g/m²/week</b> split into 2–3 doses with irrigation water (`+(t?`whole area: about <b>${t} kg/week</b>`:`per 100 m²: ${h} kg/week`)+`).`,compost:s=>`Add 3–5 kg/m² of mature compost before planting or beside the rows; `+(s?`sandy soil is poor and loses nutrients by leaching.`:`soil benefits from organic matter.`),sandyF:`Sandy soil: split fertilizer into smaller, more frequent doses to reduce leaching.`,micro:ca=>`Micronutrients: Fe-EDDHA monthly in sandy or alkaline soil.`+(ca?` Calcium nitrate weekly to prevent calcium deficiency.`:``),salF:`With salinity: avoid chloride fertilizers such as KCl, use nitrates and sulfates, and lower the dose.`,
+fp:{f1:`19-19-19`,f2:`30-10-10 with calcium nitrate`,f3:`15-5-30 or potassium nitrate + calcium nitrate`,f4:`potassium nitrate (less nitrogen)`,f5:`30-10-10`,f6:`25-10-10 (high nitrogen)`,f7:`20-10-20 with calcium`,f8:`no fertilizer 2 weeks before harvest`,f9:`20-10-20`,f10:`10-5-30 or potassium nitrate`,f11:`potassium only`,f12:`stop nitrogen`,f13:`12-61-0 with little potassium`,f14:`10-20-30`,f15:`not needed`,f16:`urea + 20-10-20`,f17:`potassium nitrate`,f18:`15-5-30`},
+iNeed:(m,e,r,k)=>`Daily need: about <b>${m} L/m²/day</b> (ET0≈${e} mm ${r?`from real weather`:`seasonal estimate`}, Kc≈${k}).`,iTot:l=>`For the whole area: about <b>${l} L/day</b>.`,iFreq:(v,d,p)=>`Frequency: every <b>${v===1?`day`:v+` days`}</b>${d?` (2–3 short pulses per day)`:``}, ${p} L/m² each time.`,leach:p=>`I added ${p}% for salt leaching.`,finger:`Check moisture by finger at 5–10 cm depth before irrigating.`,
+tVent:`Ventilation: open sides and roof in the morning; do not let night humidity exceed 80%.`,tShade:t=>`Shading: 30–40% net when heat goes above ${t}°C.`,tWind:`Wind: set up windbreaks (reed or netting) to protect plants.`,tMulch:`Mulch: straw or black plastic cuts evaporation 25–30% and suppresses weeds.`,tSup:`Support: tie plants with string or netting before fruit grows heavy.`,tRot:`Rotation: do not repeat the same family in the same spot for more than one season.`,
+wk:[`Check soil moisture, leaf color and that the emitters work.`,`Inspect leaf undersides for pests (aphids, whitefly, mites) and note numbers.`,`Check roots and stems, any wilting or spots; measure irrigation water EC if possible.`,`Assess growth and feeding; adjust doses by leaf color.`],weekL:n=>`Week ${n}`,
+wHot:(v,t,c)=>`Max temperature ${v}°C is above the limit for ${c} (${t}°C): shade, and increase irrigation and ventilation.`,wCold:(v,t)=>`Min temperature ${v}°C is below ${t}°C: cover plants or close the greenhouse at night.`,wEcH:(c,e)=>`Water salinity is above what ${c} tolerates (about ${e} dS/m): leach the soil and use fresher water if possible.`,wEcU:`Water salinity unknown: measure it with an EC meter (cheap); it is a key factor in dry regions.`,wSoil:`Saline soil: leach with periodic heavy irrigation and choose tolerant varieties.`,wWind:`Wind and dust: watch for drying and mechanical damage.`,wCom:(c,l)=>`Common pests and diseases of ${c}: ${l}.`,
+yR:(a,b,ta,tb)=>`Expected yield: about <b>${a}–${b} kg/m²</b>`+(ta?` ⇒ about <b>${ta}–${tb} kg</b> for the whole area`:``)+`.`,yH:(dt,d)=>`Estimated harvest date: <b>${dt}</b> (about ${d} days after sowing).`,yNo:d=>`Enter the sowing date to estimate harvest (cycle about ${d} days).`,yPrev:`Prevention: weekly scouting, yellow sticky traps, preventive neem oil or potassium soap spray every 10–14 days, rotating products.`,yOrg:`Prefer organic fertilizer with mulch to cut evaporation and improve soil.`}};
 const $=id=>document.getElementById(id);
-let W={};
-const C={};
-function c(n,d,y,t0,t1,ec,fam,sp,pests){C[n]={d,y,t:[t0,t1],ec,fam,sp,pests}}
-c('طماطم',90,60,10,34,2.5,'fruit','40–50 سم بين النباتات و100 سم بين الخطوط مع دعامات',['الذبابة البيضاء','حفار الأوراق (توتا)','اللفحة المبكرة والمتأخرة','النيماتودا']);
-c('خيار',60,50,12,34,2.0,'cucurb','30–40 سم مع تدعيم عمودي',['العنكبوت الأحمر','البياض الدقيقي','الذبابة البيضاء','المن']);
-c('فلفل',100,35,12,34,1.5,'fruit','40–50 سم',['المن','التربس','العنكبوت الأحمر','عفن الطرف الزهري']);
-c('باذنجان',100,45,12,34,2.5,'fruit','50–60 سم',['العنكبوت الأحمر','الذبابة البيضاء','حفار الساق والثمار']);
-c('كوسة',50,30,10,35,3.0,'cucurb','60–80 سم',['البياض الدقيقي','المن','الذبابة البيضاء']);
-c('بطيخ',90,35,15,38,3.0,'cucurb','100–150 سم',['الذبول الفيوزاريومي','البياض الدقيقي','المن','العنكبوت']);
-c('شمام',85,25,15,38,2.5,'cucurb','80–100 سم',['البياض الدقيقي','المن','الذبول']);
-c('بصل',140,35,5,32,1.2,'bulb','10 سم',['التربس','العفن الأبيض','البياض الزغبي']);
-c('ثوم',160,12,3,30,1.5,'bulb','10–12 سم',['العفن الأبيض','الصدأ','التربس']);
-c('جزر',100,40,5,30,1.0,'root','5 سم',['ذبابة الجزر','النيماتودا','اللفحة']);
-c('بطاطس',100,30,7,28,1.7,'root','25–30 سم',['اللفحة المتأخرة','فراشة درنات البطاطس','الذبابة البيضاء']);
-c('بطاطا حلوة',120,25,12,35,3.0,'root','30 سم',['سوسة البطاطا','النيماتودا']);
-c('ملفوف',90,40,4,28,1.8,'leaf','40–50 سم',['فراشة الظهر الماسي','المن','العفن الأسود']);
-c('قرنبيط',90,25,4,26,1.8,'leaf','50 سم',['فراشة الظهر الماسي','المن','العفن الأسود']);
-c('خس',55,25,4,26,1.3,'leaf','25–30 سم',['المن','العفن الرمادي','البياض الزغبي','حرق أطراف الأوراق']);
-c('سبانخ',45,15,2,26,2.0,'leaf','10 سم',['المن','البياض الزغبي','حفارات الأوراق']);
-c('جرجير',35,15,3,28,2.5,'leaf','5–10 سم',['خنفساء البراغيث','المن']);
-c('كزبرة وبقدونس',55,15,3,28,1.5,'leaf','10 سم',['المن','تبقع الأوراق']);
-c('فاصوليا',60,12,12,32,1.0,'legume','8–10 سم',['العنكبوت الأحمر','الذبابة البيضاء','الصدأ']);
-c('بازلاء',70,8,3,26,1.5,'legume','5 سم',['المن','البياض الدقيقي','الصدأ']);
-c('فول',90,6,3,26,1.6,'legume','15–20 سم',['المن','الصدأ','تبقع الشوكولاتة']);
-c('بامية',60,12,15,38,2.0,'fruit','30–40 سم',['المن','الذبابة البيضاء','النيماتودا']);
-c('ذرة سكرية',80,12,10,35,1.7,'cereal','25 سم بين النباتات و70 سم بين الخطوط',['دودة الحشد الخريفية','حفار الساق','المن']);
-c('لفت وفجل',40,25,4,28,1.5,'root','5–8 سم',['خنفساء البراغيث','ذبابة الجذور']);
-c('شمندر',70,40,4,30,4.0,'root','10 سم',['تبقع الأوراق','المن']);
-c('يقطين',100,30,12,35,2.5,'cucurb','100–150 سم',['البياض الدقيقي','المن','ذبابة الفاكهة']);
-const sel=$('crop');
-const SYM=[
-['old','الأوراق السفلى (القديمة) اصفرّت كلياً وبدأ ذلك من الأسفل','نقص نيتروجين (N)','أضف سماد غني بالنيتروجين (نترات الأمونيوم أو 30-10-10) مع الري.'],
-['old','حواف الأوراق القديمة بنية محروقة مع تجعد','نقص بوتاسيوم (K) أو ملوحة','أضف نترات البوتاسيوم، وافحص ملوحة الماء والتربة.'],
-['old','اصفرار بين العروق مع بقاء العروق خضراء (أوراق قديمة)','نقص مغنيسيوم (Mg)','رشّ كبريتات المغنيسيوم 0.5% (5 غ/لتر) كل أسبوع لمدة 3 أسابيع.'],
-['old','لون أرجواني أو بنفسجي على الأوراق','نقص فوسفور (P) أو برودة الجذور','سماد غني بالفوسفور (12-61-0)، وتجنّب الري البارد والتربة المبلّلة.'],
-['young','اصفرار بين العروق في الأوراق الحديثة (العروق خضراء)','نقص حديد (Fe) (شائع في التربة الرملية القلوية)','أضف حديد مخلّبي EDDHA مع الري أو رشّاً ورقياً.'],
-['young','احتراق أطراف وحواف الأوراق الحديثة','نقص كالسيوم (Ca) أو ملوحة أو رطوبة عالية','أضف نترات الكالسيوم، وانتظم الري، وحسّن التهوية.'],
-['young','تشوه وتقزم الأوراق الحديثة','نقص بورون/زنك أو إصابة تربس/فيروس','افحص التربس تحت العدسة؛ رشّ عناصر صغرى مخلّبية.'],
-['pest','بقع بنية دائرية مع هالة صفراء','لفحة فطرية (مبكرة/تبقع)','أزل الأوراق المصابة وقلّل الرطوبة، وجرّب مبيداً نحاسياً.'],
-['pest','مسحوق أبيض على الأوراق','بياض دقيقي','رشّ الكبريت الميكروني أو بيكربونات البوتاسيوم، وحسّن التهوية.'],
-['pest','بقع صفراء أعلى الورقة ورمادي بنفسجي أسفلها','بياض زغبي','قلّل الرطوبة والرذاذ على الأوراق، ورشّ مبيداً نحاسياً.'],
-['pest','ثقوب أو أنفاق في الأوراق','يرقات أو حفارات (توتا، دودة ورق)','فخاخ فرمونية، وBt (باسيلوس ثورنجينسيس)، وإزالة الأوراق المصابة.'],
-['pest','لزوجة على الأوراق وحشرات صغيرة تحتها','من أو ذبابة بيضاء','فخاخ لاصقة صفراء، وصابون بوتاسيوم أو زيت النيم كل 7 أيام.'],
-['pest','نسيج عنكبوتي ونقاط صفراء صغيرة','عنكبوت أحمر','رشّ الماء أسفل الأوراق، وكبريت أو زيت معدني، وقلّل الحرارة والجفاف.'],
-['fruit','تعفن أسفل الثمرة (طرف زهري/أسود)','نقص كالسيوم بسبب ري غير منتظم','انتظم الري، ونترات الكالسيوم، وتجنّب الإفراط في النيتروجين.'],
-['fruit','تشقق الثمار','تذبذب الري أو الرطوبة','ري منتظم ومنتظم الكمية، وتغطية التربة (mulch).'],
-['root','ذبول مفاجئ مع جذور بنية','عفن جذور أو فيوزاريوم أو ري زائد','قلّل الري وحسّن التصريف، وأزل النباتات المصابة.'],
-['root','أورام أو عقد على الجذور','نيماتودا','تعقيم شمسي للتربة، وتناوب زراعي، وأصول مقاومة.']
-];
-const GR={old:'أوراق قديمة',young:'أوراق حديثة',pest:'أمراض وآفات',fruit:'ثمار',root:'جذور وساق'};
-(function(){Object.keys(C).forEach(k=>{const o=document.createElement('option');o.textContent=k;sel.appendChild(o)});
-let h='',g='';SYM.forEach((s,i)=>{if(s[0]!==g){g=s[0];h+='<label style="margin-top:12px">'+GR[g]+'</label>'}h+='<label class="chk"><input type="checkbox" data-i="'+i+'"><span>'+s[1]+'</span></label>'});$('sym').innerHTML=h})();
-const EFF={'تنقيط':.9,'رش':.75,'غمر (غرافيتي)':.6};
+let LANG='ar',W={},PH=null,YEL=null,LAST=null;
+try{const s=localStorage.getItem('fa_lang');if(D[s])LANG=s}catch(_){}
+const FF={fruit:[['f1',1],['f2',2],['f3',3],['f4',2.5]],cucurb:[['f1',1],['f5',2],['f3',3],['f17',2.5]],leaf:[['f1',1],['f6',2.5],['f7',2.5],['f8',.5]],root:[['f1',1],['f9',1.5],['f10',2],['f11',1]],bulb:[['f1',1],['f9',1.5],['f10',2],['f12',.5]],legume:[['f13',.5],['f1',1],['f14',1.5],['f15',.5]],cereal:[['f1',1],['f16',2.5],['f18',2.5],['f15',.5]]};
+const ET0={w:3,sp:5,su:7.5,au:4.5};
+const EFF={drip:.9,spr:.75,flood:.6};
+const ECV={fresh:.5,mid:1.3,salty:3};
 const avg=a=>a.reduce((x,y)=>x+y,0)/a.length;
 const num=v=>{const n=parseFloat(String(v).replace(',','.'));return isNaN(n)?null:n};
-const ET0_DEF={'شتاء':3,'ربيع':5,'صيف':7.5,'خريف':4.5};
-const STAGE=['التأسيس والإنبات','النمو الخضري','','النضج والحصاد'];
-const MID={fruit:'الإزهار وعقد الثمار',cucurb:'الإزهار وعقد الثمار',leaf:'تكوين الأوراق والرأس',root:'تضخم الجذر أو الدرنة',bulb:'تكوين البصلة',legume:'الإزهار وتكوين القرون',cereal:'التزهير والتلقيح'};
-const FERT={
-fruit:[['19-19-19',1],['30-10-10 مع نترات الكالسيوم',2],['15-5-30 أو نترات البوتاسيوم + نترات الكالسيوم',3],['نترات البوتاسيوم (قلّل النيتروجين)',2.5]],
-cucurb:[['19-19-19',1],['30-10-10',2],['15-5-30 أو نترات البوتاسيوم',3],['نترات البوتاسيوم',2.5]],
-leaf:[['19-19-19',1],['25-10-10 (نيتروجين عالٍ)',2.5],['20-10-20 مع كالسيوم',2.5],['لا تسميد قبل الحصاد بأسبوعين',0.5]],
-root:[['19-19-19',1],['20-10-20',1.5],['10-5-30 أو نترات البوتاسيوم',2],['بوتاسيوم فقط',1]],
-bulb:[['19-19-19',1],['20-10-20',1.5],['10-5-30',2],['أوقف النيتروجين',0.5]],
-legume:[['12-61-0 فوسفور وبوتاسيوم قليل',0.5],['19-19-19 خفيف',1],['10-20-30',1.5],['لا يلزم',0.5]],
-cereal:[['19-19-19',1],['يوريا + 20-10-20',2.5],['15-5-30',2.5],['لا يلزم',0.5]]
-};
-function estClimate(lat,lon){
-if(lat>=15&&lat<=35&&lon>=-18&&lon<=40)return'جافة (تقدير: أمطار سنوية أقل من نحو 250 ملم)';
-if(lat>=8&&lat<15&&lon>=-18&&lon<=40)return'شبه جافة إلى شبه رطبة (تقدير: 300–800 ملم)';
-return'غير محدد من الإحداثيات؛ أدخل الأمطار السنوية'}
-function classify(r){return r<250?'جافة':r<500?'شبه جافة':'رطبة'}
-function irrig(m,soil){
-if(m==='غمر (غرافيتي)')return soil==='رملية'?4:soil==='طينية'?8:6;
-if(m==='رش')return soil==='رملية'?2:soil==='طينية'?5:3;
-return soil==='رملية'?1:soil==='طينية'?3:(soil==='طمية (غرينية)'?1:1)}
+function fill(id,list){const e=$(id),v=e.value;e.innerHTML='';list.forEach(([k,l])=>{const o=document.createElement('option');o.value=k;o.textContent=l;e.appendChild(o)});if(v&&[...e.options].some(o=>o.value===v))e.value=v}
+function buildSym(){const keep=new Set([...document.querySelectorAll('#sym input:checked')].map(x=>x.dataset.i));let h='',g='';Object.keys(IS).sort((a,b)=>Object.keys(GRP).indexOf(IS[a].g)-Object.keys(GRP).indexOf(IS[b].g)).forEach(k=>{const s=IS[k];if(s.g!==g){g=s.g;h+='<label style="margin-top:12px">'+GRP[g][LANG]+'</label>'}h+='<label class="chk"><input type="checkbox" data-i="'+k+'"'+(keep.has(k)?' checked':'')+'><span>'+s[LANG].s+'</span></label>'});$('sym').innerHTML=h}
+function applyLang(){const X=D[LANG];document.documentElement.lang=LANG;document.documentElement.dir=X.dir;$('lang').value=LANG;
+document.querySelectorAll('[data-t]').forEach(e=>{e.textContent=X.u[e.dataset.t]});$('ttl').textContent=X.u.ttl;$('cp').textContent=X.u.cp;
+['env','season','irr','ec','soil','comp'].forEach(k=>fill(k,X.opt[k]));
+const cv=$('crop').value;const cs=$('crop');cs.innerHTML='';Object.keys(CR).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=CR[k].nm[LANG];cs.appendChild(o)});if(cv&&CR[cv])cs.value=cv;
+buildSym();$('lat').placeholder='16.51';
+if(LAST)render()}
 function L(a){return'<ul>'+a.map(x=>'<li>'+x+'</li>').join('')+'</ul>'}
+function issue(k,X){const s=IS[k][LANG];return'<b>'+s.n+'</b><br><span class="tr">'+X.o.trl+': '+s.t+'</span><br><span class="pv">'+X.o.prl+': '+s.p+'</span>'}
 function compute(I){
-const k=C[I.crop],H=[],cp=[];
-const lat=num(I.lat),lon=num(I.lon);
-const sec=(t,b)=>{H.push('<h3>'+t+'</h3>'+b)};
-const gh=I.env==='بيت محمي';
+const X=D[LANG],o=X.o,k=CR[I.crop],H=[],cn=k.nm[LANG];
+const sec=(i,b)=>H.push('<h3>'+o.h[i]+'</h3>'+b);
+const lat=num(I.lat),lon=num(I.lon),gh=I.env==='gh',area=num(I.area);
 let dd=I.sow?Math.floor((Date.now()-new Date(I.sow))/864e5):null;
 const assumed=dd===null||dd<0;if(assumed)dd=30;
-// 1 climate
-let cl=[];
-const rn=num(I.rain);
-if(rn!==null&&rn>0&&!String(I.rain).includes('آخر'))cl.push('الأمطار السنوية المدخلة '+rn+' ملم: منطقة <b>'+classify(rn)+'</b>');
-else cl.push('المنطقة: '+estClimate(lat,lon));
-if(W.txt)cl.push(W.txt);else if(num(I.temp)!==null)cl.push('الحرارة المتوسطة المدخلة: '+I.temp+'°م');
-cl.push('هذا تقدير مناخي وليس قراءة حقيقية إلا إذا جلبت الطقس.');
-sec('1. المناخ',L(cl));
-// 2 stage
-const f=dd/k.d;let si=f<.2?0:f<.5?1:f<.8?2:3;
-let sn=si===2?MID[k.fam]:STAGE[si];
-let stg='عمر المحصول: <b>'+dd+' يوماً</b>'+(assumed?' (افتراضي لأنك لم تُدخل تاريخ البذر)':'')+'. المرحلة: <b>'+(f>1.4?'نهاية الدورة':sn)+'</b>.';
-const stTip=[ 'حافظ على رطوبة ثابتة وحماية من البرد والحرارة.','شجّع النمو الجذري والخضري ونيتروجين معتدل.','انتظم الري وأضف البوتاسيوم والكالسيوم حسب المحصول.','قلّل النيتروجين وراقب النضج والحصاد.'][si];
-sec('2. مرحلة النمو',"<p>"+stg+'</p><p>'+stTip+'</p><p>المسافة الموصى بها: '+k.sp+'.</p>');
-// 3 diagnosis
-let dg=[];
-(I.sym||[]).forEach(i=>dg.push('<b>'+SYM[i][2]+'</b> — '+SYM[i][1]+'.<br>الإجراء: '+SYM[i][3]));
-sec('3. التشخيص',dg.length?L(dg)+'<p class="note">الثقة متوسطة لأنها مبنية على الأعراض التي حددتها. تأكد بفحص مخبري عند الحاجة.</p>':'<p>لم تحدد أعراضاً. إن ظهرت أعراض، حدّدها في القسم 4 أعلاه وأعد الضغط.</p><p>الآفات الأكثر شيوعاً في '+I.crop+': '+k.pests.join('، ')+'.</p>');
-// 4 fertilizer
-const area=num(I.area);
-const fs=FERT[k.fam][si];
-let rate=fs[1];
-let rm=1;
-if(I.soil==='رملية')rm*=1.1;
-if(I.comp==='نعم، كمية جيدة')rm*=.7;else if(I.comp==='نعم، كمية قليلة')rm*=.85;
+// 1
+let cl=[];const rn=num(I.rain);
+if(rn!==null&&rn>0)cl.push(o.clRain(rn,rn<250?o.cls[0]:rn<500?o.cls[1]:o.cls[2]));
+else{let e='unk';if(lat!==null&&lon!==null){if(lat>=15&&lat<=35&&lon>=-18&&lon<=40)e='arid';else if(lat>=8&&lat<15&&lon>=-18&&lon<=40)e='semi'}cl.push(o.clEst(e))}
+if(W.ax!==undefined)cl.push(o.wx({ax:W.ax,an:W.an,rain:W.rain,fx:W.fxA.map(Math.round).join('/'),fn:W.fnA.map(Math.round).join('/')}));
+else if(num(I.temp)!==null)cl.push(o.clTemp(I.temp));
+cl.push(o.clNote);sec(0,L(cl));
+// 2
+const f=dd/k.d,si=f<.2?0:f<.5?1:f<.8?2:3;
+const sn=f>1.4?o.endCycle:si===2?o.MID[k.fam]:o.STG[si];
+sec(1,'<p>'+o.age(dd,assumed)+'. '+o.stageIs(sn)+'</p><p>'+o.stTip[si]+'</p><p>'+o.sp(k.sp[0],k.sp[1])+'</p>');
+// 3
+let dg='';
+if(PH){dg+='<p>'+o.photoLbl+'</p><img class="pimg" src="'+PH+'" alt="">';if(YEL!==null)dg+='<p>'+o.yellow(YEL)+'</p>'}
+if(I.sym.length)dg+=L(I.sym.map(i=>issue(i,X)))+'<p class="note">'+o.conf+'</p>';else dg+='<p>'+o.noSym+'</p>';
+sec(2,dg);
+// 4
+const fs=FF[k.fam][si];let rate=fs[1],rm=1;
+if(I.soil==='sand')rm*=1.1;
+if(I.comp==='good')rm*=.7;else if(I.comp==='low')rm*=.85;
 rate=+(rate*rm).toFixed(2);
-let fl=['المرحلة الحالية: '+fs[0]+' بمعدل نحو <b>'+rate+' غ/م²/أسبوع</b> يقسَّم على 2–3 دفعات مع ماء الري'+(area?' (المساحة كلها: نحو <b>'+(rate*area/1000).toFixed(2)+' كغ/أسبوع</b>)':' (لكل 100 م²: '+(rate/10).toFixed(2)+' كغ/أسبوع)')+'.'];
-if(I.comp==='لا')fl.push('أضف كومبوست ناضجاً 3–5 كغ/م² قبل الزراعة أو بجانب الخطوط؛ التربة '+(I.soil==='رملية'?'الرملية فقيرة وتفقد العناصر بالغسل.':'تستفيد من المادة العضوية.'));
-if(I.soil==='رملية')fl.push('التربة الرملية: قسّم التسميد على دفعات صغيرة أكثر لتقليل الفقد بالغسل.');
-fl.push('عناصر صغرى: حديد EDDHA شهرياً في التربة الرملية أو القلوية.'+(['fruit','leaf'].includes(k.fam)?' نترات الكالسيوم أسبوعياً لتجنب نقص الكالسيوم.':''));
-if(I.ec.startsWith('مالحة')||I.soil==='مالحة')fl.push('مع الملوحة: تجنّب الأسمدة الكلوريدية مثل KCl، واستخدم النترات والكبريتات، وقلّل التركيز.');
-sec('4. التسميد',L(fl));
-// 5 irrigation
-let et=W.et!=null?W.et:ET0_DEF[I.season]||4;
-let ef=EFF[I.irr]||.8;
-let kc=si===0?.5:si===1?.8:si===2?(k.fam==='fruit'||k.fam==='cucurb'?1.15:k.fam==='leaf'?.95:1.05):.85;
-let envf=gh?.75:1;
-let mm=kc*et*envf/ef;
-let iv=irrig(I.irr,I.soil);
-let wEC={'عذبة (EC أقل من 0.7)':.5,'متوسطة (0.7–2)':1.3,'مالحة (أكثر من 2)':3}[I.ec];
-let lf=0;
+const fl=[o.fCur(o.fp[fs[0]],rate,area?(rate*area/1000).toFixed(2):null,(rate/10).toFixed(2))];
+if(I.comp==='no')fl.push(o.compost(I.soil==='sand'));
+if(I.soil==='sand')fl.push(o.sandyF);
+fl.push(o.micro(['fruit','leaf'].includes(k.fam)));
+if(I.ec==='salty'||I.soil==='saline')fl.push(o.salF);
+sec(3,L(fl));
+// 5
+const real=W.et!=null,et=real?W.et:ET0[I.season];
+const kc=si===0?.5:si===1?.8:si===2?(k.fam==='fruit'||k.fam==='cucurb'?1.15:k.fam==='leaf'?.95:1.05):.85;
+let mm=kc*et*(gh?.75:1)/EFF[I.irr];
+const wEC=ECV[I.ec]||null;let lf=0;
 if(wEC&&wEC>k.ec*.6){lf=wEC>k.ec?.2:.1;mm*=1+lf}
-let per=mm*iv;
-let il=['الاحتياج اليومي: نحو <b>'+mm.toFixed(1)+' لتر/م²/يوم</b> (ET0≈'+et.toFixed(1)+' ملم'+(W.et!=null?' من الطقس الحقيقي':' تقدير موسمي')+'، Kc≈'+kc+').'];
-if(area)il.push('للمساحة كلها: نحو <b>'+Math.round(mm*area)+' لتر/يوم</b>.');
-il.push('التكرار: كل <b>'+(iv===1?'يوم':iv+' أيام')+'</b>'+(I.irr==='تنقيط'&&I.soil==='رملية'?' (جرعتان إلى ثلاث صغيرة في اليوم)':'')+'، '+per.toFixed(1)+' لتر/م² في كل مرة.');
-if(lf)il.push('أضفت '+Math.round(lf*100)+'% لغسل الأملاح.');
-il.push('اختبر الرطوبة بالإصبع على عمق 5–10 سم قبل الري.');
-sec('5. الري',L(il));
-// 6 tips
-let tp=[];
-if(gh){tp.push('التهوية: افتح الجوانب والسقف صباحاً، ولا تترك الرطوبة فوق 80% ليلاً.');tp.push('التظليل: شبك 30–40% عند ارتفاع الحرارة فوق '+k.t[1]+'°م.');}
-else tp.push('الرياح: ضع مصدّات من القصب أو الشبك لحماية النباتات.');
-tp.push('التباعد: '+k.sp+'.');
-tp.push('التغطية (mulch): قش أو بلاستيك أسود يقلل التبخر 25–30% ويحدّ الأعشاب.');
-if(['fruit','cucurb','legume'].includes(k.fam)&&['طماطم','خيار','فاصوليا','بازلاء','باذنجان','فلفل'].includes(I.crop))tp.push('الدعامات: ثبّت النبات بخيط أو شبك قبل نمو الثمار.');
-tp.push('التناوب الزراعي: لا تكرر نفس العائلة في نفس المكان أكثر من موسم.');
-sec('6. لتحسين الإنتاج',L(tp));
-// 7 weekly
-const wk=['افحص رطوبة التربة ولون الأوراق وتأكد من عمل النقاطات.','افحص أسفل الأوراق للآفات (من، ذبابة، عنكبوت) وسجّل الأعداد.','افحص الجذور والساق وأي ذبول أو بقع، وقِس EC ماء الري إن أمكن.','قيّم النمو والتسميد واضبط الجرعات حسب لون الأوراق.'];
-sec('7. المتابعة الأسبوعية',L(wk.map((x,i)=>'الأسبوع '+(i+1)+': '+x)));
-// 8 warnings
-let wr=[];
-if(num(I.tmax)!==null&&num(I.tmax)>k.t[1])wr.push('<span class="warn">الحرارة العظمى '+I.tmax+'°م أعلى من حد '+I.crop+' ('+k.t[1]+'°م): ظلّل وزد الري والتهوية.</span>');
-if(num(I.tmin)!==null&&num(I.tmin)<k.t[0])wr.push('<span class="warn">الحرارة الصغرى '+I.tmin+'°م أقل من '+k.t[0]+'°م: غطِّ النباتات أو أغلق البيت ليلاً.</span>');
-if(W.alerts)wr.push(W.alerts);
-if(wEC&&wEC>k.ec)wr.push('<span class="warn">ملوحة الماء أعلى من تحمل '+I.crop+' (نحو '+k.ec+' dS/م): اغسل التربة واستخدم ماءً أعذب إن أمكن.</span>');
-if(I.ec==='لا أعرف')wr.push('ملوحة الماء مجهولة: افحصها بجهاز EC (رخيص)، فهي أهم عامل في مناطق جافة.');
-if(I.soil==='مالحة')wr.push('<span class="warn">التربة مالحة: اغسلها بري غزير دوري واختر الأصناف المتحملة.</span>');
-if(!gh)wr.push('الرياح والغبار: راقب الجفاف والتلف الميكانيكي.');
-wr.push('آفات '+I.crop+' الشائعة: '+k.pests.join('، ')+'.');
-sec('8. تحذيرات',L(wr));
-// 9 yield
-let yk=k.y/10;
-yk*=gh?(k.fam==='fruit'||k.fam==='cucurb'?1.3:1.15):1;
-if(I.soil==='رملية'&&I.comp==='لا')yk*=.9;
-if(wEC&&wEC>k.ec||I.soil==='مالحة')yk*=.8;
-let yl=['الإنتاج المتوقع: نحو <b>'+(yk*.8).toFixed(1)+'–'+(yk*1.2).toFixed(1)+' كغ/م²</b>'+(area?' ⇒ نحو <b>'+Math.round(yk*.8*area)+'–'+Math.round(yk*1.2*area)+' كغ</b> للمساحة كلها':'')+'.'];
-if(!assumed){const hd=new Date(new Date(I.sow).getTime()+k.d*864e5);yl.push('موعد الحصاد المتوقع: <b>'+hd.toLocaleDateString('ar')+'</b> (بعد نحو '+k.d+' يوماً من البذر).')}
-else yl.push('أدخل تاريخ البذر لتحديد موعد الحصاد (الدورة نحو '+k.d+' يوماً).');
-yl.push('وقاية: رشّة وقائية كل 10–14 يوماً (زيت النيم أو صابون البوتاسيوم)، وفخاخ لاصقة صفراء، وتبديل المبيدات.');
-yl.push('يُفضَّل التسميد العضوي + mulch لتقليل التبخر وتحسين التربة.');
-sec('9. الإنتاج والحصاد',L(yl));
+const sd=I.soil==='sand',cl2=I.soil==='clay';
+const iv=I.irr==='flood'?(sd?4:cl2?8:6):I.irr==='spr'?(sd?2:cl2?5:3):(cl2?3:1);
+const il=[o.iNeed(mm.toFixed(1),et.toFixed(1),real,kc)];
+if(area)il.push(o.iTot(Math.round(mm*area)));
+il.push(o.iFreq(iv,I.irr==='drip'&&sd,(mm*iv).toFixed(1)));
+if(lf)il.push(o.leach(Math.round(lf*100)));
+il.push(o.finger);sec(4,L(il));
+// 6
+const tp=[];
+if(gh){tp.push(o.tVent);tp.push(o.tShade(k.t[1]))}else tp.push(o.tWind);
+tp.push(o.sp(k.sp[0],k.sp[1]));tp.push(o.tMulch);
+if(['tom','cuc','bea','pea','egg','pep'].includes(I.crop))tp.push(o.tSup);
+tp.push(o.tRot);sec(5,L(tp));
+// 7
+sec(6,L(o.wk.map((x,i)=>o.weekL(i+1)+': '+x)));
+// 8
+const wr=[];
+const tx=num(I.tmax),tn=num(I.tmin);
+if(tx!==null&&tx>k.t[1])wr.push('<span class="warn">'+o.wHot(I.tmax,k.t[1],cn)+'</span>');
+if(tn!==null&&tn<k.t[0])wr.push('<span class="warn">'+o.wCold(I.tmin,k.t[0])+'</span>');
+if(W.fxA)wr.push(o.wxAl(W.fxA.filter(v=>v>k.t[1]).length,W.fnA.filter(v=>v<k.t[0]).length));
+if(wEC&&wEC>k.ec)wr.push('<span class="warn">'+o.wEcH(cn,k.ec)+'</span>');
+if(I.ec==='unk')wr.push(o.wEcU);
+if(I.soil==='saline')wr.push('<span class="warn">'+o.wSoil+'</span>');
+if(!gh)wr.push(o.wWind);
+wr.push(o.wCom(cn,k.pests.map(p=>IS[p][LANG].n).join(', ')));
+sec(7,L(wr));
+// 9
+let yk=k.y/10*(gh?(k.fam==='fruit'||k.fam==='cucurb'?1.3:1.15):1);
+if(sd&&I.comp==='no')yk*=.9;
+if(wEC&&wEC>k.ec||I.soil==='saline')yk*=.8;
+const yl=[o.yR((yk*.8).toFixed(1),(yk*1.2).toFixed(1),area?Math.round(yk*.8*area):null,area?Math.round(yk*1.2*area):null)];
+if(!assumed){const hd=new Date(new Date(I.sow).getTime()+k.d*864e5);yl.push(o.yH(hd.toLocaleDateString(LANG),k.d))}else yl.push(o.yNo(k.d));
+yl.push(o.yPrev);yl.push(o.yOrg);sec(8,L(yl));
+// 10
+sec(9,k.pests.map(p=>'<details><summary>'+IS[p][LANG].n+'</summary><p>'+IS[p][LANG].s+'</p><p class="tr">'+o.trl+': '+IS[p][LANG].t+'</p><p class="pv">'+o.prl+': '+IS[p][LANG].p+'</p></details>').join(''));
 return H.join('')}
-let cache='';
-$('wxb').onclick=async()=>{
-const lat=$('lat').value,lon=$('lon').value;if(!lat||!lon){alert('أدخل الإحداثيات');return}
-const b=$('wxb');b.disabled=true;$('wxo').textContent='جارٍ الجلب…';
-try{
-const u='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,et0_fao_evapotranspiration&past_days=30&forecast_days=7&timezone=auto';
-const d=(await (await fetch(u)).json()).daily;const p=30;
-const hx=d.temperature_2m_max.slice(0,p),hn=d.temperature_2m_min.slice(0,p),fx=d.temperature_2m_max.slice(p),fn=d.temperature_2m_min.slice(p);
-const rain=d.precipitation_sum.slice(0,p).reduce((x,y)=>x+y,0),et=avg(d.et0_fao_evapotranspiration.slice(p-7,p));
-const k=C[$('crop').value],t=k.t;
-const hot=fx.filter(v=>v>t[1]).length,cold=fn.filter(v=>v<t[0]).length;
-W.et=et;
-W.txt='آخر 30 يوماً: عظمى متوسطة '+avg(hx).toFixed(1)+'°م، صغرى متوسطة '+avg(hn).toFixed(1)+'°م، أمطار '+rain.toFixed(1)+' ملم. الأيام السبعة القادمة: عظمى '+fx.map(Math.round).join('/')+'، صغرى '+fn.map(Math.round).join('/');
-W.alerts='حرارة فوق '+t[1]+' في '+hot+' من 7 أيام؛ برودة تحت '+t[0]+' في '+cold+' من 7 أيام';
+function getI(){return{lat:$('lat').value,lon:$('lon').value,rain:$('rain').value,temp:$('temp').value,tmax:$('tmax').value,tmin:$('tmin').value,crop:$('crop').value,sow:$('sow').value,area:$('area').value,env:$('env').value,season:$('season').value,irr:$('irr').value,ec:$('ec').value,soil:$('soil').value,comp:$('comp').value,sym:[...document.querySelectorAll('#sym input:checked')].map(x=>x.dataset.i)}}
+function render(){$('out').innerHTML=compute(LAST);$('res').style.display='block'}
+function analyze(url){return new Promise(res=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=80;const x=c.getContext('2d');x.drawImage(im,0,0,80,80);const d=x.getImageData(0,0,80,80).data;let g=0,y=0;for(let i=0;i<d.length;i+=4){const r=d[i]/255,gg=d[i+1]/255,b=d[i+2]/255,mx=Math.max(r,gg,b),mn=Math.min(r,gg,b),df=mx-mn;if(mx<.25||df/mx<.3)continue;let h;if(mx===r)h=((gg-b)/df)%6;else if(mx===gg)h=(b-r)/df+2;else h=(r-gg)/df+4;h*=60;if(h<0)h+=360;if(h>=75&&h<=165)g++;else if(h>=42&&h<75)y++}res(g+y>30?Math.round(100*y/(g+y)):null)};im.onerror=()=>res(null);im.src=url})}
+function onPhoto(e){const f=e.target.files[0];if(!f)return;if(PH)URL.revokeObjectURL(PH);PH=URL.createObjectURL(f);YEL=null;$('prev').src=PH;$('prev').style.display='block';e.target.value=''}
+$('f1').onchange=onPhoto;$('f2').onchange=onPhoto;
+$('cam').onclick=()=>$('f1').click();$('pick').onclick=()=>$('f2').click();
+$('lang').onchange=()=>{LANG=$('lang').value;try{localStorage.setItem('fa_lang',LANG)}catch(_){}applyLang()};
+$('gps').onclick=()=>{const X=D[LANG].u;if(!navigator.geolocation){alert(X.gpsNA);return}navigator.geolocation.getCurrentPosition(p=>{$('lat').value=p.coords.latitude.toFixed(4);$('lon').value=p.coords.longitude.toFixed(4)},()=>alert(X.gpsF))};
+$('wxb').onclick=async()=>{const X=D[LANG].u,lat=$('lat').value,lon=$('lon').value;if(!lat||!lon){alert(X.needC);return}
+const b=$('wxb');b.disabled=true;$('wxo').textContent=X.fetch;
+try{const u='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,et0_fao_evapotranspiration&past_days=30&forecast_days=7&timezone=auto';
+const d=(await (await fetch(u)).json()).daily,p=30;
+const hx=d.temperature_2m_max.slice(0,p),hn=d.temperature_2m_min.slice(0,p);
+W={ax:avg(hx).toFixed(1),an:avg(hn).toFixed(1),rain:d.precipitation_sum.slice(0,p).reduce((x,y)=>x+y,0).toFixed(1),et:avg(d.et0_fao_evapotranspiration.slice(p-7,p)),fxA:d.temperature_2m_max.slice(p),fnA:d.temperature_2m_min.slice(p)};
 $('tmax').value=Math.max(...hx).toFixed(1);$('tmin').value=Math.min(...hn).toFixed(1);
-$('wxo').textContent='✅ '+W.txt+'\n⚠️ '+W.alerts;
-}catch(e){W={};$('wxo').textContent='تعذر جلب الطقس (تحقق من الإنترنت). يمكنك المتابعة بدونه.'}
+$('wxo').textContent='✅ '+D[LANG].o.wx({ax:W.ax,an:W.an,rain:W.rain,fx:W.fxA.map(Math.round).join('/'),fn:W.fnA.map(Math.round).join('/')});
+}catch(e){W={};$('wxo').textContent=X.wxF}
 b.disabled=false};
-$('gps').onclick=()=>{if(!navigator.geolocation){alert('تحديد الموقع غير متاح، أدخل الإحداثيات يدوياً');return}
-navigator.geolocation.getCurrentPosition(p=>{$('lat').value=p.coords.latitude.toFixed(4);$('lon').value=p.coords.longitude.toFixed(4)},()=>alert('تعذر تحديد الموقع، أدخل الإحداثيات يدوياً'))};
-$('go').onclick=()=>{
-const lat=$('lat').value,lon=$('lon').value;
-if(!lat||!lon){alert('أدخل الإحداثيات');return}
-const I={lat,lon,rain:$('rain').value,temp:$('temp').value,tmax:$('tmax').value,tmin:$('tmin').value,crop:$('crop').value,sow:$('sow').value,area:$('area').value,env:$('env').value,season:$('season').value,irr:$('irr').value,ec:$('ec').value,soil:$('soil').value,comp:$('comp').value,sym:[...document.querySelectorAll('#sym input:checked')].map(x=>+x.dataset.i)};
-$('out').innerHTML=compute(I);$('res').style.display='block';
-$('cp').onclick=async()=>{const t=$('out').innerText;try{await navigator.clipboard.writeText(t);$('cp').textContent='✔️ تم النسخ'}catch(_){$('cp').textContent='حدّد النص وانسخه يدوياً'}};
+$('go').onclick=async()=>{const X=D[LANG].u;
+if(!$('lat').value||!$('lon').value){alert(X.needC);return}
+if(PH&&YEL===null)YEL=await analyze(PH);
+LAST=getI();render();
+$('cp').onclick=async()=>{try{await navigator.clipboard.writeText($('out').innerText);$('cp').textContent=D[LANG].u.cpd}catch(_){$('cp').textContent=D[LANG].u.cpf}};
 $('res').scrollIntoView({behavior:'smooth'})};
+applyLang();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
