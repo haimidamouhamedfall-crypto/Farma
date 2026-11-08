@@ -1,8 +1,8 @@
 {
- "name": "المنظومة الزراعية",
- "short_name": "المنظومة الزراعية",
- "lang": "ar",
- "dir": "rtl",
+ "name": "Agri System",
+ "short_name": "AgriSystem",
+ "lang": "en",
+ "dir": "auto",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
