@@ -1,0 +1,8 @@
+{
+  "appId": "com.agrisystem.app",
+  "appName": "Agri System",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
